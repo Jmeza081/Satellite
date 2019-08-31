@@ -1,0 +1,43 @@
+{
+	"name": "theme-satellite",
+	"version": "2.18.0",
+	"displayName": "Satellite",
+	"description": "A dark theme inspired by space",
+	"license": "MIT",
+	"scripts": {
+		"dev": "node ./scripts/dev.js",
+		"build": "node ./scripts/build.js",
+		"lint": "node ./scripts/lint.js",
+		"package": "vsce package -o ./bin/dracula.vsix",
+		"vscode:prepublish": "npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Jmeza081/Satellite"
+	},
+	"bugs": {
+		"url": "https://github.com/Jmeza081/Satellite/issues"
+	},
+	"engines": {
+		"vscode": "^1.13.0"
+	},
+	"categories": [
+		"Themes"
+	],
+	"contributes": {
+		"themes": [
+			{
+				"label": "Satellite",
+				"uiTheme": "vs-dark",
+				"path": "./theme/satellite.json"
+			}
+		]
+	},
+	"devDependencies": {
+		"js-yaml": "^3.13.1",
+		"prettier": "^1.17.0",
+		"tinycolor2": "^1.4.1",
+		"babel-eslint": "^10.0.1",
+    	"eslint": "^5.11.0"
+	}
+}
