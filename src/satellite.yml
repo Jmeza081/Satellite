@@ -15,6 +15,7 @@ satellite:
     - &RED       '#FF5555'
     - &YELLOW    '#F1FA8C'
   ansi:
+    # Used by Terminal colors
     - &COLOR0        '#21222C'
     - &COLOR1        '#FF5555'
     - &COLOR2        '#50FA7B'
