@@ -15,27 +15,33 @@ A dark theme for vs code meant to be easy on the eyes.
 ---
 
 ## Demo
+
 Current version of working theme. Sample picture is using JS as the base language.
 
 <img width="1552" alt="satellite-dark" src="https://user-images.githubusercontent.com/16481834/51505622-4bd04980-1dad-11e9-8380-8829f0bad60f.png">
 
+## Installation (Without Vs Code Marketplace)
 
-## Installation
+If you would like to install this theme without the use of the Vs Code market place, you can do so by running the following commands:
 
-[Instructions]
+```
+$ git clone https://github.com/Jmeza081/Satellite.git ~/.vscode/extensions/theme-satellite
+$ cd ~/.vscode/extensions/theme-satellite
+$ yarn
+$ yarn build
+```
+
+Note that you may have to restart your Vscode in order for the theme extension to show up in your settings.
 
 ## Supported Languages
 
-
 ## Contributing
-**ATTN: NOT PUBLISHED YET**
 
 If you'd like to contribute to this theme, please read the [contributing guidelines](./.github/CONTRIBUTING.md).
 
-
 # Development Build Instructions
-This project uses `.yaml` files to structure the contents of the final `.json` theme. When running `yarn build`, the `loadTheme.js` file will aggregate the `.yaml` theme file and convert into `.json` which is then exported under the `theme` directory.
 
+This project uses `.yaml` files to structure the contents of the final `.json` theme. When running `yarn build`, the `loadTheme.js` file will aggregate the `.yaml` theme file and convert it into `.json` which is then exported under the `theme` directory.
 
 ## License
 
