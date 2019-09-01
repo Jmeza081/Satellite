@@ -7,17 +7,18 @@ satellite:
     - &FG        '#FFFFFF'
     - &SELECTION '#4C6770A6'
     - &COMMENT   '#4C6269'
+    # Colors
+    - &CYAN      '#01C3CC'
+    - &GREEN     '#61e9a5'
     - &SEA_GREEN '#0a9796'
     - &GOLD      '#FFC157'
     - &AUBURN    '#FF7F78'
-    - &ORANGE    '#FF6A1A'
+    - &ORANGE    '#FF833D'
     - &RED       '#FF5555'
+    - &PURPLE    '#BE76CA'
     # Theirs
-    - &CYAN      '#8BE9FD'
-    - &PINK      '#FF79C6'
-    - &PURPLE    '#BD93F9'
     - &YELLOW    '#F1FA8C'
-    - &GREEN     '#FF5252'
+
   ansi:
     # Used by Terminal colors
     - &COLOR0        '#21222C'
@@ -445,7 +446,7 @@ tokenColors:
   - scope:
     - entity.name.filename
     settings:
-      foreground: *YELLOW
+      foreground: *GOLD
   - scope:
     - markup.error
     settings:
@@ -478,7 +479,7 @@ tokenColors:
     scope:
     - markup.italic
     settings:
-      foreground: *YELLOW
+      foreground: *GOLD
       fontStyle: italic
 
   - name: Bullets, lists (prose)
@@ -510,7 +511,7 @@ tokenColors:
     - string.other.link.description
     - string.other.link.title
     settings:
-      foreground: *PINK
+      foreground: *PURPLE
 
   - name: Blockquotes (prose)
     scope:
@@ -569,7 +570,7 @@ tokenColors:
     scope:
     - entity.name.type.class
     settings:
-      foreground: *CYAN
+      foreground: *ORANGE
       fontStyle: normal
 
   - name: this, super, self, etc.
@@ -581,7 +582,7 @@ tokenColors:
     - variable.other.readwrite.instance.ruby                # ruby's "@" instance symbol
     - variable.parameter.function.language.special          # Special words as parameters
     settings:
-      foreground: *PURPLE
+      foreground: *ORANGE
       fontStyle: italic
 
   - name: Inherited classes
@@ -610,26 +611,25 @@ tokenColors:
     - comment.block.documentation keyword
     - comment.block.documentation storage.type.class
     settings:
-      foreground: *PINK
+      foreground: *GOLD
 
   - name: JSDoc-style types
     scope:
     - comment.block.documentation entity.name.type
     settings:
-      foreground: *CYAN
+      foreground: *ORANGE
       fontStyle: italic
 
   - name: JSDoc-style type brackets
     scope:
     - comment.block.documentation entity.name.type punctuation.definition.bracket
     settings:
-      foreground: *CYAN
+      foreground: *GOLD
 
   - name: JSDoc-style comment parameters
     scope:
     - comment.block.documentation variable
     settings:
-      foreground: *ORANGE
       fontStyle: italic
 
 # =============================================================================
@@ -641,7 +641,7 @@ tokenColors:
     - constant
     - variable.other.constant
     settings:
-      foreground: *PURPLE
+      foreground: *ORANGE
 
   - name: Constant escape sequences
     scope:
@@ -649,7 +649,7 @@ tokenColors:
     - constant.character.string.escape
     - constant.regexp
     settings:
-      foreground: *PINK
+      foreground: *PURPLE
 
 # =============================================================================
 # Entities
@@ -659,13 +659,13 @@ tokenColors:
     scope:
     - entity.name.tag
     settings:
-      foreground: *PINK
+      foreground: *PURPLE
 
   - name: CSS attribute parent selectors ('&')
     scope:
     - entity.other.attribute-name.parent-selector
     settings:
-      foreground: *PINK
+      foreground: *PURPLE
 
   - name: HTML/CSS attribute names
     scope:
@@ -690,7 +690,7 @@ tokenColors:
     - support.function.any-method.lua
     - keyword.operator.function.infix
     settings:
-      foreground: *GREEN
+      foreground: *CYAN
 
   - name: Function parameters
     scope:
@@ -702,7 +702,7 @@ tokenColors:
     - variable.parameter
     settings:
       fontStyle: italic
-      foreground: *ORANGE
+      foreground: *AUBURN
 
   - name: Decorators
     scope:
@@ -740,7 +740,7 @@ tokenColors:
     scope:
     - meta.selector
     settings:
-      foreground: *PINK
+      foreground: *PURPLE
 
 # =============================================================================
 # Language Built-ins
@@ -787,6 +787,7 @@ tokenColors:
     - punctuation.definition.block.scalar.literal.yaml
     - punctuation.definition.block.sequence.item.yaml
     - punctuation.definition.entity.other.inherited-class
+    - meta.parameters.js
     - punctuation.function.swift
     - punctuation.separator.dictionary.key-value
     - punctuation.separator.hash
@@ -808,6 +809,7 @@ tokenColors:
     - keyword.other.statement-separator.powershell
     - meta.brace.round
     - meta.function-call punctuation
+    - meta.object-binding-pattern-variable.js
     - punctuation.definition.arguments.begin
     - punctuation.definition.arguments.end
     - punctuation.definition.entity.begin
@@ -817,11 +819,12 @@ tokenColors:
     - punctuation.definition.type.end
     - punctuation.section.scope.begin
     - punctuation.section.scope.end
+    - punctuation.definition.block.js
     - storage.type.generic.java
     - string.template meta.brace
     - string.template punctuation.accessor
     settings:
-      foreground: *FG
+      foreground: *GOLD
 
   - name: Variable interpolation operators
     scope:
@@ -837,7 +840,7 @@ tokenColors:
     - punctuation.section.embedded.end source.ruby # Issue with ruby's tmLanguage
     - punctuation.definition.variable.makefile
     settings:
-      foreground: *PINK
+      foreground: *GOLD
 
 # =============================================================================
 # Serializable / Config Langages
@@ -979,7 +982,7 @@ tokenColors:
     scope:
     - string
     settings:
-      foreground: *YELLOW
+      foreground: *GREEN
 
   - name: String quotes (temporary vscode fix)
     scope:
@@ -988,7 +991,7 @@ tokenColors:
     - punctuation.definition.string.begin
     - punctuation.definition.string.end
     settings:
-      foreground: *TEMP_QUOTES
+      foreground: *GREEN
 
   - name: Property quotes (temporary vscode fix)
     scope:
@@ -996,7 +999,7 @@ tokenColors:
     - punctuation.support.type.property-name.begin
     - punctuation.support.type.property-name.end
     settings:
-      foreground: *TEMP_PROPERTY_QUOTES
+      foreground: *GREEN
 
   - name: Docstrings
     scope:
@@ -1019,12 +1022,14 @@ tokenColors:
     - variable.other.constant.js  # Fix incorrect highlighting of pseudo-constants in js, jsx
     - variable.other.constant.ts  # Fixes incorrect highlighting of pseudo-constants in ts
     - variable.other.constant.tsx # Fixes incorrect highlighting of pseudo-constants in tsx
+    - meta.object-literal.key.js
     settings:
-      foreground: *FG
+      foreground: *AUBURN
 
   - name: Destructuring / aliasing reference name (LHS)
     scope:
     - meta.import variable.other.readwrite                          # Module import aliasing (real name)
+    - meta.import variable.other.readwrite.alias                    # Module import aliasing (alias name)
     - meta.object-binding-pattern-variable variable.object.property # Object destructuring property
     - meta.variable.assignment.destructured.object.coffee variable  # Object destructuring property (coffeescript)
     settings:
@@ -1033,12 +1038,11 @@ tokenColors:
 
   - name: Destructuring / aliasing variable name (RHS)
     scope:
-    - meta.import variable.other.readwrite.alias                             # Module import aliasing (alias name)
     - meta.export variable.other.readwrite.alias                             # Module import aliasing (alias name)
     - meta.variable.assignment.destructured.object.coffee variable variable  # Object destructuring variable (coffeescript)
     settings:
       fontStyle: normal
-      foreground: *FG
+      foreground: *GOLD
 
 # =============================================================================
 # Language Extensions / Edge Cases
@@ -1082,8 +1086,15 @@ tokenColors:
     - punctuation.section.embedded.end.jsx
     - punctuation.separator.list.comma.css                          # Commas separating selectors in CSS
     - constant.language.empty-list.haskell
+    - keyword.control.from.js
     settings:
-      foreground: *FG
+      foreground: *CYAN
+
+  - name: JSX Overrides
+    scope:
+    - meta.tag.js
+    settings:
+      foreground: *CYAN
 
   # This is set to conform to the standard of coloring langage constants purple.
   # In this case, this colors "$?", "$@", "$*", "$1", etc..
