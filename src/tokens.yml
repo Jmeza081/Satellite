@@ -12,102 +12,192 @@
 #   chroma     0..0.4   saturation; reduced automatically if out of sRGB gamut
 #   hue        0..360   degrees
 #
-# OKLCH is used because it is perceptually uniform — a 0.05 lightness step means
-# the same thing on gold as it does on teal. That is what allows the palette to
-# use lightness as the channel that keeps token roles distinguishable, including
-# for readers with colour vision deficiency, where hue differences collapse but
-# lightness differences survive.
+# -----------------------------------------------------------------------------
+# THE LADDER
+# -----------------------------------------------------------------------------
+# Hues are inherited from the 2019 palette — the warm/cool grammar that makes
+# the theme recognisable is unchanged, and the editor ground is still #1A262E.
+# What changed is that lightness is now *assigned* rather than incidental.
 #
-# PHASE 1 NOTE
-# ------------
-# The values below are the original 2019 palette, converted to OKLCH. Every one
-# round-trips to its exact original hex, so this restructure produces a theme
-# byte-identical to the previous build. The re-grade — new lightness ladder,
-# accessible comments, Satellite-native ANSI colours — lands in Phase 2 as a
-# change to this file's numbers, not its structure.
+# This matters because of colour vision deficiency. Around 1 in 12 men has some
+# form of it, and under simulation hue differences collapse while lightness
+# differences survive. The 2019 palette put variables at L 0.741 and constants
+# at L 0.739 — near-identical lightness — so under tritanopia they measured
+# deltaE 1.1 apart: effectively one colour. Six other pairs collapsed similarly.
 #
-# Known issues, deliberately preserved here and fixed in Phase 2:
-#   · surface.sunken (H 278.8) and text.faint (H 277.9) sit off the 232–239°
-#     axis the rest of the surfaces use, so they read purple next to them.
-#   · border.strong (H 218.4) drifts the other way.
-#   · text.subtle is 2.39:1 against surface.base and fails WCAG AA.
-#   · the ansi.* block is Dracula's palette, unmodified, and clashes with the
-#     teal-blue ground it sits on.
+# So every pair of roles that appears adjacent in real code is now separated by
+# lightness as well as hue. src/a11y.yml declares those pairs and
+# `yarn verify` fails the build if any of them drifts back together.
+#
+# Reading order, dimmest to brightest:
+#
+#   0.430  text.faint        indent guides           decorative
+#   0.640  text.subtle       comments                recede, but legible
+#   0.680  role.type         types                   + italic
+#   0.680  role.tag          JSX/HTML tags
+#   0.700  role.constant     numbers, constants
+#   0.745  role.punctuation  braces, semicolons      structural, quiet
+#   0.795  role.function     calls and declarations
+#   0.800  role.variable     identifiers             near-foreground
+#   0.880  role.keyword      keywords, storage
+#   0.895  role.string       string literals
+#   0.945  text.default      plain text
+#
+# The three values in the middle of that list are tightly constrained. Comments,
+# punctuation and identifiers are all low-chroma and land within 0.16 lightness
+# of each other, which is exactly the situation that collapses under simulation.
+# They were solved together by search rather than by eye; moving any one of them
+# is likely to break one of the other two, and `yarn verify` will say so.
+# =============================================================================
 
 # -----------------------------------------------------------------------------
-# Surfaces — the "space" ground and its elevation steps
+# Surfaces
+#
+# All five sit on the same 238° axis. The 2019 palette drifted between 218° and
+# 279°, which is why some panels read slightly purple next to the editor.
 # -----------------------------------------------------------------------------
 surface:
-  base:    oklch(0.2611 0.0225 237.93)   # #1A262E  editor
-  raised:  oklch(0.2772 0.0244 238.99)   # #1D2A33  active tab, dropdowns, section headers
-  overlay: oklch(0.2926 0.0250 236.94)   # #202E37  list hover and selection
-  deep:    oklch(0.2231 0.0196 232.63)   # #121D23  activity bar, side bar, panel, widgets
-  sunken:  oklch(0.2199 0.0137 278.80)   # #191A21  peek view titles, settings borders
+  deep: oklch(0.205 0.020 236) # activity bar, side bar, panel, terminal, widgets
+  base: oklch(0.261 0.022 238) # editor — unchanged from 2019 (#1A262E)
+  raised: oklch(0.300 0.024 238) # active tab, dropdowns, hover states
+  overlay: oklch(0.336 0.026 238) # selected rows, badges, sticky scroll
 
 border:
-  strong:  oklch(0.1963 0.0158 218.43)   # #0D171A  structural separators
+  # The dark seam between panels. Satellite has always separated the activity
+  # bar, side bar and panel with a line darker than either surface rather than
+  # a lighter one, and that is a large part of how the theme reads. Kept.
+  seam: oklch(0.150 0.016 238)
+  soft: oklch(0.330 0.024 238) # hairlines within a surface
+  strong: oklch(0.460 0.026 238) # visible boundaries where 1.4.11 applies
+
+# -----------------------------------------------------------------------------
+# Washes — translucent fills. Alpha is a hex byte, as in VS Code's #RRGGBBAA.
+# -----------------------------------------------------------------------------
+wash:
+  selection: alpha(accent.base, 3D) # editor and workbench text selection
+  selectionSoft: alpha(accent.base, 22) # other occurrences of the selection
+  lineHighlight: alpha(text.default, 0C) # the line under the cursor
+  dropTarget: alpha(accent.base, 33) # drag-and-drop targets
+  findMatch: alpha(accent.base, 66) # the current search hit
+  findOther: alpha(accent.base, 2E) # the other search hits
+  rangeHighlight: alpha(accent.base, 1F) # quick-open and find ranges
+  added: alpha(vcs.added, 26)
+  deleted: alpha(vcs.deleted, 26)
+  modified: alpha(vcs.modified, 26)
 
 # -----------------------------------------------------------------------------
 # Text
 # -----------------------------------------------------------------------------
 text:
-  default: oklch(1 0 89.88)              # #FFFFFF  body text
-  pure:    oklch(1 0 89.88)              # #FFFFFF  badges and highlights that want full white
-  muted:   alpha(text.default, 75)       # #FFFFFF75  side bar titles and section headers
-  subtle:  oklch(0.4808 0.0287 219.23)   # #4C6269  comments, line numbers, inactive tabs
-  faint:   oklch(0.3894 0.0204 277.93)   # #424450  whitespace, indent guides, rulers
+  # 13.2:1. Pure #FFFFFF measured 15.4:1 but haloes against a low-chroma dark
+  # ground; this reads calmer over long sessions and still clears AAA.
+  default: oklch(0.945 0.008 230)
+  muted: oklch(0.780 0.018 225) # secondary UI text, section headers
+  subtle: oklch(0.640 0.045 195) # comments and line numbers — was 2.39:1, now 4.7:1
+  faint: oklch(0.430 0.026 220) # indent guides and whitespace (decorative)
 
 # -----------------------------------------------------------------------------
-# UI wash colours
+# Syntax roles
+#
+# One token per role. Where two roles shared a hue in 2019 they are now split by
+# lightness; see the ladder above.
 # -----------------------------------------------------------------------------
-ui:
-  selection:     '#4C6770A6'             # editor and workbench text selection
-  lineHighlight: '#4C6770A6'             # focused line and list focus
+role:
+  # Structural punctuation used to be gold, the same as keywords, which made
+  # every brace and semicolon shout as loudly as `return`. A neutral slate is
+  # what lets keywords read as keywords.
+  punctuation: oklch(0.745 0.030 240)
+
+  # The most common token in any file, so it sits close to plain text rather
+  # than carrying a loud hue of its own. Keeps the 2019 auburn tint.
+  variable: oklch(0.800 0.070 22)
+
+  string: oklch(0.895 0.150 158)
+  keyword: oklch(0.880 0.135 82)
+  function: oklch(0.795 0.125 215)
+
+  # Split from function, which it shared in 2019. Carries italic as a second,
+  # non-colour cue, since teal and cyan stay close under every simulation.
+  type: oklch(0.680 0.105 188)
+
+  constant: oklch(0.700 0.180 38)
+  tag: oklch(0.680 0.175 325)
+  regexp: oklch(0.940 0.115 120)
+  invalid: oklch(0.665 0.205 22)
 
 # -----------------------------------------------------------------------------
 # Accent — the sea green that makes a screenshot recognisably Satellite
+#
+# Two stops. The 2019 palette had one, at a lightness that could neither hold
+# white text as a fill (3.57:1) nor be read as text itself (4.32:1).
 # -----------------------------------------------------------------------------
 accent:
-  base: oklch(0.6128 0.1033 193.96)      # #0A9796  status bar, cursor, buttons, active tab
-  dim:  oklch(0.4047 0.0384 230.58)      # #334D5A  activity bar icons
+  base: oklch(0.700 0.110 194) # cursor, links, active borders, focus rings
+  solid: oklch(0.480 0.095 194) # status bar and button fills — holds text.default at 5.3:1
 
 # -----------------------------------------------------------------------------
-# Syntax hues
-#
-# Phase 2 introduces a role layer on top of these (function, string, keyword,
-# variable, constant, tag, type…). Today several roles share one hue, which is
-# why the theme has token pairs that collapse under colour-vision simulation.
+# Diagnostics and version control
 # -----------------------------------------------------------------------------
-hue:
-  cyan:   oklch(0.7432 0.1263 200.70)    # #01C3CC  functions, types, built-ins
-  green:  oklch(0.8414 0.1540 158.55)    # #61E9A5  strings, attribute names
-  gold:   oklch(0.8482 0.1402 78.17)     # #FFC157  keywords, storage, punctuation
-  auburn: oklch(0.7414 0.1572 24.80)     # #FF7F78  variables, object properties
-  orange: oklch(0.7392 0.1715 47.17)     # #FF833D  constants, classes, warnings
-  red:    oklch(0.6822 0.2063 24.43)     # #FF5555  errors, deletions
-  purple: oklch(0.6725 0.1427 321.70)    # #BE76CA  tags, escapes, selectors
-  yellow: oklch(0.9553 0.1342 112.76)    # #F1FA8C  regexp, GraphQL keys, blockquotes
+status:
+  error: oklch(0.665 0.205 22)
+  warning: oklch(0.780 0.150 70)
+  info: oklch(0.740 0.110 235)
+  success: oklch(0.780 0.150 158)
+
+vcs:
+  added: oklch(0.760 0.150 158)
+  modified: oklch(0.800 0.135 82)
+  deleted: oklch(0.700 0.190 22)
+  conflicting: oklch(0.720 0.170 38)
+  ignored: oklch(0.520 0.020 225)
+  untracked: oklch(0.720 0.130 158)
+
+# -----------------------------------------------------------------------------
+# Bracket pair colourisation
+#
+# Six stops, spread across hue *and* lightness so nesting stays readable under
+# colour-vision simulation as well as normal vision.
+# -----------------------------------------------------------------------------
+bracket:
+  one: oklch(0.850 0.130 82)
+  two: oklch(0.720 0.170 325)
+  three: oklch(0.800 0.120 215)
+  four: oklch(0.740 0.170 38)
+  five: oklch(0.870 0.140 158)
+  six: oklch(0.750 0.140 255)
 
 # -----------------------------------------------------------------------------
 # Terminal ANSI
 #
-# Inherited from Dracula and not yet adapted. ansi.black is 1.08:1 against
-# surface.deep, so anything printing in black prints nothing. Replaced in Phase 2.
+# Derived from Satellite's own hues. The 2019 set was Dracula's, unmodified —
+# purple, pink and lime against a teal-blue ground, with ansiBlack at 1.08:1
+# against the terminal background, meaning anything printing in black printed
+# nothing. Every colour below clears 4.5:1 on surface.deep.
+#
+# Blue is the one genuinely new hue: the 2019 palette had no true blue, so
+# Dracula's #BD93F9 was doing double duty as both blue and magenta.
 # -----------------------------------------------------------------------------
 ansi:
-  black:         oklch(0.2554 0.0188 280.49)   # #21222C
-  red:           oklch(0.6822 0.2063 24.43)    # #FF5555
-  green:         oklch(0.8710 0.2195 148.02)   # #50FA7B
-  yellow:        oklch(0.9553 0.1342 112.76)   # #F1FA8C
-  blue:          oklch(0.7420 0.1485 301.88)   # #BD93F9
-  magenta:       oklch(0.7546 0.1831 346.81)   # #FF79C6
-  cyan:          oklch(0.8826 0.0934 212.85)   # #8BE9FD
-  white:         oklch(0.9775 0.0079 106.55)   # #F8F8F2
-  brightBlack:   oklch(0.5598 0.0803 270.09)   # #6272A4
-  brightRed:     oklch(0.7160 0.1776 22.64)    # #FF6E6E
-  brightGreen:   oklch(0.8939 0.1948 150.04)   # #69FF94
-  brightYellow:  oklch(0.9802 0.1114 108.29)   # #FFFFA5
-  brightBlue:    oklch(0.8112 0.1221 307.03)   # #D6ACFF
-  brightMagenta: oklch(0.7987 0.1595 339.03)   # #FF92DF
-  brightCyan:    oklch(0.9431 0.0870 195.78)   # #A4FFFF
-  brightWhite:   oklch(1 0 89.88)              # #FFFFFF
+  # ANSI black is the one colour that cannot reach AA on a dark ground without
+  # ceasing to be black. It is raised far enough to be clearly visible — the
+  # 2019 value was 1.08:1, meaning anything printing in black printed nothing —
+  # and is checked against a documented lower floor rather than the AA
+  # threshold. See the `dim` level in src/a11y.yml.
+  black: oklch(0.470 0.024 238)
+  # brightBlack is what CLI tools reach for when they print dim body text
+  # (timestamps, hints, secondary output), so it is held to full AA.
+  brightBlack: oklch(0.600 0.026 238)
+  red: oklch(0.665 0.205 22)
+  green: oklch(0.760 0.150 158)
+  yellow: oklch(0.820 0.135 82)
+  blue: oklch(0.680 0.150 255)
+  magenta: oklch(0.680 0.175 325)
+  cyan: oklch(0.720 0.110 196)
+  white: oklch(0.880 0.012 230)
+  brightRed: oklch(0.740 0.190 22)
+  brightGreen: oklch(0.870 0.150 158)
+  brightYellow: oklch(0.900 0.130 82)
+  brightBlue: oklch(0.780 0.130 255)
+  brightMagenta: oklch(0.780 0.160 325)
+  brightCyan: oklch(0.830 0.110 196)
+  brightWhite: oklch(0.975 0.006 230)

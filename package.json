@@ -9,11 +9,12 @@
 		"build": "node ./scripts/build.js",
 		"validate": "node ./scripts/validate.js",
 		"coverage": "node ./scripts/validate.js --coverage",
-		"verify": "node ./scripts/verify.js",
+		"verify": "node ./scripts/verify.js --strict",
+		"verify:report": "node ./scripts/verify.js",
 		"update-color-keys": "node ./scripts/update-color-keys.js",
 		"test": "node ./scripts/test.js && npm run build && npm run validate && npm run verify",
 		"package": "vsce package -o ./bin/satellite.vsix",
-		"vscode:prepublish": "npm run build && npm run validate"
+		"vscode:prepublish": "npm run build && npm run validate && npm run verify"
 	},
 	"repository": {
 		"type": "git",

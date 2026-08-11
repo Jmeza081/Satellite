@@ -8,26 +8,714 @@
 #   key: surface.deep            a token reference
 #   key: alpha(accent.base, 50)  the same token with a hex alpha byte appended
 #
-# The alpha argument is a two-digit hex byte, matching VS Code's own
-# #RRGGBBAA colour format — 50 is 0x50, roughly 31% opaque.
+# The alpha argument is a two-digit hex byte, matching VS Code's own #RRGGBBAA
+# colour format — 50 is 0x50, roughly 31% opaque.
 #
 # Keys must exist in data/vscode-color-keys.json; scripts/validate.js enforces
-# that and refuses keys with no value. The previous file carried 55 keys
-# declared with no value, which the loader emitted as null into the JSON.
+# that and refuses keys with no value.
 #
 # Reference: https://code.visualstudio.com/api/references/theme-color
 
-# Integrated Terminal Colors
+# -----------------------------------------------------------------------------
+# Base
+# -----------------------------------------------------------------------------
+foreground: text.default
+disabledForeground: text.subtle
+descriptionForeground: text.muted
+errorForeground: status.error
+focusBorder: accent.base
+icon.foreground: text.muted
+selection.background: wash.selection
+sash.hoverBorder: accent.base
+widget.border: border.soft
+widget.shadow: alpha(border.seam, 66)
+
+window.activeBorder: border.seam
+window.inactiveBorder: border.seam
+
+contrastBorder: border.seam
+contrastActiveBorder: accent.base
+
+# -----------------------------------------------------------------------------
+# Text
+# -----------------------------------------------------------------------------
+textBlockQuote.background: surface.deep
+textBlockQuote.border: accent.base
+textCodeBlock.background: surface.deep
+textLink.foreground: accent.base
+textLink.activeForeground: role.function
+textPreformat.foreground: role.string
+textPreformat.background: surface.deep
+textSeparator.foreground: border.strong
+
+# -----------------------------------------------------------------------------
+# Actions
+# -----------------------------------------------------------------------------
+toolbar.hoverBackground: surface.raised
+toolbar.activeBackground: surface.overlay
+toolbar.hoverOutline: border.soft
+actionBar.toggledBackground: surface.overlay
+editorActionList.background: surface.deep
+editorActionList.foreground: text.default
+editorActionList.focusBackground: wash.selection
+editorActionList.focusForeground: text.default
+
+# -----------------------------------------------------------------------------
+# Buttons, checkboxes, radios
+# -----------------------------------------------------------------------------
+button.background: accent.solid
+button.foreground: text.default
+button.border: border.seam
+button.separator: alpha(text.default, 40)
+button.hoverBackground: accent.base
+button.secondaryBackground: surface.raised
+button.secondaryForeground: text.default
+button.secondaryHoverBackground: surface.overlay
+button.secondaryBorder: border.soft
+
+checkbox.background: surface.raised
+checkbox.foreground: text.default
+checkbox.border: border.strong
+checkbox.selectBackground: surface.overlay
+checkbox.selectBorder: accent.base
+checkbox.disabled.background: surface.base
+checkbox.disabled.foreground: text.subtle
+
+radio.activeForeground: text.default
+radio.activeBackground: alpha(accent.base, 33)
+radio.activeBorder: accent.base
+radio.inactiveForeground: text.muted
+radio.inactiveBackground: surface.raised
+radio.inactiveBorder: border.soft
+radio.inactiveHoverBackground: surface.overlay
+
+# -----------------------------------------------------------------------------
+# Dropdowns and inputs
+# -----------------------------------------------------------------------------
+dropdown.background: surface.raised
+dropdown.listBackground: surface.deep
+dropdown.border: border.soft
+dropdown.foreground: text.default
+
+input.background: surface.deep
+input.foreground: text.default
+input.border: border.soft
+input.placeholderForeground: text.subtle
+inputOption.activeBackground: alpha(accent.base, 33)
+inputOption.activeBorder: accent.base
+inputOption.activeForeground: text.default
+inputOption.hoverBackground: surface.overlay
+
+inputValidation.infoForeground: text.default
+inputValidation.infoBackground: surface.deep
+inputValidation.infoBorder: status.info
+inputValidation.warningForeground: text.default
+inputValidation.warningBackground: surface.deep
+inputValidation.warningBorder: status.warning
+inputValidation.errorForeground: text.default
+inputValidation.errorBackground: surface.deep
+inputValidation.errorBorder: status.error
+
+# -----------------------------------------------------------------------------
+# Scrollbars
+# -----------------------------------------------------------------------------
+scrollbar.shadow: alpha(border.seam, 80)
+scrollbarSlider.background: alpha(text.subtle, 33)
+scrollbarSlider.hoverBackground: alpha(text.subtle, 55)
+scrollbarSlider.activeBackground: alpha(accent.base, 77)
+
+# -----------------------------------------------------------------------------
+# Badges and progress
+# -----------------------------------------------------------------------------
+badge.background: accent.solid
+badge.foreground: text.default
+progressBar.background: accent.base
+
+# -----------------------------------------------------------------------------
+# Lists and trees
+# -----------------------------------------------------------------------------
+list.activeSelectionBackground: surface.overlay
+list.activeSelectionForeground: text.default
+list.activeSelectionIconForeground: accent.base
+list.inactiveSelectionBackground: surface.raised
+list.inactiveSelectionForeground: text.default
+list.inactiveSelectionIconForeground: text.muted
+list.focusBackground: surface.overlay
+list.focusForeground: text.default
+list.focusOutline: accent.base
+list.focusHighlightForeground: accent.base
+list.inactiveFocusBackground: surface.raised
+list.inactiveFocusOutline: border.soft
+list.hoverBackground: surface.raised
+list.hoverForeground: text.default
+list.highlightForeground: accent.base
+list.dropBackground: wash.dropTarget
+list.dropBetweenBackground: accent.base
+list.errorForeground: status.error
+list.warningForeground: status.warning
+list.invalidItemForeground: status.error
+list.deemphasizedForeground: text.subtle
+list.filterMatchBackground: wash.findOther
+list.filterMatchBorder: accent.base
+
+listFilterWidget.background: surface.raised
+listFilterWidget.outline: accent.base
+listFilterWidget.noMatchesOutline: status.error
+listFilterWidget.shadow: alpha(border.seam, 66)
+
+tree.indentGuidesStroke: text.faint
+tree.inactiveIndentGuidesStroke: alpha(text.faint, 80)
+tree.tableColumnsBorder: border.soft
+tree.tableOddRowsBackground: alpha(text.default, 06)
+
+# -----------------------------------------------------------------------------
+# Activity bar
+#
+# The 2019 theme drew these icons at 1.92:1, which made the primary navigation
+# effectively invisible. Active icons now use the accent; inactive use the same
+# subtle grey as comments.
+# -----------------------------------------------------------------------------
+activityBar.background: surface.deep
+activityBar.foreground: accent.base
+activityBar.inactiveForeground: text.subtle
+activityBar.border: border.seam
+activityBar.activeBorder: accent.base
+activityBar.activeBackground: alpha(accent.base, 14)
+activityBar.activeFocusBorder: accent.base
+activityBar.dropBorder: accent.base
+activityBarBadge.background: accent.solid
+activityBarBadge.foreground: text.default
+activityWarningBadge.background: status.warning
+activityWarningBadge.foreground: surface.deep
+activityErrorBadge.background: status.error
+activityErrorBadge.foreground: surface.deep
+
+activityBarTop.background: surface.deep
+activityBarTop.foreground: accent.base
+activityBarTop.inactiveForeground: text.subtle
+activityBarTop.activeBorder: accent.base
+activityBarTop.activeBackground: alpha(accent.base, 14)
+activityBarTop.dropBorder: accent.base
+
+profileBadge.background: accent.solid
+profileBadge.foreground: text.default
+profiles.sashBorder: border.soft
+
+# -----------------------------------------------------------------------------
+# Side bar
+# -----------------------------------------------------------------------------
+sideBar.background: surface.deep
+sideBar.foreground: text.muted
+sideBar.border: border.seam
+sideBar.dropBackground: wash.dropTarget
+sideBarTitle.foreground: text.muted
+sideBarTitle.background: surface.deep
+sideBarSectionHeader.background: surface.base
+sideBarSectionHeader.foreground: text.muted
+sideBarSectionHeader.border: border.seam
+sideBarActivityBarTop.border: border.seam
+sideBarStickyScroll.background: surface.overlay
+sideBarStickyScroll.border: border.soft
+sideBarStickyScroll.shadow: alpha(border.seam, 66)
+
+# -----------------------------------------------------------------------------
+# Minimap
+# -----------------------------------------------------------------------------
+minimap.background: surface.base
+minimap.findMatchHighlight: wash.findMatch
+minimap.selectionHighlight: wash.selection
+minimap.selectionOccurrenceHighlight: wash.selectionSoft
+minimap.errorHighlight: status.error
+minimap.warningHighlight: status.warning
+minimap.infoHighlight: status.info
+minimapSlider.background: alpha(text.subtle, 22)
+minimapSlider.hoverBackground: alpha(text.subtle, 44)
+minimapSlider.activeBackground: alpha(accent.base, 55)
+minimapGutter.addedBackground: vcs.added
+minimapGutter.modifiedBackground: vcs.modified
+minimapGutter.deletedBackground: vcs.deleted
+
+# -----------------------------------------------------------------------------
+# Editor groups and tabs
+# -----------------------------------------------------------------------------
+editorGroup.border: border.seam
+editorGroup.dropBackground: wash.dropTarget
+editorGroup.emptyBackground: surface.base
+editorGroup.focusedEmptyBorder: accent.base
+editorGroup.dropIntoPromptBackground: surface.deep
+editorGroup.dropIntoPromptForeground: text.default
+editorGroup.dropIntoPromptBorder: accent.base
+editorGroupHeader.tabsBackground: surface.deep
+editorGroupHeader.tabsBorder: border.seam
+editorGroupHeader.noTabsBackground: surface.deep
+editorGroupHeader.border: border.seam
+editorPane.background: surface.deep
+
+tab.activeBackground: surface.base
+tab.activeForeground: text.default
+tab.activeBorder: accent.base
+tab.activeBorderTop: accent.base
+tab.inactiveBackground: surface.deep
+tab.inactiveForeground: text.subtle
+tab.border: border.seam
+tab.hoverBackground: surface.raised
+tab.hoverForeground: text.default
+tab.hoverBorder: accent.base
+tab.unfocusedActiveBackground: surface.base
+tab.unfocusedActiveForeground: text.muted
+tab.unfocusedActiveBorder: alpha(accent.base, 66)
+tab.unfocusedActiveBorderTop: alpha(accent.base, 66)
+tab.unfocusedInactiveBackground: surface.deep
+tab.unfocusedInactiveForeground: text.subtle
+tab.unfocusedHoverBackground: surface.raised
+tab.unfocusedHoverForeground: text.muted
+tab.unfocusedHoverBorder: border.soft
+tab.selectedBackground: surface.raised
+tab.selectedForeground: text.default
+tab.selectedBorderTop: accent.base
+tab.activeModifiedBorder: vcs.modified
+tab.inactiveModifiedBorder: alpha(vcs.modified, 99)
+tab.unfocusedActiveModifiedBorder: alpha(vcs.modified, 99)
+tab.unfocusedInactiveModifiedBorder: alpha(vcs.modified, 66)
+tab.lastPinnedBorder: border.strong
+tab.dragAndDropBorder: accent.base
+
+sideBySideEditor.horizontalBorder: border.seam
+sideBySideEditor.verticalBorder: border.seam
+
+# -----------------------------------------------------------------------------
+# Editor
+# -----------------------------------------------------------------------------
+editor.background: surface.base
+editor.foreground: text.default
+editor.placeholder.foreground: text.subtle
+
+editorLineNumber.foreground: text.subtle
+editorLineNumber.activeForeground: text.default
+editorLineNumber.dimmedForeground: text.faint
+
+editorCursor.foreground: accent.base
+editorCursor.background: surface.base
+editorMultiCursor.primary.foreground: accent.base
+editorMultiCursor.secondary.foreground: role.type
+
+editor.selectionBackground: wash.selection
+editor.selectionHighlightBackground: wash.selectionSoft
+editor.inactiveSelectionBackground: alpha(accent.base, 22)
+
+editor.wordHighlightBackground: alpha(accent.base, 25)
+editor.wordHighlightStrongBackground: alpha(accent.base, 40)
+editor.wordHighlightTextBackground: alpha(accent.base, 20)
+
+editor.findMatchBackground: wash.findMatch
+editor.findMatchHighlightBackground: wash.findOther
+editor.findRangeHighlightBackground: wash.rangeHighlight
+editor.findMatchBorder: accent.base
+
+editor.hoverHighlightBackground: alpha(accent.base, 26)
+editor.lineHighlightBackground: wash.lineHighlight
+editor.rangeHighlightBackground: wash.rangeHighlight
+editor.symbolHighlightBackground: alpha(accent.base, 33)
+editor.linkedEditingBackground: alpha(accent.base, 22)
+editor.foldBackground: alpha(accent.base, 1A)
+editor.foldPlaceholderForeground: text.subtle
+
+editorLink.activeForeground: accent.base
+
+editorUnicodeHighlight.border: status.warning
+editorUnicodeHighlight.background: alpha(status.warning, 22)
+
+editorWhitespace.foreground: text.faint
+editorIndentGuide.background1: text.faint
+editorIndentGuide.activeBackground1: text.muted
+editorRuler.foreground: border.soft
+
+editorCodeLens.foreground: text.subtle
+editorLightBulb.foreground: status.warning
+editorLightBulbAutoFix.foreground: accent.base
+editorLightBulbAi.foreground: role.tag
+
+editorBracketMatch.background: alpha(accent.base, 30)
+editorBracketMatch.border: accent.base
+
+# Bracket pair colourisation — new since 2019.
+editorBracketHighlight.foreground1: bracket.one
+editorBracketHighlight.foreground2: bracket.two
+editorBracketHighlight.foreground3: bracket.three
+editorBracketHighlight.foreground4: bracket.four
+editorBracketHighlight.foreground5: bracket.five
+editorBracketHighlight.foreground6: bracket.six
+editorBracketHighlight.unexpectedBracket.foreground: status.error
+
+editorBracketPairGuide.background1: alpha(bracket.one, 40)
+editorBracketPairGuide.background2: alpha(bracket.two, 40)
+editorBracketPairGuide.background3: alpha(bracket.three, 40)
+editorBracketPairGuide.background4: alpha(bracket.four, 40)
+editorBracketPairGuide.background5: alpha(bracket.five, 40)
+editorBracketPairGuide.background6: alpha(bracket.six, 40)
+editorBracketPairGuide.activeBackground1: bracket.one
+editorBracketPairGuide.activeBackground2: bracket.two
+editorBracketPairGuide.activeBackground3: bracket.three
+editorBracketPairGuide.activeBackground4: bracket.four
+editorBracketPairGuide.activeBackground5: bracket.five
+editorBracketPairGuide.activeBackground6: bracket.six
+
+# Inlay hints — new since 2019.
+editorInlayHint.background: surface.raised
+editorInlayHint.foreground: text.subtle
+editorInlayHint.typeBackground: surface.raised
+editorInlayHint.typeForeground: role.type
+editorInlayHint.parameterBackground: surface.raised
+editorInlayHint.parameterForeground: role.variable
+
+# Sticky scroll — new since 2019.
+editorStickyScroll.background: surface.raised
+editorStickyScroll.border: border.soft
+editorStickyScroll.shadow: alpha(border.seam, 66)
+editorStickyScrollGutter.background: surface.raised
+editorStickyScrollHover.background: surface.overlay
+
+# Ghost text and inline edits — new since 2019.
+editorGhostText.foreground: text.subtle
+editorGhostText.border: border.soft
+inlineEdit.originalBackground: wash.deleted
+inlineEdit.modifiedBackground: wash.added
+inlineEdit.originalBorder: vcs.deleted
+inlineEdit.modifiedBorder: vcs.added
+inlineEdit.gutterIndicator.background: surface.raised
+inlineEdit.gutterIndicator.primaryBackground: accent.solid
+inlineEdit.gutterIndicator.primaryForeground: text.default
+inlineEdit.gutterIndicator.primaryBorder: accent.base
+inlineEdit.gutterIndicator.secondaryBackground: surface.overlay
+inlineEdit.gutterIndicator.secondaryForeground: text.muted
+inlineEdit.gutterIndicator.secondaryBorder: border.soft
+inlineEdit.gutterIndicator.successfulBackground: vcs.added
+inlineEdit.gutterIndicator.successfulForeground: surface.deep
+inlineEdit.gutterIndicator.successfulBorder: vcs.added
+
+# Overview ruler
+editorOverviewRuler.background: surface.base
+editorOverviewRuler.border: border.seam
+editorOverviewRuler.findMatchForeground: alpha(accent.base, 99)
+editorOverviewRuler.rangeHighlightForeground: alpha(accent.base, 66)
+editorOverviewRuler.selectionHighlightForeground: alpha(accent.base, 88)
+editorOverviewRuler.wordHighlightForeground: alpha(role.type, 88)
+editorOverviewRuler.wordHighlightStrongForeground: alpha(accent.base, 99)
+editorOverviewRuler.wordHighlightTextForeground: alpha(role.type, 66)
+editorOverviewRuler.bracketMatchForeground: accent.base
+editorOverviewRuler.modifiedForeground: alpha(vcs.modified, 99)
+editorOverviewRuler.addedForeground: alpha(vcs.added, 99)
+editorOverviewRuler.deletedForeground: alpha(vcs.deleted, 99)
+editorOverviewRuler.errorForeground: status.error
+editorOverviewRuler.warningForeground: status.warning
+editorOverviewRuler.infoForeground: status.info
+
+# Diagnostics
+editorError.foreground: status.error
+editorWarning.foreground: status.warning
+editorInfo.foreground: status.info
+editorHint.foreground: text.muted
+problemsErrorIcon.foreground: status.error
+problemsWarningIcon.foreground: status.warning
+problemsInfoIcon.foreground: status.info
+editorUnnecessaryCode.opacity: alpha(text.default, 80)
+
+# Gutter
+editorGutter.background: surface.base
+editorGutter.modifiedBackground: vcs.modified
+editorGutter.addedBackground: vcs.added
+editorGutter.deletedBackground: vcs.deleted
+editorGutter.foldingControlForeground: text.muted
+editorGutter.commentRangeForeground: text.subtle
+editorGutter.commentGlyphForeground: text.muted
+editorGutter.commentUnresolvedGlyphForeground: status.warning
+
+# Snippets
+editor.snippetTabstopHighlightBackground: alpha(accent.base, 26)
+editor.snippetTabstopHighlightBorder: alpha(accent.base, 55)
+editor.snippetFinalTabstopHighlightBackground: alpha(accent.base, 26)
+editor.snippetFinalTabstopHighlightBorder: accent.base
+
+# Comments widget
+editorCommentsWidget.resolvedBorder: text.subtle
+editorCommentsWidget.unresolvedBorder: status.warning
+editorCommentsWidget.rangeBackground: alpha(accent.base, 1A)
+editorCommentsWidget.rangeActiveBackground: alpha(accent.base, 2E)
+editorCommentsWidget.replyInputBackground: surface.deep
+
+# -----------------------------------------------------------------------------
+# Diff editor
+# -----------------------------------------------------------------------------
+diffEditor.insertedTextBackground: wash.added
+diffEditor.removedTextBackground: wash.deleted
+diffEditor.insertedLineBackground: alpha(vcs.added, 14)
+diffEditor.removedLineBackground: alpha(vcs.deleted, 14)
+diffEditorGutter.insertedLineBackground: alpha(vcs.added, 22)
+diffEditorGutter.removedLineBackground: alpha(vcs.deleted, 22)
+diffEditorOverview.insertedForeground: alpha(vcs.added, 99)
+diffEditorOverview.removedForeground: alpha(vcs.deleted, 99)
+diffEditor.border: border.seam
+diffEditor.diagonalFill: border.soft
+diffEditor.unchangedRegionBackground: surface.deep
+diffEditor.unchangedRegionForeground: text.subtle
+diffEditor.unchangedCodeBackground: alpha(text.default, 06)
+diffEditor.move.border: role.tag
+diffEditor.moveActive.border: accent.base
+
+multiDiffEditor.background: surface.deep
+multiDiffEditor.headerBackground: surface.raised
+multiDiffEditor.border: border.seam
+
+# -----------------------------------------------------------------------------
+# Editor widgets
+# -----------------------------------------------------------------------------
+editorWidget.background: surface.deep
+editorWidget.foreground: text.default
+editorWidget.border: border.soft
+editorWidget.resizeBorder: accent.base
+
+editorSuggestWidget.background: surface.deep
+editorSuggestWidget.border: border.soft
+editorSuggestWidget.foreground: text.default
+editorSuggestWidget.selectedBackground: surface.overlay
+editorSuggestWidget.selectedForeground: text.default
+editorSuggestWidget.selectedIconForeground: accent.base
+editorSuggestWidget.highlightForeground: accent.base
+editorSuggestWidget.focusHighlightForeground: accent.base
+editorSuggestWidgetStatus.foreground: text.subtle
+
+editorHoverWidget.background: surface.deep
+editorHoverWidget.foreground: text.default
+editorHoverWidget.border: border.soft
+editorHoverWidget.highlightForeground: accent.base
+editorHoverWidget.statusBarBackground: surface.raised
+
+debugExceptionWidget.background: surface.deep
+debugExceptionWidget.border: status.error
+
+editorMarkerNavigation.background: surface.deep
+editorMarkerNavigationError.background: status.error
+editorMarkerNavigationWarning.background: status.warning
+editorMarkerNavigationInfo.background: status.info
+editorMarkerNavigationError.headerBackground: alpha(status.error, 22)
+editorMarkerNavigationWarning.headerBackground: alpha(status.warning, 22)
+editorMarkerNavigationInfo.headerBackground: alpha(status.info, 22)
+
+# -----------------------------------------------------------------------------
+# Peek view
+# -----------------------------------------------------------------------------
+peekView.border: accent.base
+peekViewEditor.background: surface.base
+peekViewEditorGutter.background: surface.base
+peekViewEditor.matchHighlightBackground: wash.findMatch
+peekViewEditor.matchHighlightBorder: accent.base
+peekViewEditorStickyScroll.background: surface.raised
+peekViewEditorStickyScrollGutter.background: surface.raised
+peekViewResult.background: surface.deep
+peekViewResult.fileForeground: text.default
+peekViewResult.lineForeground: text.muted
+peekViewResult.matchHighlightBackground: wash.findMatch
+peekViewResult.selectionBackground: surface.overlay
+peekViewResult.selectionForeground: text.default
+peekViewTitle.background: surface.raised
+peekViewTitleLabel.foreground: text.default
+peekViewTitleDescription.foreground: text.muted
+
+# -----------------------------------------------------------------------------
+# Merge conflicts
+# -----------------------------------------------------------------------------
+merge.currentHeaderBackground: alpha(role.tag, 40)
+merge.currentContentBackground: alpha(role.tag, 1A)
+merge.incomingHeaderBackground: alpha(accent.base, 40)
+merge.incomingContentBackground: alpha(accent.base, 1A)
+merge.commonHeaderBackground: alpha(text.subtle, 40)
+merge.commonContentBackground: alpha(text.subtle, 1A)
+merge.border: border.soft
+editorOverviewRuler.currentContentForeground: alpha(role.tag, 99)
+editorOverviewRuler.incomingContentForeground: alpha(accent.base, 99)
+editorOverviewRuler.commonContentForeground: alpha(text.subtle, 99)
+editorOverviewRuler.commentForeground: text.subtle
+editorOverviewRuler.commentUnresolvedForeground: status.warning
+
+mergeEditor.change.background: alpha(vcs.added, 1F)
+mergeEditor.change.word.background: alpha(vcs.added, 33)
+mergeEditor.changeBase.background: alpha(vcs.deleted, 1F)
+mergeEditor.changeBase.word.background: alpha(vcs.deleted, 33)
+mergeEditor.conflict.unhandledUnfocused.border: alpha(status.warning, 99)
+mergeEditor.conflict.unhandledFocused.border: status.warning
+mergeEditor.conflict.handledUnfocused.border: alpha(vcs.added, 66)
+mergeEditor.conflict.handledFocused.border: vcs.added
+mergeEditor.conflict.handled.minimapOverViewRuler: vcs.added
+mergeEditor.conflict.unhandled.minimapOverViewRuler: status.warning
+mergeEditor.conflictingLines.background: alpha(status.warning, 1F)
+mergeEditor.conflict.input1.background: alpha(role.tag, 1F)
+mergeEditor.conflict.input2.background: alpha(accent.base, 1F)
+
+# -----------------------------------------------------------------------------
+# Panel
+# -----------------------------------------------------------------------------
+panel.background: surface.deep
+panel.border: border.seam
+panel.dropBorder: accent.base
+panelTitle.activeBorder: accent.base
+panelTitle.activeForeground: text.default
+panelTitle.inactiveForeground: text.subtle
+panelTitle.border: border.seam
+panelTitleBadge.background: accent.solid
+panelTitleBadge.foreground: text.default
+panelInput.border: border.soft
+panelSection.border: border.seam
+panelSection.dropBackground: wash.dropTarget
+panelSectionHeader.background: surface.base
+panelSectionHeader.foreground: text.muted
+panelSectionHeader.border: border.seam
+panelStickyScroll.background: surface.overlay
+panelStickyScroll.border: border.soft
+panelStickyScroll.shadow: alpha(border.seam, 66)
+outputView.background: surface.deep
+outputViewStickyScroll.background: surface.overlay
+
+# -----------------------------------------------------------------------------
+# Status bar
+#
+# The 2019 accent could not hold white text (3.57:1). accent.solid is deep
+# enough that text.default clears 5.3:1.
+# -----------------------------------------------------------------------------
+statusBar.background: accent.solid
+statusBar.foreground: text.default
+statusBar.border: border.seam
+statusBar.focusBorder: text.default
+statusBar.debuggingBackground: role.constant
+statusBar.debuggingForeground: surface.deep
+statusBar.debuggingBorder: border.seam
+statusBar.noFolderBackground: surface.raised
+statusBar.noFolderForeground: text.default
+statusBar.noFolderBorder: border.seam
+statusBarItem.activeBackground: alpha(text.default, 26)
+statusBarItem.hoverBackground: alpha(text.default, 1A)
+statusBarItem.hoverForeground: text.default
+statusBarItem.focusBorder: text.default
+statusBarItem.compactHoverBackground: alpha(text.default, 33)
+statusBarItem.prominentBackground: alpha(surface.deep, 99)
+statusBarItem.prominentForeground: text.default
+statusBarItem.prominentHoverBackground: surface.deep
+statusBarItem.prominentHoverForeground: text.default
+statusBarItem.remoteBackground: surface.deep
+statusBarItem.remoteForeground: accent.base
+statusBarItem.remoteHoverBackground: surface.raised
+statusBarItem.remoteHoverForeground: accent.base
+statusBarItem.errorBackground: status.error
+statusBarItem.errorForeground: surface.deep
+statusBarItem.errorHoverBackground: surface.deep
+statusBarItem.errorHoverForeground: status.error
+statusBarItem.warningBackground: status.warning
+statusBarItem.warningForeground: surface.deep
+statusBarItem.warningHoverBackground: surface.deep
+statusBarItem.warningHoverForeground: status.warning
+statusBarItem.offlineBackground: role.constant
+statusBarItem.offlineForeground: surface.deep
+statusBarItem.offlineHoverBackground: surface.deep
+statusBarItem.offlineHoverForeground: role.constant
+
+# -----------------------------------------------------------------------------
+# Title bar, menus, command centre
+# -----------------------------------------------------------------------------
+titleBar.activeBackground: surface.deep
+titleBar.activeForeground: text.muted
+titleBar.inactiveBackground: surface.deep
+titleBar.inactiveForeground: text.subtle
+titleBar.border: border.seam
+
+menubar.selectionForeground: text.default
+menubar.selectionBackground: surface.raised
+menubar.selectionBorder: border.soft
+menu.foreground: text.default
+menu.background: surface.deep
+menu.selectionForeground: text.default
+menu.selectionBackground: surface.overlay
+menu.selectionBorder: border.soft
+menu.separatorBackground: border.soft
+menu.border: border.soft
+
+commandCenter.foreground: text.muted
+commandCenter.activeForeground: text.default
+commandCenter.inactiveForeground: text.subtle
+commandCenter.background: surface.base
+commandCenter.activeBackground: surface.raised
+commandCenter.border: border.soft
+commandCenter.inactiveBorder: border.soft
+commandCenter.activeBorder: accent.base
+commandCenter.debuggingBackground: alpha(role.constant, 33)
+
+# -----------------------------------------------------------------------------
+# Notifications
+#
+# The 2019 theme styled the singular `notification.*` namespace, which VS Code
+# renamed to `notifications.*` and whose severity and button variants were
+# removed. None of it had any effect. Restyled here on the current keys.
+# -----------------------------------------------------------------------------
+notifications.background: surface.deep
+notifications.foreground: text.default
+notifications.border: border.soft
+notificationCenter.border: border.soft
+notificationCenterHeader.background: surface.raised
+notificationCenterHeader.foreground: text.muted
+notificationToast.border: border.soft
+notificationLink.foreground: accent.base
+notificationsErrorIcon.foreground: status.error
+notificationsWarningIcon.foreground: status.warning
+notificationsInfoIcon.foreground: status.info
+
+banner.background: surface.raised
+banner.foreground: text.default
+banner.iconForeground: accent.base
+
+# -----------------------------------------------------------------------------
+# Extensions
+# -----------------------------------------------------------------------------
+extensionButton.prominentBackground: accent.solid
+extensionButton.prominentForeground: text.default
+extensionButton.prominentHoverBackground: accent.base
+extensionButton.background: accent.solid
+extensionButton.foreground: text.default
+extensionButton.hoverBackground: accent.base
+extensionButton.separator: alpha(text.default, 40)
+extensionBadge.remoteBackground: accent.solid
+extensionBadge.remoteForeground: text.default
+extensionIcon.starForeground: role.keyword
+extensionIcon.verifiedForeground: accent.base
+extensionIcon.preReleaseForeground: role.constant
+extensionIcon.sponsorForeground: role.tag
+extensionIcon.privateForeground: text.subtle
+
+# -----------------------------------------------------------------------------
+# Quick picker
+# -----------------------------------------------------------------------------
+pickerGroup.border: border.soft
+pickerGroup.foreground: accent.base
+quickInput.background: surface.deep
+quickInput.foreground: text.default
+quickInputTitle.background: surface.raised
+quickInputList.focusBackground: surface.overlay
+quickInputList.focusForeground: text.default
+quickInputList.focusIconForeground: accent.base
+
+# -----------------------------------------------------------------------------
+# Keybindings
+# -----------------------------------------------------------------------------
+keybindingLabel.background: surface.raised
+keybindingLabel.foreground: text.default
+keybindingLabel.border: border.soft
+keybindingLabel.bottomBorder: border.strong
+keybindingTable.headerBackground: surface.raised
+keybindingTable.rowsBackground: alpha(text.default, 06)
+
+# -----------------------------------------------------------------------------
+# Integrated terminal
+# -----------------------------------------------------------------------------
 terminal.background: surface.deep
 terminal.foreground: text.default
-terminal.ansiBrightBlack: ansi.brightBlack
-terminal.ansiBrightRed: ansi.brightRed
-terminal.ansiBrightGreen: ansi.brightGreen
-terminal.ansiBrightYellow: ansi.brightYellow
-terminal.ansiBrightBlue: ansi.brightBlue
-terminal.ansiBrightMagenta: ansi.brightMagenta
-terminal.ansiBrightCyan: ansi.brightCyan
-terminal.ansiBrightWhite: ansi.brightWhite
+terminal.border: border.seam
 terminal.ansiBlack: ansi.black
 terminal.ansiRed: ansi.red
 terminal.ansiGreen: ansi.green
@@ -36,283 +724,331 @@ terminal.ansiBlue: ansi.blue
 terminal.ansiMagenta: ansi.magenta
 terminal.ansiCyan: ansi.cyan
 terminal.ansiWhite: ansi.white
+terminal.ansiBrightBlack: ansi.brightBlack
+terminal.ansiBrightRed: ansi.brightRed
+terminal.ansiBrightGreen: ansi.brightGreen
+terminal.ansiBrightYellow: ansi.brightYellow
+terminal.ansiBrightBlue: ansi.brightBlue
+terminal.ansiBrightMagenta: ansi.brightMagenta
+terminal.ansiBrightCyan: ansi.brightCyan
+terminal.ansiBrightWhite: ansi.brightWhite
+terminal.selectionBackground: wash.selection
+terminal.inactiveSelectionBackground: wash.selectionSoft
+terminal.findMatchBackground: wash.findMatch
+terminal.findMatchBorder: accent.base
+terminal.findMatchHighlightBackground: wash.findOther
+terminal.hoverHighlightBackground: alpha(accent.base, 26)
+terminal.dropBackground: wash.dropTarget
+terminal.tab.activeBorder: accent.base
+terminal.initialHintForeground: text.subtle
+terminalCursor.foreground: accent.base
+terminalCursor.background: surface.deep
+terminalCommandDecoration.defaultBackground: text.subtle
+terminalCommandDecoration.successBackground: vcs.added
+terminalCommandDecoration.errorBackground: status.error
+terminalCommandGuide.foreground: border.strong
+terminalOverviewRuler.cursorForeground: accent.base
+terminalOverviewRuler.findMatchForeground: alpha(accent.base, 99)
+terminalOverviewRuler.border: border.seam
+terminalStickyScroll.background: surface.base
+terminalStickyScroll.border: border.soft
+terminalStickyScrollHover.background: surface.raised
 
-# Contrast Colors
-contrastBorder: surface.sunken                                                     # An extra border around elements to separate them from others for greater contrast
-
-# Base Colors
-focusBorder: text.subtle                                                         # Overall border color for focused elements. This color is only used if not overridden by a component
-foreground: text.default                                                               # Overall foreground color. This color is only used if not overridden by a component
-selection.background: ui.selection                                              # Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
-errorForeground: hue.red                                                         # Overall foreground color for error messages (this color is only used if not overridden by a component)
-
-# Button Control
-button.background: accent.base                                                 # Button background color
-button.foreground: text.default                                                        # Button foreground color
-
-# Dropdown Control
-dropdown.background: surface.raised                                                 # Dropdown background
-dropdown.border: surface.sunken                                                    # Dropdown border
-dropdown.foreground: text.pure                                                   # Dropdown foreground
-
-# Input Control
-input.background: surface.base                                                         # Input box background
-input.border: border.strong                                                     # Input box border
-input.placeholderForeground: text.subtle                                         # Input box foreground color for placeholder text
-inputOption.activeBorder: accent.base                                          # Border color of activated options in input fields
-inputValidation.infoBorder: surface.overlay                                        # Input validation border color for information severity
-inputValidation.warningBorder: hue.orange                                        # Input validation border color for warning severity
-inputValidation.errorBorder: hue.red                                             # Input validation border color for error severity
-
-# Scroll Bar Control
-
-# Badge
-badge.background: ui.selection                                                  # Badge background color
-
-# Progress Bar
-progressBar.background: accent.base                                            # Background color of the progress bar shown for long running operations
-
-# List & Trees
-list.activeSelectionBackground: surface.overlay                                    # List/Tree background color for the selected item when the list/tree is active
-list.activeSelectionForeground: accent.base                                    # List/Tree foreground color for the selected item when the list/tree is active
-list.dropBackground: ui.selection                                               # List/Tree drag and drop background when moving items around using the mouse
-list.focusBackground: ui.lineHighlight                                          # List/Tree background color for the focused item when the list/tree is active
-list.highlightForeground: text.pure                                              # List/Tree foreground color of the match highlights when searching inside the list/tree
-list.hoverBackground: surface.overlay                                              # List/Tree background when hovering over items using the mouse
-list.inactiveSelectionBackground: surface.raised                                    # List/Tree background color for the selected item when the list/tree is inactive
-list.inactiveSelectionForeground: text.pure                                      # List/Tree foreground color for the selected item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not
-list.warningForeground: hue.gold                                                 # Color of warning decorations in the explorer
-list.errorForeground: hue.red                                                    # Color of error decorations in the explorer
-
-# Activity Bar
-activityBar.background: surface.deep                                               # Activity Bar background color
-activityBar.inactiveForeground: alpha(accent.dim, 80)                 # Activity bar item foreground color when it is inactive
-activityBar.foreground: accent.dim                                        # Activity bar foreground color (for example used for the icons)
-activityBar.border: border.strong                                               # Activity Bar border color with the Side Bar
-activityBarBadge.background: accent.base                                       # Activity notification badge background color
-activityBarBadge.foreground: text.pure                                           # Activity notification badge foreground color
-
-# Side Bar
-sideBar.background: surface.deep                                                   # Side Bar background color
-sideBar.border: border.strong                                                   # Side Bar border color on the side separating the editor
-sideBarTitle.foreground: text.muted                                    # Side Bar title foreground color
-sideBarSectionHeader.background: surface.raised                                     # Side Bar section header background color
-sideBarSectionHeader.foreground: text.muted                            # Side Bar section header foreground color
-sideBarSectionHeader.border: border.strong                                      # Side bar section header border color
-
-# Editor Group & Tabs
-# DEAD KEY — removed from VS Code. Editor group backgrounds are now drawn by
-# editorPane.background (empty panes) and editorGroup.emptyBackground.
-# TODO(phase-2): restyle using the current keys.
-# editorGroup.background: surface.deep
-editorGroup.border: border.strong                                               # Color to separate multiple editor groups from each other
-editorGroup.dropBackground: alpha(accent.base, 50)                           # Background color when dragging editors around
-editorGroupHeader.tabsBackground: surface.deep                                     # Background color of the Tabs container
-editorGroupHeader.tabsBorder: border.strong                                     # Border color of the editor group title header when tabs are enabled. Editor groups are the containers of editors
-tab.activeBackground: surface.raised                                                # Active Tab background color
-tab.activeForeground: text.pure                                                  # Active Tab foreground color in an active group
-tab.border: border.strong                                                       # Border to separate Tabs from each other
-tab.activeBorder: accent.base                                                  # A border drawn to the bottom of the active tab
-tab.inactiveBackground: surface.deep                                               # Inactive Tab background color
-tab.inactiveForeground: text.subtle                                              # Inactive Tab foreground color in an active group
-
-# Editor Colors
-editor.foreground: text.default
-editor.background: surface.base
-editorLineNumber.foreground: text.subtle
-editorCursor.foreground: accent.base
-
-editor.selectionBackground: ui.selection                                        # Color of the editor selection
-editor.selectionHighlightBackground: surface.overlay                               # Color for regions with the same content as the selection
-
-editor.wordHighlightBackground: alpha(accent.base, 25)                     # Background color of a symbol during read-access, for example when reading a variable
-editor.wordHighlightStrongBackground: alpha(accent.base, 50)               # Background color of a symbol during write-access, for example when writing to a variable
-
-editor.findMatchBackground: alpha(accent.base, 80)
-editor.findMatchHighlightBackground: alpha(text.pure, 40)                    # Color of the other search matches
-editor.findRangeHighlightBackground: ui.lineHighlight                           # Color the range limiting the search
-
-editor.hoverHighlightBackground: surface.sunken                                    # Highlight below the word for which a hover is shown
-
-editor.lineHighlightBorder: ui.selection                                        # Background color for the border around the line at the cursor position
-
-editorLink.activeForeground: accent.base                                       # Color of active links
-editor.rangeHighlightBackground: alpha(accent.base, 15)                    # Background color of highlighted ranges, like by Quick Open and Find features
-
-editor.snippetTabstopHighlightBackground: surface.base                                 # Highlight background color of a snippet tabstop
-editor.snippetTabstopHighlightBorder: text.subtle                                # Highlight border color of a snippet tabstop
-editor.snippetFinalTabstopHighlightBackground: surface.base                            # Highlight background color of the final tabstop of a snippet
-editor.snippetFinalTabstopHighlightBorder: accent.base                         # Highlight border color of the final tabstop of a snippet
-
-editorWhitespace.foreground: text.faint                                         # Color of whitespace characters in the editor
-editorIndentGuide.background: text.faint                                        # Color of the editor indentation guides
-editorIndentGuide.activeBackground: alpha(text.pure, 45)                      # Color of the active indentation guide
-editorRuler.foreground: text.faint                                              # Color of the editor rulers
-
-editorCodeLens.foreground: text.subtle                                           # Foreground color of an editor CodeLens
-
-# NOTE: These are not set because they tend to be highly contested from
-# person to person. Thus, setting these is probably better suited
-# for workbench.colorCustomizations in User Settings
-
-editorOverviewRuler.border: surface.sunken                                         # Color of the overview ruler border
-editorOverviewRuler.selectionHighlightForeground: accent.base
-editorOverviewRuler.wordHighlightForeground: hue.auburn
-editorOverviewRuler.wordHighlightStrongForeground: accent.base
-editorOverviewRuler.modifiedForeground: alpha(text.pure, 80)
-editorOverviewRuler.addedForeground: alpha(accent.base, 80)
-editorOverviewRuler.deletedForeground: alpha(hue.auburn, 90)
-editorOverviewRuler.errorForeground: alpha(hue.auburn, 40)
-editorOverviewRuler.warningForeground: alpha(hue.orange, 50)
-editorOverviewRuler.infoForeground: alpha(text.pure, 40)
-
-editorError.foreground: hue.red                                                  # Foreground color of error squigglies in the editor
-editorWarning.foreground: hue.orange                                             # Foreground color of warning squigglies in the editor
-
-editorGutter.modifiedBackground: alpha(text.pure, 50)                   # Editor gutter background color for lines that are modified
-editorGutter.addedBackground: alpha(accent.base, 80)                   # Editor gutter background color for lines that are added
-editorGutter.deletedBackground: alpha(hue.auburn, 80)                   # Editor gutter background color for lines that are deleted
-
-# Explorer Colors
-gitDecoration.modifiedResourceForeground: accent.base
-gitDecoration.deletedResourceForeground: hue.auburn
-gitDecoration.untrackedResourceForeground: text.subtle
-gitDecoration.ignoredResourceForeground: alpha(text.pure, 50)
-gitDecoration.conflictingResourceForeground: hue.auburn
-
-# Diff Editor Colors
-diffEditor.insertedTextBackground: alpha(accent.base, 20)                  # Background color for inserted text
-diffEditor.removedTextBackground: alpha(hue.auburn, 20)                      # Background color for removed text
-
-# Editor Widget Colors
-editorWidget.background: surface.deep                                              # Background color of editor widgets, such as Find/Replace
-
-editorSuggestWidget.background: surface.deep                                       # Background color of the suggestion widget
-editorSuggestWidget.foreground: text.default                                           # Foreground color of the suggestion widget
-editorSuggestWidget.selectedBackground: ui.selection                            # Background color of the selected entry in the suggestion widget
-
-editorHoverWidget.background: surface.base                                             # Background color of the editor hover
-editorHoverWidget.border: text.subtle                                            # Border color of the editor hover
-
-editorMarkerNavigation.background: surface.deep                                    # Editor marker navigation widget background
-
-# Peek View Colors
-peekView.border: ui.selection                                                   # Color of the peek view borders and arrow
-peekViewEditor.background: surface.base                                                # Background color of the peek view editor
-peekViewEditor.matchHighlightBackground: alpha(accent.base, 80)            # Match highlight color in the peek view editor
-peekViewResult.background: surface.deep                                            # Background color of the peek view result list
-peekViewResult.fileForeground: text.default                                            # Foreground color for file nodes in the peek view result list
-peekViewResult.lineForeground: text.default                                            # Foreground color for line nodes in the peek view result list
-peekViewResult.matchHighlightBackground: alpha(accent.base, 80)            # Match highlight color in the peek view result list
-peekViewResult.selectionBackground: ui.selection                                # Background color of the selected entry in the peek view result list
-peekViewResult.selectionForeground: text.default                                       # Foreground color of the selected entry in the peek view result list
-peekViewTitle.background: surface.sunken                                           # Background color of the peek view title area
-peekViewTitleDescription.foreground: text.subtle                                 # Color of the peek view title info
-peekViewTitleLabel.foreground: text.default                                            # Color of the peek view title
-
-# Merge Conflicts
-merge.currentHeaderBackground: alpha(text.pure, 30)                      # Current header background in inline merge conflicts
-merge.incomingHeaderBackground: alpha(accent.base, 20)                     # Incoming header background in inline merge conflicts
-editorOverviewRuler.currentContentForeground: text.pure                          # Current overview ruler foreground for inline merge conflicts
-editorOverviewRuler.incomingContentForeground: accent.base                     # Incoming overview ruler foreground for inline merge conflicts
-
-# Panel Colors
-panel.background: surface.deep                                                     # Panel background color
-panel.border: border.strong                                                     # Panel border color on the top separating to the editor
-panelTitle.activeBorder: accent.base                                           # Border color for the active panel title
-panelTitle.activeForeground: text.default                                              # Title color for the active panel
-panelTitle.inactiveForeground: text.subtle                                       # Title color for the inactive panel
-
-# Status Bar Colors
-statusBar.background: accent.base                                              # Standard Status Bar background color
-statusBar.debuggingBackground: hue.orange                                        # Status Bar background color when a program is being debugged
-statusBar.noFolderBackground: surface.sunken                                       # Status Bar foreground color when no folder is opened
-statusBar.noFolderForeground: text.default                                             # Status Bar background color when no folder is opened
-statusBarItem.prominentBackground: hue.auburn                                    # Status Bar prominent items background color. Prominent items stand out from other Status Bar entries to indicate importance
-statusBarItem.prominentHoverBackground: hue.orange                               # Status Bar prominent items background color when hovering. Prominent items stand out from other Status Bar entries to indicate importance
-statusBarItem.remoteForeground: text.default                                           # Background color for the remote indicator on the status bar
-statusBarItem.remoteBackground: hue.orange                                       # Foreground color for the remote indicator on the status bar
-
-# Title Bar Colors (MacOS Only)
-titleBar.activeBackground: surface.deep                                            # Title Bar background when the window is active
-titleBar.activeForeground: text.default                                                # Title Bar foreground when the window is active
-titleBar.inactiveBackground: surface.deep                                        # Title Bar background when the window is inactive
-titleBar.inactiveForeground: text.subtle                                         # Title Bar foreground when the window is inactive
-
-# Notification Dialog Colors
-# DEAD KEYS — the singular `notification.*` namespace was renamed to
-# `notifications.*` and the severity/button variants were dropped entirely.
-# None of these have had any effect since around 2019. The intent is preserved
-# here so Phase 2 can restyle notifications against the current key set:
-#
-#   notification.background        -> notifications.background
-#   notification.foreground        -> notifications.foreground
-#   notification.buttonBackground  -> button.background (already styled)
-#   notification.buttonForeground  -> button.foreground (already styled)
-#   notification.errorBackground   -> notificationsErrorIcon.foreground
-#   notification.warningBackground -> notificationsWarningIcon.foreground
-#   notification.infoBackground    -> notificationsInfoIcon.foreground
-#
-# plus notifications.border, notificationLink.foreground, notificationToast.border
-# and the notificationCenter* group, none of which the theme has ever set.
-#
-# TODO(phase-2): restyle notifications.
-# notification.background: surface.base
-# notification.foreground: text.default
-# notification.buttonBackground: accent.base
-# notification.buttonForeground: text.default
-# notification.errorBackground: hue.auburn
-# notification.errorForeground: text.default
-# notification.infoBackground: alpha(text.pure, 50)
-# notification.infoForeground: surface.base
-# notification.warningBackground: hue.orange
-# notification.warningForeground: text.default
-
-# Extensions
-extensionButton.prominentForeground: text.default                                      # Extension view button foreground color (for example Install button)
-extensionButton.prominentBackground: alpha(accent.base, 90)                # Extension view button background color
-extensionButton.prominentHoverBackground: alpha(accent.base, 60)           # Extension view button background hover color
-
-# Quick Picker
-pickerGroup.border: accent.base                                                # Quick picker (Quick Open) color for grouping borders
-pickerGroup.foreground: accent.base                                            # Quick picker (Quick Open) color for grouping labels
-
+# -----------------------------------------------------------------------------
 # Debug
-debugToolBar.background: surface.deep                                              # Debug toolbar background color
+# -----------------------------------------------------------------------------
+debugToolBar.background: surface.deep
+debugToolBar.border: border.soft
+editor.stackFrameHighlightBackground: alpha(role.keyword, 26)
+editor.focusedStackFrameHighlightBackground: alpha(vcs.added, 26)
+editor.inlineValuesForeground: text.subtle
+editor.inlineValuesBackground: alpha(accent.base, 1A)
+debugView.exceptionLabelForeground: text.default
+debugView.exceptionLabelBackground: status.error
+debugView.stateLabelForeground: text.default
+debugView.stateLabelBackground: surface.overlay
+debugView.valueChangedHighlight: accent.base
+debugTokenExpression.name: role.variable
+debugTokenExpression.value: text.muted
+debugTokenExpression.string: role.string
+debugTokenExpression.boolean: role.constant
+debugTokenExpression.number: role.constant
+debugTokenExpression.error: status.error
+debugTokenExpression.type: role.type
+debugConsole.infoForeground: status.info
+debugConsole.warningForeground: status.warning
+debugConsole.errorForeground: status.error
+debugConsole.sourceForeground: text.subtle
+debugConsoleInputIcon.foreground: accent.base
 
-# Welcome Page
-walkThrough.embeddedEditorBackground: surface.deep                                 # Background color for the embedded editors on the Interactive Playground
+debugIcon.breakpointForeground: status.error
+debugIcon.breakpointDisabledForeground: alpha(status.error, 80)
+debugIcon.breakpointUnverifiedForeground: text.subtle
+debugIcon.breakpointCurrentStackframeForeground: role.keyword
+debugIcon.breakpointStackframeForeground: text.muted
+debugIcon.startForeground: vcs.added
+debugIcon.pauseForeground: status.info
+debugIcon.stopForeground: status.error
+debugIcon.disconnectForeground: status.error
+debugIcon.restartForeground: vcs.added
+debugIcon.stepOverForeground: accent.base
+debugIcon.stepIntoForeground: accent.base
+debugIcon.stepOutForeground: accent.base
+debugIcon.stepBackForeground: accent.base
+debugIcon.continueForeground: accent.base
 
-# Setting Editor
-settings.headerForeground: text.default                                      # The foreground color for a section header or active title
-# DEAD KEY — removed from VS Code. settings.modifiedItemIndicator (set below)
-# is the surviving key and already carries this colour.
-# settings.modifiedItemForeground: hue.orange
-settings.modifiedItemIndicator: hue.orange                                  # The color of the line that indicates a modified setting
-settings.dropdownBackground: surface.deep                                  # Dropdown background
-settings.dropdownForeground: text.default                                      # Dropdown foreground
-settings.dropdownBorder: surface.sunken                                # Dropdown border
-settings.checkboxBackground: surface.deep                                  # Checkbox background
-settings.checkboxForeground: text.default                                      # Checkbox foreground
-settings.checkboxBorder: surface.sunken                                # Checkbox border
-settings.textInputBackground: surface.deep                                  # Text input box background
-settings.textInputForeground: text.default                                      # Text input box foreground
-settings.textInputBorder: surface.sunken                                # Text input box border
-settings.numberInputBackground: surface.deep                                  # Number input box background
-settings.numberInputForeground: text.default                                      # Number input box foreground
-settings.numberInputBorder: surface.sunken                                # Number input box border
+# -----------------------------------------------------------------------------
+# Testing
+# -----------------------------------------------------------------------------
+testing.runAction: vcs.added
+testing.iconPassed: vcs.added
+testing.iconFailed: status.error
+testing.iconErrored: status.error
+testing.iconQueued: role.keyword
+testing.iconUnset: text.subtle
+testing.iconSkipped: text.subtle
+testing.iconPassed.retired: alpha(vcs.added, 99)
+testing.iconFailed.retired: alpha(status.error, 99)
+testing.iconErrored.retired: alpha(status.error, 99)
+testing.iconQueued.retired: alpha(role.keyword, 99)
+testing.iconUnset.retired: alpha(text.subtle, 99)
+testing.iconSkipped.retired: alpha(text.subtle, 99)
+testing.peekBorder: status.error
+testing.peekHeaderBackground: alpha(status.error, 22)
+testing.messagePeekBorder: status.info
+testing.messagePeekHeaderBackground: alpha(status.info, 22)
+testing.message.error.lineBackground: alpha(status.error, 22)
+testing.message.error.badgeBackground: status.error
+testing.message.error.badgeBorder: status.error
+testing.message.error.badgeForeground: surface.deep
+testing.message.info.lineBackground: alpha(status.info, 1A)
+testing.message.info.decorationForeground: text.subtle
+testing.coveredBackground: alpha(vcs.added, 22)
+testing.coveredBorder: alpha(vcs.added, 66)
+testing.coveredGutterBackground: alpha(vcs.added, 44)
+testing.uncoveredBackground: alpha(status.error, 1A)
+testing.uncoveredBorder: alpha(status.error, 55)
+testing.uncoveredGutterBackground: alpha(status.error, 44)
+testing.uncoveredBranchBackground: alpha(status.warning, 33)
+testing.coverCountBadgeBackground: accent.solid
+testing.coverCountBadgeForeground: text.default
 
+# -----------------------------------------------------------------------------
+# Notebooks
+# -----------------------------------------------------------------------------
+notebook.editorBackground: surface.base
+notebook.cellEditorBackground: surface.deep
+notebook.cellBorderColor: border.soft
+notebook.cellHoverBackground: surface.raised
+notebook.cellInsertionIndicator: accent.base
+notebook.cellStatusBarItemHoverBackground: surface.overlay
+notebook.cellToolbarSeparator: border.soft
+notebook.focusedCellBackground: surface.raised
+notebook.focusedCellBorder: accent.base
+notebook.focusedEditorBorder: accent.base
+notebook.inactiveFocusedCellBorder: border.strong
+notebook.inactiveSelectedCellBorder: border.soft
+notebook.selectedCellBackground: surface.raised
+notebook.selectedCellBorder: border.strong
+notebook.outputContainerBackgroundColor: surface.deep
+notebook.outputContainerBorderColor: border.soft
+notebook.symbolHighlightBackground: alpha(accent.base, 22)
+notebookScrollbarSlider.background: alpha(text.subtle, 33)
+notebookScrollbarSlider.hoverBackground: alpha(text.subtle, 55)
+notebookScrollbarSlider.activeBackground: alpha(accent.base, 77)
+notebookStatusSuccessIcon.foreground: vcs.added
+notebookStatusErrorIcon.foreground: status.error
+notebookStatusRunningIcon.foreground: status.info
+notebookEditorOverviewRuler.runningCellForeground: status.info
+
+# -----------------------------------------------------------------------------
+# Chat and inline chat
+# -----------------------------------------------------------------------------
+chat.requestBackground: surface.raised
+chat.requestBorder: border.soft
+chat.requestBubbleBackground: surface.raised
+chat.requestBubbleHoverBackground: surface.overlay
+chat.requestCodeBorder: border.soft
+chat.slashCommandBackground: alpha(accent.base, 33)
+chat.slashCommandForeground: accent.base
+chat.avatarBackground: surface.overlay
+chat.avatarForeground: accent.base
+chat.editedFileForeground: role.constant
+chat.linesAddedForeground: vcs.added
+chat.linesRemovedForeground: vcs.deleted
+chat.checkpointSeparator: border.soft
+
+inlineChat.background: surface.deep
+inlineChat.foreground: text.default
+inlineChat.border: border.soft
+inlineChat.shadow: alpha(border.seam, 66)
+inlineChatInput.background: surface.base
+inlineChatInput.border: border.soft
+inlineChatInput.focusBorder: accent.base
+inlineChatInput.placeholderForeground: text.subtle
+inlineChatDiff.inserted: wash.added
+inlineChatDiff.removed: wash.deleted
+editorOverviewRuler.inlineChatInserted: alpha(vcs.added, 99)
+editorOverviewRuler.inlineChatRemoved: alpha(vcs.deleted, 99)
+editorMinimap.inlineChatInserted: alpha(vcs.added, 99)
+minimap.chatEditHighlight: alpha(accent.base, 44)
+
+interactive.activeCodeBorder: accent.base
+interactive.inactiveCodeBorder: border.soft
+
+# -----------------------------------------------------------------------------
+# Source control
+# -----------------------------------------------------------------------------
+gitDecoration.addedResourceForeground: vcs.added
+gitDecoration.modifiedResourceForeground: vcs.modified
+gitDecoration.deletedResourceForeground: vcs.deleted
+gitDecoration.renamedResourceForeground: vcs.untracked
+gitDecoration.untrackedResourceForeground: vcs.untracked
+gitDecoration.ignoredResourceForeground: vcs.ignored
+gitDecoration.conflictingResourceForeground: vcs.conflicting
+gitDecoration.stageModifiedResourceForeground: vcs.modified
+gitDecoration.stageDeletedResourceForeground: vcs.deleted
+gitDecoration.submoduleResourceForeground: role.tag
+git.blame.editorDecorationForeground: text.subtle
+
+scmGraph.foreground1: bracket.three
+scmGraph.foreground2: bracket.five
+scmGraph.foreground3: bracket.two
+scmGraph.foreground4: bracket.four
+scmGraph.foreground5: bracket.six
+scmGraph.historyItemRefColor: accent.base
+scmGraph.historyItemRemoteRefColor: role.tag
+scmGraph.historyItemBaseRefColor: role.constant
+scmGraph.historyItemHoverLabelForeground: text.default
+scmGraph.historyItemHoverAdditionsForeground: vcs.added
+scmGraph.historyItemHoverDeletionsForeground: vcs.deleted
+scmGraph.historyItemHoverDefaultLabelForeground: text.default
+scmGraph.historyItemHoverDefaultLabelBackground: surface.overlay
+
+# -----------------------------------------------------------------------------
+# Settings editor
+# -----------------------------------------------------------------------------
+settings.headerForeground: text.default
+settings.headerBorder: border.soft
+settings.settingsHeaderHoverForeground: accent.base
+settings.modifiedItemIndicator: accent.base
+settings.rowHoverBackground: surface.raised
+settings.focusedRowBackground: surface.raised
+settings.focusedRowBorder: accent.base
+settings.sashBorder: border.soft
+settings.dropdownBackground: surface.deep
+settings.dropdownForeground: text.default
+settings.dropdownBorder: border.soft
+settings.dropdownListBorder: border.soft
+settings.checkboxBackground: surface.deep
+settings.checkboxForeground: text.default
+settings.checkboxBorder: border.soft
+settings.textInputBackground: surface.deep
+settings.textInputForeground: text.default
+settings.textInputBorder: border.soft
+settings.numberInputBackground: surface.deep
+settings.numberInputForeground: role.constant
+settings.numberInputBorder: border.soft
+
+# -----------------------------------------------------------------------------
 # Breadcrumbs
-breadcrumb.foreground: text.subtle                                               # Color of breadcrumb items
+# -----------------------------------------------------------------------------
 breadcrumb.background: surface.base
-breadcrumb.focusForeground: text.default                                               # Color of focused breadcrumb items
-breadcrumb.activeSelectionForeground: text.default                                     # Color of selected breadcrumb items
-breadcrumbPicker.background: surface.deep                                          # Background color of breadcrumb item picker
+breadcrumb.foreground: text.subtle
+breadcrumb.focusForeground: text.default
+breadcrumb.activeSelectionForeground: accent.base
+breadcrumbPicker.background: surface.deep
 
-# Misc
+# -----------------------------------------------------------------------------
+# Welcome page
+# -----------------------------------------------------------------------------
+welcomePage.background: surface.base
+welcomePage.tileBackground: surface.raised
+welcomePage.tileHoverBackground: surface.overlay
+welcomePage.tileBorder: border.soft
+welcomePage.progress.background: surface.overlay
+welcomePage.progress.foreground: accent.base
+walkThrough.embeddedEditorBackground: surface.deep
+walkthrough.stepTitle.foreground: text.default
 
-listFilterWidget.background: surface.raised                                         # Background color of the type filter widget in lists and trees.
-listFilterWidget.outline: surface.overlay                                          # Outline color of the type filter widget in lists and trees.
-listFilterWidget.noMatchesOutline: hue.auburn                                    # Outline color of the type filter widget in lists and trees, when there are no matches.
+# -----------------------------------------------------------------------------
+# Search
+# -----------------------------------------------------------------------------
+search.resultsInfoForeground: text.muted
+searchEditor.findMatchBackground: wash.findOther
+searchEditor.findMatchBorder: alpha(accent.base, 66)
+searchEditor.textInputBorder: border.soft
+simpleFindWidget.sashBorder: border.soft
 
-# Syntaxes
+# -----------------------------------------------------------------------------
+# Symbol icons
+# -----------------------------------------------------------------------------
+symbolIcon.arrayForeground: role.constant
+symbolIcon.booleanForeground: role.constant
+symbolIcon.classForeground: role.type
+symbolIcon.colorForeground: role.tag
+symbolIcon.constantForeground: role.constant
+symbolIcon.constructorForeground: role.function
+symbolIcon.enumeratorForeground: role.type
+symbolIcon.enumeratorMemberForeground: role.constant
+symbolIcon.eventForeground: role.keyword
+symbolIcon.fieldForeground: role.variable
+symbolIcon.fileForeground: text.muted
+symbolIcon.folderForeground: text.muted
+symbolIcon.functionForeground: role.function
+symbolIcon.interfaceForeground: role.type
+symbolIcon.keyForeground: role.variable
+symbolIcon.keywordForeground: role.keyword
+symbolIcon.methodForeground: role.function
+symbolIcon.moduleForeground: role.tag
+symbolIcon.namespaceForeground: role.tag
+symbolIcon.nullForeground: role.constant
+symbolIcon.numberForeground: role.constant
+symbolIcon.objectForeground: role.type
+symbolIcon.operatorForeground: role.punctuation
+symbolIcon.packageForeground: role.tag
+symbolIcon.propertyForeground: role.variable
+symbolIcon.referenceForeground: role.function
+symbolIcon.snippetForeground: role.keyword
+symbolIcon.stringForeground: role.string
+symbolIcon.structForeground: role.type
+symbolIcon.textForeground: text.default
+symbolIcon.typeParameterForeground: role.type
+symbolIcon.unitForeground: role.constant
+symbolIcon.variableForeground: role.variable
+
+# -----------------------------------------------------------------------------
+# Charts and gauges
+# -----------------------------------------------------------------------------
+charts.foreground: text.default
+charts.lines: border.strong
+charts.red: status.error
+charts.blue: bracket.six
+charts.yellow: role.keyword
+charts.orange: role.constant
+charts.green: vcs.added
+charts.purple: role.tag
+chart.line: accent.base
+chart.axis: border.strong
+chart.guide: border.soft
+
+gauge.background: surface.overlay
+gauge.foreground: accent.base
+gauge.border: border.soft
+gauge.warningBackground: alpha(status.warning, 44)
+gauge.warningForeground: status.warning
+gauge.errorBackground: alpha(status.error, 44)
+gauge.errorForeground: status.error
+
+# -----------------------------------------------------------------------------
+# Miscellaneous
+# -----------------------------------------------------------------------------
+ports.iconRunningProcessForeground: vcs.added
+commentsView.resolvedIcon: text.subtle
+commentsView.unresolvedIcon: status.warning
+
+markdownAlert.note.foreground: status.info
+markdownAlert.tip.foreground: vcs.added
+markdownAlert.important.foreground: role.tag
+markdownAlert.warning.foreground: status.warning
+markdownAlert.caution.foreground: status.error

@@ -33,4 +33,18 @@ module.exports = {
     // Whether to force the use of parens when using arrow functions:
     // params => {}       vs       (params) => {}
     arrowParens: 'always',
+
+    overrides: [
+        {
+            // The theme sources are YAML, where two-space indentation is the
+            // convention. Without this they inherit tabWidth 4 from the JS
+            // settings above, which is valid but reads as wrong and pushes the
+            // aligned trailing comments off the right edge.
+            files: '*.{yml,yaml}',
+            options: {
+                tabWidth: 2,
+                singleQuote: false,
+            },
+        },
+    ],
 };
