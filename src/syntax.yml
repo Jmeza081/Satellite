@@ -1,0 +1,753 @@
+# =============================================================================
+# Satellite — TextMate syntax rules
+# =============================================================================
+#
+# Colours for grammar-based tokenisation. This is the fallback layer: languages
+# with a semantic token provider are coloured by semantic.yml first, and fall
+# back to these rules for anything the language server does not classify.
+#
+# 'foreground' values are token references from tokens.yml.
+#
+# Reference: https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide
+
+# =============================================================================
+# General
+# =============================================================================
+
+  - scope:
+    - emphasis
+    settings:
+      fontStyle: italic
+  - scope:
+    - strong
+    settings:
+      fontStyle: bold
+  - scope:
+    - header
+    settings:
+      foreground: hue.purple
+  - scope:
+    - source
+    settings:
+      foreground: text.default
+
+  # Diffs
+  # ======
+  - scope:
+    - meta.diff
+    - meta.diff.header
+    settings:
+      foreground: text.subtle
+  - scope:
+    - markup.inserted
+    settings:
+      foreground: hue.green
+  - scope:
+    - markup.deleted
+    settings:
+      foreground: hue.red
+  - scope:
+    - markup.changed
+    settings:
+      foreground: hue.orange
+  - scope:
+    - invalid
+    settings:
+      foreground: hue.red
+      fontStyle: underline italic
+  - scope:
+    - invalid.deprecated
+    settings:
+      foreground: text.default
+      fontStyle: underline italic
+  - scope:
+    - entity.name.filename
+    settings:
+      foreground: hue.gold
+  - scope:
+    - markup.error
+    settings:
+      foreground: hue.red
+
+  # Markdown / RST / Prose
+  # ======================
+
+  - name: Underlined markup
+    scope:
+    - markup.underline
+    settings:
+      fontStyle: underline
+
+  - name: Bold markup
+    scope:
+    - markup.bold
+    settings:
+      fontStyle: bold
+      foreground: hue.orange
+
+  - name: Markup headings
+    scope:
+    - markup.heading
+    settings:
+      fontStyle: bold
+      foreground: hue.purple
+
+  - name: Markup italic
+    scope:
+    - markup.italic
+    settings:
+      foreground: hue.gold
+      fontStyle: italic
+
+  - name: Bullets, lists (prose)
+    scope:
+    - beginning.punctuation.definition.list.markdown
+    - beginning.punctuation.definition.quote.markdown
+    - punctuation.definition.link.restructuredtext
+    settings:
+      foreground: hue.cyan
+
+  - name: Inline code (prose)
+    scope:
+    - markup.inline.raw
+    - markup.raw.restructuredtext
+    settings:
+      foreground: hue.green
+
+  - name: Links (prose)
+    scope:
+    - markup.underline.link
+    - markup.underline.link.image
+    settings:
+      foreground: hue.cyan
+
+  - name: Link text, image alt text (prose)
+    scope:
+    - meta.link.reference.def.restructuredtext
+    - punctuation.definition.directive.restructuredtext
+    - string.other.link.description
+    - string.other.link.title
+    settings:
+      foreground: hue.purple
+
+  - name: Blockquotes (prose)
+    scope:
+    - entity.name.directive.restructuredtext
+    - markup.quote
+    settings:
+      foreground: hue.yellow
+      fontStyle: italic
+
+  - name: Horizontal rule (prose)
+    scope:
+    - meta.separator.markdown
+    settings:
+      foreground: text.subtle
+
+  - name: Code blocks
+    scope:
+    - fenced_code.block.language
+    - markup.raw.inner.restructuredtext
+    - markup.fenced_code.block.markdown punctuation.definition.markdown
+    settings:
+      foreground: hue.green
+
+  - name: Prose constants
+    scope:
+    - punctuation.definition.constant.restructuredtext
+    settings:
+      foreground: hue.purple
+
+  - name: Braces in markdown headings
+    scope:
+    - markup.heading.markdown punctuation.definition.string.begin
+    - markup.heading.markdown punctuation.definition.string.end
+    settings:
+      foreground: hue.purple
+
+  - name: Braces in markdown paragraphs
+    scope:
+    - meta.paragraph.markdown punctuation.definition.string.begin
+    - meta.paragraph.markdown punctuation.definition.string.end
+    settings:
+      foreground: text.default
+
+  - name: Braces in markdown blockquotes
+    scope:
+    - markup.quote.markdown meta.paragraph.markdown punctuation.definition.string.begin
+    - markup.quote.markdown meta.paragraph.markdown punctuation.definition.string.end
+    settings:
+      foreground: hue.yellow
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+  - name: User-defined class names
+    scope:
+    - entity.name.type.class
+    settings:
+      foreground: hue.orange
+      fontStyle: normal
+
+  - name: this, super, self, etc.
+    scope:
+    - keyword.expressions-and-types.swift
+    - keyword.other.this
+    - variable.language
+    - variable.language punctuation.definition.variable.php # the "$" symbol in $this
+    - variable.other.readwrite.instance.ruby                # ruby's "@" instance symbol
+    - variable.parameter.function.language.special          # Special words as parameters
+    settings:
+      foreground: hue.orange
+      fontStyle: italic
+
+  - name: Inherited classes
+    scope:
+    - entity.other.inherited-class
+    settings:
+      fontStyle: italic
+      foreground: hue.cyan
+
+# =============================================================================
+# Comments
+# =============================================================================
+
+  - name: Comments
+    scope:
+    - comment
+    - punctuation.definition.comment
+    - unused.comment
+    - wildcard.comment
+    settings:
+      foreground: text.subtle
+
+  - name: JSDoc-style keywords
+    scope:
+    - comment keyword.codetag.notation
+    - comment.block.documentation keyword
+    - comment.block.documentation storage.type.class
+    settings:
+      foreground: hue.gold
+
+  - name: JSDoc-style types
+    scope:
+    - comment.block.documentation entity.name.type
+    settings:
+      foreground: hue.orange
+      fontStyle: italic
+
+  - name: JSDoc-style type brackets
+    scope:
+    - comment.block.documentation entity.name.type punctuation.definition.bracket
+    settings:
+      foreground: hue.gold
+
+  - name: JSDoc-style comment parameters
+    scope:
+    - comment.block.documentation variable
+    settings:
+      fontStyle: italic
+
+# =============================================================================
+# Constants
+# =============================================================================
+
+  - name: Constants
+    scope:
+    - constant
+    - variable.other.constant
+    settings:
+      foreground: hue.orange
+
+  - name: Constant escape sequences
+    scope:
+    - constant.character.escape
+    - constant.character.string.escape
+    - constant.regexp
+    settings:
+      foreground: hue.purple
+
+# =============================================================================
+# Entities
+# =============================================================================
+
+  - name: HTML tags
+    scope:
+    - entity.name.tag
+    settings:
+      foreground: hue.purple
+
+  - name: CSS attribute parent selectors ('&')
+    scope:
+    - entity.other.attribute-name.parent-selector
+    settings:
+      foreground: hue.purple
+
+  - name: HTML/CSS attribute names
+    scope:
+    - entity.other.attribute-name
+    settings:
+      foreground: hue.green
+      fontStyle: italic
+
+# =============================================================================
+# Functions/Methods
+# =============================================================================
+
+  - name: Function names
+    scope:
+    - entity.name.function
+    - meta.function-call.generic
+    - meta.function-call.object
+    - meta.function-call.php
+    - meta.function-call.static
+    - meta.method-call.java meta.method
+    - meta.method.groovy
+    - support.function.any-method.lua
+    - keyword.operator.function.infix
+    settings:
+      foreground: hue.cyan
+
+  - name: Function parameters
+    scope:
+    - entity.name.variable.parameter
+    - meta.at-rule.function variable # Sass function params
+    - meta.at-rule.mixin variable    # Sass mixin params
+    - meta.function.arguments variable.other.php
+    - meta.selectionset.graphql meta.arguments.graphql variable.arguments.graphql
+    - variable.parameter
+    settings:
+      fontStyle: italic
+      foreground: hue.auburn
+
+  - name: Decorators
+    scope:
+    - meta.decorator variable.other.readwrite
+    - meta.decorator variable.other.property
+    settings:
+      foreground: hue.green
+      fontStyle: italic
+
+  - name: Decorator Objects
+    scope:
+      - meta.decorator variable.other.object
+    settings:
+      foreground: hue.green
+
+# =============================================================================
+# Keywords
+# =============================================================================
+
+  - name: Keywords
+    scope:
+    - keyword
+    - punctuation.definition.keyword
+    settings:
+      foreground: hue.gold
+
+  - name: Keyword "new"
+    scope:
+    - keyword.control.new
+    - keyword.operator.new
+    settings:
+      fontStyle: bold
+
+  - name: Generic selectors (CSS/SCSS/Less/Stylus)
+    scope:
+    - meta.selector
+    settings:
+      foreground: hue.purple
+
+# =============================================================================
+# Language Built-ins
+# =============================================================================
+
+  - name: Language Built-ins
+    scope:
+    - support
+    settings:
+      fontStyle: italic
+      foreground: hue.cyan
+
+  - name: Built-in magic functions and constants
+    scope:
+    - support.function.magic
+    - support.variable
+    - variable.other.predefined
+    settings:
+      fontStyle: regular
+      foreground: hue.purple
+
+  - name: Built-in functions / properties
+    scope:
+    - support.function
+    - support.type.property-name
+    settings:
+      fontStyle: regular
+
+# =============================================================================
+# Punctuation
+# =============================================================================
+
+  - name: Separators (key/value, namespace, inheritance, pointer, hash, slice, etc)
+    scope:
+    - constant.other.symbol.hashkey punctuation.definition.constant.ruby
+    - entity.other.attribute-name.placeholder punctuation # Sass placeholder `%` symbols
+    - entity.other.attribute-name.pseudo-class punctuation
+    - entity.other.attribute-name.pseudo-element punctuation
+    - meta.group.double.toml
+    - meta.group.toml
+    - meta.object-binding-pattern-variable punctuation.destructuring
+    - punctuation.colon.graphql
+    - punctuation.definition.block.scalar.folded.yaml
+    - punctuation.definition.block.scalar.literal.yaml
+    - punctuation.definition.block.sequence.item.yaml
+    - punctuation.definition.entity.other.inherited-class
+    - meta.parameters.js
+    - punctuation.function.swift
+    - punctuation.separator.dictionary.key-value
+    - punctuation.separator.hash
+    - punctuation.separator.inheritance
+    - punctuation.separator.key-value
+    - punctuation.separator.key-value.mapping.yaml
+    - punctuation.separator.namespace
+    - punctuation.separator.pointer-access
+    - punctuation.separator.slice
+    - string.unquoted.heredoc punctuation.definition.string
+    - support.other.chomping-indicator.yaml
+    - punctuation.separator.annotation
+    settings:
+      foreground: hue.gold
+
+  - name: Brackets, braces, parens, etc.
+    scope:
+    - keyword.operator.other.powershell # Commas
+    - keyword.other.statement-separator.powershell
+    - meta.brace.round
+    - meta.function-call punctuation
+    - meta.object-binding-pattern-variable.js
+    - punctuation.definition.arguments.begin
+    - punctuation.definition.arguments.end
+    - punctuation.definition.entity.begin
+    - punctuation.definition.entity.end
+    - punctuation.definition.tag.cs # HTML tags in comments
+    - punctuation.definition.type.begin
+    - punctuation.definition.type.end
+    - punctuation.section.scope.begin
+    - punctuation.section.scope.end
+    - punctuation.definition.block.js
+    - storage.type.generic.java
+    - string.template meta.brace
+    - string.template punctuation.accessor
+    settings:
+      foreground: hue.gold
+
+  - name: Variable interpolation operators
+    scope:
+    - meta.string-contents.quoted.double punctuation.definition.variable
+    - punctuation.definition.interpolation.begin
+    - punctuation.definition.interpolation.end
+    - punctuation.definition.template-expression.begin
+    - punctuation.definition.template-expression.end
+    - punctuation.section.embedded.begin
+    - punctuation.section.embedded.coffee
+    - punctuation.section.embedded.end
+    - punctuation.section.embedded.end source.php  # PHP edge case
+    - punctuation.section.embedded.end source.ruby # Issue with ruby's tmLanguage
+    - punctuation.definition.variable.makefile
+    settings:
+      foreground: hue.gold
+
+# =============================================================================
+# Serializable / Config Langages
+# =============================================================================
+
+  - name: Keys (serializable languages)
+    scope:
+    - entity.name.function.target.makefile
+    - entity.name.section.toml
+    - entity.name.tag.yaml
+    - variable.other.key.toml
+    settings:
+      foreground: hue.gold
+
+  - name: Dates / timestamps (serializable languages)
+    scope:
+    - constant.other.date
+    - constant.other.timestamp
+    settings:
+      foreground: hue.orange
+
+  - name: YAML aliases
+    scope:
+    - variable.other.alias.yaml
+    settings:
+      fontStyle: italic underline
+      foreground: hue.green
+
+# =============================================================================
+# Storage
+# =============================================================================
+
+  - name: Storage
+    scope:
+    - storage
+    - meta.implementation storage.type.objc
+    - meta.interface-or-protocol storage.type.objc
+    - source.groovy storage.type.def
+    settings:
+      fontStyle: regular
+      foreground: hue.gold
+
+  - name: Types
+    scope:
+    - entity.name.type
+    - keyword.primitive-datatypes.swift
+    - keyword.type.cs
+    - meta.protocol-list.objc
+    - meta.return-type.objc
+    - source.go storage.type
+    - source.groovy storage.type
+    - source.java storage.type
+    - source.powershell entity.other.attribute-name
+    - storage.class.std.rust
+    - storage.type.attribute.swift
+    - storage.type.c
+    - storage.type.core.rust
+    - storage.type.cs
+    - storage.type.groovy
+    - storage.type.objc
+    - storage.type.php
+    - storage.type.haskell
+    - storage.type.ocaml
+    settings:
+      fontStyle: italic
+      foreground: hue.cyan
+
+  - name: Generics, templates, and mapped type declarations
+    scope:
+    - entity.name.type.type-parameter
+    - meta.indexer.mappedtype.declaration entity.name.type # Mapped type declarations
+    - meta.type.parameters entity.name.type                # Generic type declarations
+    settings:
+      foreground: hue.orange
+
+  - name: Modifiers
+    scope:
+    - storage.modifier
+    settings:
+      foreground: hue.gold
+
+# =============================================================================
+# RegExp
+# =============================================================================
+
+  - name: RegExp string
+    scope:
+    - string.regexp
+    - constant.other.character-class.set.regexp
+    - constant.character.escape.backslash.regexp
+    settings:
+      foreground: hue.yellow
+
+  - name: Non-capture operators
+    scope:
+    # NOTE: The scope name is a misnomer. It is actually non-capture operators
+    - punctuation.definition.group.capture.regexp
+    settings:
+      foreground: hue.gold
+
+  - name: RegExp start and end characters
+    scope:
+    - string.regexp punctuation.definition.string.begin
+    - string.regexp punctuation.definition.string.end
+    settings:
+      foreground: hue.red
+
+  - name: Character group
+    scope:
+    - punctuation.definition.character-class.regexp
+    settings:
+      foreground: hue.cyan
+
+  - name: Capture groups
+    scope:
+    - punctuation.definition.group.regexp
+    settings:
+      foreground: hue.orange
+
+  - name: Assertion operators
+    scope:
+    - punctuation.definition.group.assertion.regexp
+    - keyword.operator.negation.regexp
+    settings:
+      foreground: hue.red
+
+  - name: Positive lookaheads
+    scope:
+    - meta.assertion.look-ahead.regexp
+    settings:
+      foreground: hue.green
+
+# =============================================================================
+# Strings
+# =============================================================================
+
+  - name: Strings
+    scope:
+    - string
+    settings:
+      foreground: hue.green
+
+  - name: String quotes (temporary vscode fix)
+    scope:
+    # NOTE: This is a temporary fix for VSCode expand selection.
+    # See (https://github.com/Microsoft/vscode/issues/4795)
+    - punctuation.definition.string.begin
+    - punctuation.definition.string.end
+    settings:
+      foreground: hue.green
+
+  - name: Property quotes (temporary vscode fix)
+    scope:
+    # NOTE: Same as above
+    - punctuation.support.type.property-name.begin
+    - punctuation.support.type.property-name.end
+    settings:
+      foreground: hue.green
+
+  - name: Docstrings
+    scope:
+    - string.quoted.docstring.multi
+    - string.quoted.docstring.multi.python punctuation.definition.string.begin
+    - string.quoted.docstring.multi.python punctuation.definition.string.end
+    - string.quoted.docstring.multi.python constant.character.escape
+    settings:
+      foreground: text.subtle
+
+# =============================================================================
+# Variables
+# =============================================================================
+
+  - name: Variables and object properties
+    scope:
+    - variable
+    - constant.other.key.perl     # Perl edge case
+    - support.variable.property   # Object properties
+    - variable.other.constant.js  # Fix incorrect highlighting of pseudo-constants in js, jsx
+    - variable.other.constant.ts  # Fixes incorrect highlighting of pseudo-constants in ts
+    - variable.other.constant.tsx # Fixes incorrect highlighting of pseudo-constants in tsx
+    - meta.object-literal.key.js
+    settings:
+      foreground: hue.auburn
+
+  - name: Destructuring / aliasing reference name (LHS)
+    scope:
+    - meta.import variable.other.readwrite                          # Module import aliasing (real name)
+    - meta.import variable.other.readwrite.alias                    # Module import aliasing (alias name)
+    - meta.object-binding-pattern-variable variable.object.property # Object destructuring property
+    - meta.variable.assignment.destructured.object.coffee variable  # Object destructuring property (coffeescript)
+    settings:
+      fontStyle: italic
+      foreground: hue.orange
+
+  - name: Destructuring / aliasing variable name (RHS)
+    scope:
+    - meta.export variable.other.readwrite.alias                             # Module import aliasing (alias name)
+    - meta.variable.assignment.destructured.object.coffee variable variable  # Object destructuring variable (coffeescript)
+    settings:
+      fontStyle: normal
+      foreground: hue.gold
+
+# =============================================================================
+# Language Extensions / Edge Cases
+# =============================================================================
+
+  # GraphQL
+  # =======
+  - name: GraphQL keys
+    scope:
+    - meta.selectionset.graphql variable
+    settings:
+      foreground: hue.yellow
+
+  - name: GraphQL function arguments
+    scope:
+    - meta.selectionset.graphql meta.arguments variable
+    settings:
+      foreground: text.default
+
+  - name: GraphQL fragment name (definition)
+    scope:
+    - entity.name.fragment.graphql
+    - variable.fragment.graphql
+    settings:
+      foreground: hue.cyan
+
+  # Edge Cases
+  # ==========
+  - name: Edge cases (foreground color resets)
+    scope:
+    - constant.other.symbol.hashkey.ruby                            # Ruby hash keys
+    - keyword.operator.dereference.java                             # Java dot access
+    - keyword.operator.navigation.groovy                            # groovy dot access
+    - meta.scope.for-loop.shell punctuation.definition.string.begin
+    - meta.scope.for-loop.shell punctuation.definition.string.end
+    - meta.scope.for-loop.shell string
+    - storage.modifier.import                                       # Java / Groovy imports
+    - punctuation.section.embedded.begin.tsx
+    - punctuation.section.embedded.end.tsx
+    - punctuation.section.embedded.begin.jsx
+    - punctuation.section.embedded.end.jsx
+    - punctuation.separator.list.comma.css                          # Commas separating selectors in CSS
+    - constant.language.empty-list.haskell
+    - keyword.control.from.js
+    settings:
+      foreground: hue.cyan
+
+  - name: JSX Overrides
+    scope:
+    - meta.tag.js
+    settings:
+      foreground: hue.cyan
+
+  # This is set to conform to the standard of coloring langage constants purple.
+  # In this case, this colors "$?", "$@", "$*", "$1", etc..
+  - name: Shell variables prefixed with "$" (edge case)
+    scope:
+    - source.shell variable.other
+    settings:
+      foreground: hue.purple
+
+  - name: Powershell constants mistakenly scoped to `support`, rather than `constant` (edge)
+    scope:
+    - support.constant
+    settings:
+      fontStyle: normal
+      foreground: hue.purple
+
+  - name: Makefile prerequisite names
+    scope:
+    - meta.scope.prerequisites.makefile
+    settings:
+      foreground: hue.yellow
+
+  - name: SCSS attibute selector strings
+    scope:
+      - meta.attribute-selector.scss
+    settings:
+      foreground: hue.yellow
+
+  - name: SCSS attribute selector brackets
+    scope:
+      - punctuation.definition.attribute-selector.end.bracket.square.scss
+      - punctuation.definition.attribute-selector.begin.bracket.square.scss
+    settings:
+      foreground: text.default
+
+  - name: Haskell Pragmas
+    scope:
+      - meta.preprocessor.haskell
+    settings:
+      foreground: text.subtle

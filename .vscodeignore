@@ -1,8 +1,16 @@
+# Everything the published extension does not need. The built theme JSON under
+# theme/ is the only artefact that has to ship, alongside package.json, the
+# README, the changelog and the licences.
+
 src/**
-.editorconfig
-node_modules
-build.js
-.github/*
+scripts/**
+data/**
+node_modules/**
+
+.github/**
 .vscode/**
-bootstrap.sh
-known_issues.md
+
+.gitignore
+.prettierrc.js
+.prettierrc.toml
+yarn.lock

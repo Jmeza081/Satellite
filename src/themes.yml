@@ -1,0 +1,22 @@
+# =============================================================================
+# Satellite — theme manifest
+# =============================================================================
+#
+# Each entry produces one theme JSON file. Themes compose from shared partials,
+# so adding a variant is an entry here plus a palette file — not a copy of the
+# whole theme.
+#
+#   id       file stem and internal identifier
+#   label    name shown in the VS Code theme picker; must match package.json
+#   uiTheme  vs-dark | vs | hc-black | hc-light
+#   tokens   palette file, relative to src/
+#   output   destination, relative to the repository root
+#
+# Phase 4 adds the light and high-contrast variants by pointing new entries at
+# new token files. The ui.yml and syntax.yml partials are shared unchanged.
+
+- id: satellite
+  label: Satellite
+  uiTheme: vs-dark
+  tokens: tokens.yml
+  output: theme/satellite.json

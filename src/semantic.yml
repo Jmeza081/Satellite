@@ -1,0 +1,39 @@
+# =============================================================================
+# Satellite — semantic token colours
+# =============================================================================
+#
+# Scaffold. Populated in Phase 3.
+#
+# Semantic highlighting colours what the language server actually resolved,
+# rather than what the grammar guessed. A TextMate rule cannot tell a local
+# variable from a parameter, or a class from a namespace; a semantic token can.
+# Adopting the standard token types and modifiers fixes TypeScript, Go, Rust,
+# C#, Java and Python in one place instead of per-grammar.
+#
+# Selector syntax:  (*|tokenType)(.tokenModifier)*(:tokenLanguage)?
+#
+#   Standard types      namespace class enum interface struct typeParameter type
+#                       parameter variable property enumMember decorator event
+#                       function method macro label comment string keyword
+#                       number regexp operator
+#
+#   Standard modifiers  declaration definition readonly static deprecated
+#                       abstract async modification documentation defaultLibrary
+#
+# Example of what Phase 3 will contain:
+#
+#   variable.readonly:      { foreground: role.constant }
+#   variable.defaultLibrary: { foreground: role.type, fontStyle: italic }
+#   parameter:              { foreground: role.variable, fontStyle: italic }
+#   function.declaration:   { foreground: role.function }
+#   '*.deprecated':         { fontStyle: strikethrough }
+#
+# Reference:
+# https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide
+
+# Whether VS Code should apply semantic tokens for this theme at all. Kept off
+# until the rules below exist, so that turning it on is a deliberate, reviewable
+# change rather than a silent shift in how every TypeScript file looks.
+enabled: false
+
+rules: {}

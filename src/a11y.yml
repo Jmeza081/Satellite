@@ -1,0 +1,157 @@
+# =============================================================================
+# Satellite — accessibility contract
+# =============================================================================
+#
+# What scripts/verify.js checks. Declarative so the requirements are reviewable
+# on their own, separately from the code that enforces them.
+#
+# Two independent properties are asserted:
+#
+#   1. CONTRAST   every colour that renders as text clears WCAG AA against the
+#                 surface it actually sits on.
+#   2. SEPARATION every pair of token colours that appears adjacent in real code
+#                 stays distinguishable under colour-vision deficiency.
+#
+# The second matters because roughly 1 in 12 men has some form of CVD, and hue
+# differences collapse under it while lightness differences survive. A palette
+# that separates roles by hue alone fails for those readers even when every
+# individual colour passes contrast.
+
+# -----------------------------------------------------------------------------
+# Thresholds
+# -----------------------------------------------------------------------------
+thresholds:
+  # WCAG 2.2 SC 1.4.3 — contrast ratio for text
+  text: 4.5
+  largeText: 3.0
+  # WCAG 2.2 SC 1.4.11 — non-text contrast for meaningful UI boundaries
+  nonText: 3.0
+  # CIE76 deltaE below which two simulated colours are treated as confusable
+  minDeltaE: 12
+
+# -----------------------------------------------------------------------------
+# UI foreground/background pairs
+#
+# The theme JSON does not record which foreground renders on which surface, so
+# the pairings are declared here. `level` selects the threshold above.
+# -----------------------------------------------------------------------------
+pairs:
+  - { fg: foreground,                          bg: editor.background,      level: text, as: workbench body text }
+  - { fg: editorLineNumber.foreground,         bg: editor.background,      level: text, as: line numbers }
+  - { fg: editorCodeLens.foreground,           bg: editor.background,      level: text, as: CodeLens }
+  - { fg: breadcrumb.foreground,               bg: breadcrumb.background,  level: text, as: breadcrumbs }
+  - { fg: editorError.foreground,              bg: editor.background,      level: text, as: error squiggles }
+  - { fg: editorWarning.foreground,            bg: editor.background,      level: text, as: warning squiggles }
+  - { fg: editorLink.activeForeground,         bg: editor.background,      level: text, as: active links }
+
+  - { fg: activityBar.foreground,              bg: activityBar.background, level: text, as: activity bar icons (active) }
+  - { fg: activityBar.inactiveForeground,      bg: activityBar.background, level: text, as: activity bar icons (inactive) }
+  - { fg: activityBarBadge.foreground,         bg: activityBarBadge.background, level: text, as: activity bar badge }
+
+  - { fg: sideBarTitle.foreground,             bg: sideBar.background,     level: text, as: side bar title }
+  - { fg: sideBarSectionHeader.foreground,     bg: sideBarSectionHeader.background, level: text, as: side bar section header }
+
+  - { fg: tab.activeForeground,                bg: tab.activeBackground,   level: text, as: active tab label }
+  - { fg: tab.inactiveForeground,              bg: tab.inactiveBackground, level: text, as: inactive tab label }
+
+  - { fg: list.activeSelectionForeground,      bg: list.activeSelectionBackground,   level: text, as: selected list item }
+  - { fg: list.inactiveSelectionForeground,    bg: list.inactiveSelectionBackground, level: text, as: unfocused list item }
+  - { fg: list.errorForeground,                bg: sideBar.background,     level: text, as: explorer error decoration }
+  - { fg: list.warningForeground,              bg: sideBar.background,     level: text, as: explorer warning decoration }
+
+  - { fg: gitDecoration.modifiedResourceForeground,  bg: sideBar.background, level: text, as: git modified }
+  - { fg: gitDecoration.deletedResourceForeground,   bg: sideBar.background, level: text, as: git deleted }
+  - { fg: gitDecoration.untrackedResourceForeground, bg: sideBar.background, level: text, as: git untracked }
+  - { fg: gitDecoration.conflictingResourceForeground, bg: sideBar.background, level: text, as: git conflicting }
+
+  - { fg: panelTitle.activeForeground,         bg: panel.background,       level: text, as: active panel title }
+  - { fg: panelTitle.inactiveForeground,       bg: panel.background,       level: text, as: inactive panel title }
+
+  - { fg: titleBar.activeForeground,           bg: titleBar.activeBackground,   level: text, as: title bar (active) }
+  - { fg: titleBar.inactiveForeground,         bg: titleBar.inactiveBackground, level: text, as: title bar (inactive) }
+
+  - { fg: input.placeholderForeground,         bg: input.background,       level: text, as: input placeholder }
+  - { fg: dropdown.foreground,                 bg: dropdown.background,    level: text, as: dropdown }
+  - { fg: button.foreground,                   bg: button.background,      level: text, as: button label }
+  - { fg: extensionButton.prominentForeground, bg: extensionButton.prominentBackground, level: text, as: extension install button }
+
+  - { fg: pickerGroup.foreground,              bg: editorWidget.background, level: text, as: quick pick group label }
+  - { fg: editorSuggestWidget.foreground,      bg: editorSuggestWidget.background, level: text, as: suggestion widget }
+  - { fg: peekViewResult.fileForeground,       bg: peekViewResult.background, level: text, as: peek view result }
+  - { fg: peekViewTitleLabel.foreground,       bg: peekViewTitle.background,  level: text, as: peek view title }
+  - { fg: peekViewTitleDescription.foreground, bg: peekViewTitle.background,  level: text, as: peek view description }
+
+  - { fg: settings.headerForeground,           bg: editor.background,      level: text, as: settings section header }
+  - { fg: settings.textInputForeground,        bg: settings.textInputBackground, level: text, as: settings text input }
+  - { fg: settings.dropdownForeground,         bg: settings.dropdownBackground,  level: text, as: settings dropdown }
+
+  # Status bar has no explicit foreground, so VS Code falls back to white.
+  - { fg: '#FFFFFF', bg: statusBar.background,          level: text, as: status bar text }
+  - { fg: '#FFFFFF', bg: statusBar.debuggingBackground, level: text, as: status bar text while debugging }
+  - { fg: statusBar.noFolderForeground, bg: statusBar.noFolderBackground, level: text, as: status bar with no folder }
+  - { fg: statusBarItem.remoteForeground, bg: statusBarItem.remoteBackground, level: text, as: remote indicator }
+
+  # Terminal — every ANSI colour has to be readable on the terminal ground.
+  - { fg: terminal.foreground,      bg: terminal.background, level: text, as: terminal text }
+  - { fg: terminal.ansiBlack,       bg: terminal.background, level: text, as: ansi black }
+  - { fg: terminal.ansiRed,         bg: terminal.background, level: text, as: ansi red }
+  - { fg: terminal.ansiGreen,       bg: terminal.background, level: text, as: ansi green }
+  - { fg: terminal.ansiYellow,      bg: terminal.background, level: text, as: ansi yellow }
+  - { fg: terminal.ansiBlue,        bg: terminal.background, level: text, as: ansi blue }
+  - { fg: terminal.ansiMagenta,     bg: terminal.background, level: text, as: ansi magenta }
+  - { fg: terminal.ansiCyan,        bg: terminal.background, level: text, as: ansi cyan }
+  - { fg: terminal.ansiWhite,       bg: terminal.background, level: text, as: ansi white }
+  - { fg: terminal.ansiBrightBlack, bg: terminal.background, level: text, as: ansi bright black }
+
+  # Non-text: focus indication must be perceivable (SC 1.4.11).
+  - { fg: focusBorder,          bg: editor.background, level: nonText, as: focus ring }
+  - { fg: editorCursor.foreground, bg: editor.background, level: nonText, as: cursor }
+  - { fg: tab.activeBorder,     bg: tab.activeBackground, level: nonText, as: active tab indicator }
+
+# -----------------------------------------------------------------------------
+# Decorative exemptions
+#
+# Keys that render as marks rather than information. Each needs a reason; the
+# verifier reports them so the list stays honest rather than becoming a place to
+# hide failures.
+# -----------------------------------------------------------------------------
+exempt:
+  editorWhitespace.foreground: whitespace rendering is opt-in and deliberately faint
+  editorIndentGuide.background: decorative alignment aid; the active guide carries the information
+  editorRuler.foreground: decorative column marker
+
+# -----------------------------------------------------------------------------
+# Adjacency — token pairs that must stay distinguishable
+#
+# Only pairs that actually occur next to each other in real code are listed.
+# With roughly seven hue families and three simulations there is no palette in
+# which all pairs stay separable, so the contract targets the ones that matter.
+# -----------------------------------------------------------------------------
+adjacency:
+  - a: hue.gold
+    b: hue.orange
+    why: "keywords vs constants — `const x = 5`, `new Foo`"
+  - a: hue.cyan
+    b: hue.purple
+    why: "functions vs JSX tags — `<Button onClick={handle}>`"
+  - a: hue.auburn
+    b: hue.orange
+    why: "variables vs constants"
+  - a: hue.auburn
+    b: hue.red
+    why: "variables vs invalid tokens"
+  - a: hue.auburn
+    b: hue.green
+    why: "variables vs strings — `const name = \"foo\"`"
+  - a: hue.cyan
+    b: hue.green
+    why: "functions vs strings"
+  - a: hue.gold
+    b: hue.yellow
+    why: "keywords vs regexp literals"
+  - a: hue.cyan
+    b: accent.base
+    why: "functions vs types — both cyan today"
+  - a: text.subtle
+    b: text.faint
+    why: "comments vs indent guides"

@@ -1,31 +1,47 @@
 'use strict';
 
+/**
+ * Builds every theme in src/themes.yml into its output file.
+ *
+ *   node ./scripts/build.js
+ */
+
+const fs = require('fs');
 const path = require('path');
-const fsp = require('./fsp');
-const loadThemes = require('./loadThemes');
+const { composeAll } = require('./compose');
 
-const THEME_DIR = path.join(__dirname, '..', 'theme');
-const THEME_YAML_FILE = path.join(__dirname, '..', 'src', 'satellite.yml');
+const ROOT = path.join(__dirname, '..');
 
-function toJSON(theme) {
-    return JSON.stringify(theme, null, 4);
-}
+function build() {
+    const results = composeAll();
+    const written = [];
 
-async function build() {
-    if (!(await fsp.exists(THEME_DIR))) {
-        await fsp.mkdir(THEME_DIR);
+    for (const { entry, theme } of results) {
+        const target = path.join(ROOT, entry.output);
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.writeFileSync(target, JSON.stringify(theme, null, 4) + '\n');
+        written.push({
+            output: entry.output,
+            colors: Object.keys(theme.colors).length,
+            rules: theme.tokenColors.length,
+        });
     }
 
-    const { standardTheme } = await loadThemes(THEME_YAML_FILE);
-    const standardThemePath = path.join(THEME_DIR, 'satellite.json');
-
-    await Promise.all([
-        fsp.writeFile(standardThemePath, toJSON(standardTheme)),
-    ]);
+    return written;
 }
 
-module.exports = {
-    build,
-};
+module.exports = { build };
 
-build();
+if (require.main === module) {
+    try {
+        for (const item of build()) {
+            process.stdout.write(
+                `  ${item.output.padEnd(28)} ${String(item.colors).padStart(4)} colours  ` +
+                    `${String(item.rules).padStart(3)} syntax rules\n`,
+            );
+        }
+    } catch (err) {
+        process.stderr.write(`\nBuild failed: ${err.message}\n`);
+        process.exit(1);
+    }
+}

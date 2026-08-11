@@ -1,4 +1,8 @@
 node_modules
+
+# Build output — regenerate with `yarn build`
 theme
-src/tests
+
+# Packaged extension
 bin
+*.vsix

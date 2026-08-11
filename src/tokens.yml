@@ -1,0 +1,113 @@
+# =============================================================================
+# Satellite — palette source of truth
+# =============================================================================
+#
+# Every colour in the theme resolves back to a token declared here. Nothing in
+# ui.yml or syntax.yml may contain a raw hex value, so a palette change is a
+# change to this file alone.
+#
+# Colours are authored in OKLCH: oklch(<lightness> <chroma> <hue>)
+#
+#   lightness  0..1     perceptual, not sRGB brightness
+#   chroma     0..0.4   saturation; reduced automatically if out of sRGB gamut
+#   hue        0..360   degrees
+#
+# OKLCH is used because it is perceptually uniform — a 0.05 lightness step means
+# the same thing on gold as it does on teal. That is what allows the palette to
+# use lightness as the channel that keeps token roles distinguishable, including
+# for readers with colour vision deficiency, where hue differences collapse but
+# lightness differences survive.
+#
+# PHASE 1 NOTE
+# ------------
+# The values below are the original 2019 palette, converted to OKLCH. Every one
+# round-trips to its exact original hex, so this restructure produces a theme
+# byte-identical to the previous build. The re-grade — new lightness ladder,
+# accessible comments, Satellite-native ANSI colours — lands in Phase 2 as a
+# change to this file's numbers, not its structure.
+#
+# Known issues, deliberately preserved here and fixed in Phase 2:
+#   · surface.sunken (H 278.8) and text.faint (H 277.9) sit off the 232–239°
+#     axis the rest of the surfaces use, so they read purple next to them.
+#   · border.strong (H 218.4) drifts the other way.
+#   · text.subtle is 2.39:1 against surface.base and fails WCAG AA.
+#   · the ansi.* block is Dracula's palette, unmodified, and clashes with the
+#     teal-blue ground it sits on.
+
+# -----------------------------------------------------------------------------
+# Surfaces — the "space" ground and its elevation steps
+# -----------------------------------------------------------------------------
+surface:
+  base:    oklch(0.2611 0.0225 237.93)   # #1A262E  editor
+  raised:  oklch(0.2772 0.0244 238.99)   # #1D2A33  active tab, dropdowns, section headers
+  overlay: oklch(0.2926 0.0250 236.94)   # #202E37  list hover and selection
+  deep:    oklch(0.2231 0.0196 232.63)   # #121D23  activity bar, side bar, panel, widgets
+  sunken:  oklch(0.2199 0.0137 278.80)   # #191A21  peek view titles, settings borders
+
+border:
+  strong:  oklch(0.1963 0.0158 218.43)   # #0D171A  structural separators
+
+# -----------------------------------------------------------------------------
+# Text
+# -----------------------------------------------------------------------------
+text:
+  default: oklch(1 0 89.88)              # #FFFFFF  body text
+  pure:    oklch(1 0 89.88)              # #FFFFFF  badges and highlights that want full white
+  muted:   alpha(text.default, 75)       # #FFFFFF75  side bar titles and section headers
+  subtle:  oklch(0.4808 0.0287 219.23)   # #4C6269  comments, line numbers, inactive tabs
+  faint:   oklch(0.3894 0.0204 277.93)   # #424450  whitespace, indent guides, rulers
+
+# -----------------------------------------------------------------------------
+# UI wash colours
+# -----------------------------------------------------------------------------
+ui:
+  selection:     '#4C6770A6'             # editor and workbench text selection
+  lineHighlight: '#4C6770A6'             # focused line and list focus
+
+# -----------------------------------------------------------------------------
+# Accent — the sea green that makes a screenshot recognisably Satellite
+# -----------------------------------------------------------------------------
+accent:
+  base: oklch(0.6128 0.1033 193.96)      # #0A9796  status bar, cursor, buttons, active tab
+  dim:  oklch(0.4047 0.0384 230.58)      # #334D5A  activity bar icons
+
+# -----------------------------------------------------------------------------
+# Syntax hues
+#
+# Phase 2 introduces a role layer on top of these (function, string, keyword,
+# variable, constant, tag, type…). Today several roles share one hue, which is
+# why the theme has token pairs that collapse under colour-vision simulation.
+# -----------------------------------------------------------------------------
+hue:
+  cyan:   oklch(0.7432 0.1263 200.70)    # #01C3CC  functions, types, built-ins
+  green:  oklch(0.8414 0.1540 158.55)    # #61E9A5  strings, attribute names
+  gold:   oklch(0.8482 0.1402 78.17)     # #FFC157  keywords, storage, punctuation
+  auburn: oklch(0.7414 0.1572 24.80)     # #FF7F78  variables, object properties
+  orange: oklch(0.7392 0.1715 47.17)     # #FF833D  constants, classes, warnings
+  red:    oklch(0.6822 0.2063 24.43)     # #FF5555  errors, deletions
+  purple: oklch(0.6725 0.1427 321.70)    # #BE76CA  tags, escapes, selectors
+  yellow: oklch(0.9553 0.1342 112.76)    # #F1FA8C  regexp, GraphQL keys, blockquotes
+
+# -----------------------------------------------------------------------------
+# Terminal ANSI
+#
+# Inherited from Dracula and not yet adapted. ansi.black is 1.08:1 against
+# surface.deep, so anything printing in black prints nothing. Replaced in Phase 2.
+# -----------------------------------------------------------------------------
+ansi:
+  black:         oklch(0.2554 0.0188 280.49)   # #21222C
+  red:           oklch(0.6822 0.2063 24.43)    # #FF5555
+  green:         oklch(0.8710 0.2195 148.02)   # #50FA7B
+  yellow:        oklch(0.9553 0.1342 112.76)   # #F1FA8C
+  blue:          oklch(0.7420 0.1485 301.88)   # #BD93F9
+  magenta:       oklch(0.7546 0.1831 346.81)   # #FF79C6
+  cyan:          oklch(0.8826 0.0934 212.85)   # #8BE9FD
+  white:         oklch(0.9775 0.0079 106.55)   # #F8F8F2
+  brightBlack:   oklch(0.5598 0.0803 270.09)   # #6272A4
+  brightRed:     oklch(0.7160 0.1776 22.64)    # #FF6E6E
+  brightGreen:   oklch(0.8939 0.1948 150.04)   # #69FF94
+  brightYellow:  oklch(0.9802 0.1114 108.29)   # #FFFFA5
+  brightBlue:    oklch(0.8112 0.1221 307.03)   # #D6ACFF
+  brightMagenta: oklch(0.7987 0.1595 339.03)   # #FF92DF
+  brightCyan:    oklch(0.9431 0.0870 195.78)   # #A4FFFF
+  brightWhite:   oklch(1 0 89.88)              # #FFFFFF

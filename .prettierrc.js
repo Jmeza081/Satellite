@@ -1,9 +1,9 @@
 /**
- * Prettier Config: This fill overrides all possible options (even those with
- * defaults which match our own in the event that prettier overwrites them in
- * future release). for more information and additional config
+ * Prettier config. Sets every option explicitly, including those that currently
+ * match the defaults, so a future Prettier release changing a default does not
+ * silently reformat the repository.
  *
- * visit: https://prettier.io/docs/en/options.html
+ * See https://prettier.io/docs/en/options.html
  */
 module.exports = {
     // Number of characters allowed before formatter wraps code.
@@ -26,9 +26,9 @@ module.exports = {
     // Add spacing between bracket destructuring (e.g., { varName } )
     bracketSpacing: true,
 
-    // Whether to add the '>' on a separate line or same on on multi-line JSX
-    // components.
-    jsxBracketSameLine: false,
+    // Whether to put the '>' of a multi-line element on its own line.
+    // Replaces jsxBracketSameLine, which Prettier 3 removed.
+    bracketSameLine: false,
 
     // Whether to force the use of parens when using arrow functions:
     // params => {}       vs       (params) => {}

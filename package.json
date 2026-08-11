@@ -7,9 +7,13 @@
 	"scripts": {
 		"dev": "node ./scripts/dev.js",
 		"build": "node ./scripts/build.js",
-		"lint": "node ./scripts/lint.js",
-		"package": "vsce package -o ./bin/dracula.vsix",
-		"vscode:prepublish": "npm run build"
+		"validate": "node ./scripts/validate.js",
+		"coverage": "node ./scripts/validate.js --coverage",
+		"verify": "node ./scripts/verify.js",
+		"update-color-keys": "node ./scripts/update-color-keys.js",
+		"test": "node ./scripts/test.js && npm run build && npm run validate && npm run verify",
+		"package": "vsce package -o ./bin/satellite.vsix",
+		"vscode:prepublish": "npm run build && npm run validate"
 	},
 	"repository": {
 		"type": "git",
@@ -34,10 +38,7 @@
 		]
 	},
 	"devDependencies": {
-		"js-yaml": "^3.13.1",
-		"prettier": "^1.17.0",
-		"tinycolor2": "^1.4.1",
-		"babel-eslint": "^10.0.1",
-    	"eslint": "^5.11.0"
+		"js-yaml": "^4.1.0",
+		"prettier": "^3.3.3"
 	}
 }

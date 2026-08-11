@@ -1,0 +1,318 @@
+# =============================================================================
+# Satellite — workbench colours
+# =============================================================================
+#
+# Maps VS Code colour keys to tokens declared in tokens.yml. Values are token
+# references, never raw hex.
+#
+#   key: surface.deep            a token reference
+#   key: alpha(accent.base, 50)  the same token with a hex alpha byte appended
+#
+# The alpha argument is a two-digit hex byte, matching VS Code's own
+# #RRGGBBAA colour format — 50 is 0x50, roughly 31% opaque.
+#
+# Keys must exist in data/vscode-color-keys.json; scripts/validate.js enforces
+# that and refuses keys with no value. The previous file carried 55 keys
+# declared with no value, which the loader emitted as null into the JSON.
+#
+# Reference: https://code.visualstudio.com/api/references/theme-color
+
+# Integrated Terminal Colors
+terminal.background: surface.deep
+terminal.foreground: text.default
+terminal.ansiBrightBlack: ansi.brightBlack
+terminal.ansiBrightRed: ansi.brightRed
+terminal.ansiBrightGreen: ansi.brightGreen
+terminal.ansiBrightYellow: ansi.brightYellow
+terminal.ansiBrightBlue: ansi.brightBlue
+terminal.ansiBrightMagenta: ansi.brightMagenta
+terminal.ansiBrightCyan: ansi.brightCyan
+terminal.ansiBrightWhite: ansi.brightWhite
+terminal.ansiBlack: ansi.black
+terminal.ansiRed: ansi.red
+terminal.ansiGreen: ansi.green
+terminal.ansiYellow: ansi.yellow
+terminal.ansiBlue: ansi.blue
+terminal.ansiMagenta: ansi.magenta
+terminal.ansiCyan: ansi.cyan
+terminal.ansiWhite: ansi.white
+
+# Contrast Colors
+contrastBorder: surface.sunken                                                     # An extra border around elements to separate them from others for greater contrast
+
+# Base Colors
+focusBorder: text.subtle                                                         # Overall border color for focused elements. This color is only used if not overridden by a component
+foreground: text.default                                                               # Overall foreground color. This color is only used if not overridden by a component
+selection.background: ui.selection                                              # Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
+errorForeground: hue.red                                                         # Overall foreground color for error messages (this color is only used if not overridden by a component)
+
+# Button Control
+button.background: accent.base                                                 # Button background color
+button.foreground: text.default                                                        # Button foreground color
+
+# Dropdown Control
+dropdown.background: surface.raised                                                 # Dropdown background
+dropdown.border: surface.sunken                                                    # Dropdown border
+dropdown.foreground: text.pure                                                   # Dropdown foreground
+
+# Input Control
+input.background: surface.base                                                         # Input box background
+input.border: border.strong                                                     # Input box border
+input.placeholderForeground: text.subtle                                         # Input box foreground color for placeholder text
+inputOption.activeBorder: accent.base                                          # Border color of activated options in input fields
+inputValidation.infoBorder: surface.overlay                                        # Input validation border color for information severity
+inputValidation.warningBorder: hue.orange                                        # Input validation border color for warning severity
+inputValidation.errorBorder: hue.red                                             # Input validation border color for error severity
+
+# Scroll Bar Control
+
+# Badge
+badge.background: ui.selection                                                  # Badge background color
+
+# Progress Bar
+progressBar.background: accent.base                                            # Background color of the progress bar shown for long running operations
+
+# List & Trees
+list.activeSelectionBackground: surface.overlay                                    # List/Tree background color for the selected item when the list/tree is active
+list.activeSelectionForeground: accent.base                                    # List/Tree foreground color for the selected item when the list/tree is active
+list.dropBackground: ui.selection                                               # List/Tree drag and drop background when moving items around using the mouse
+list.focusBackground: ui.lineHighlight                                          # List/Tree background color for the focused item when the list/tree is active
+list.highlightForeground: text.pure                                              # List/Tree foreground color of the match highlights when searching inside the list/tree
+list.hoverBackground: surface.overlay                                              # List/Tree background when hovering over items using the mouse
+list.inactiveSelectionBackground: surface.raised                                    # List/Tree background color for the selected item when the list/tree is inactive
+list.inactiveSelectionForeground: text.pure                                      # List/Tree foreground color for the selected item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not
+list.warningForeground: hue.gold                                                 # Color of warning decorations in the explorer
+list.errorForeground: hue.red                                                    # Color of error decorations in the explorer
+
+# Activity Bar
+activityBar.background: surface.deep                                               # Activity Bar background color
+activityBar.inactiveForeground: alpha(accent.dim, 80)                 # Activity bar item foreground color when it is inactive
+activityBar.foreground: accent.dim                                        # Activity bar foreground color (for example used for the icons)
+activityBar.border: border.strong                                               # Activity Bar border color with the Side Bar
+activityBarBadge.background: accent.base                                       # Activity notification badge background color
+activityBarBadge.foreground: text.pure                                           # Activity notification badge foreground color
+
+# Side Bar
+sideBar.background: surface.deep                                                   # Side Bar background color
+sideBar.border: border.strong                                                   # Side Bar border color on the side separating the editor
+sideBarTitle.foreground: text.muted                                    # Side Bar title foreground color
+sideBarSectionHeader.background: surface.raised                                     # Side Bar section header background color
+sideBarSectionHeader.foreground: text.muted                            # Side Bar section header foreground color
+sideBarSectionHeader.border: border.strong                                      # Side bar section header border color
+
+# Editor Group & Tabs
+# DEAD KEY — removed from VS Code. Editor group backgrounds are now drawn by
+# editorPane.background (empty panes) and editorGroup.emptyBackground.
+# TODO(phase-2): restyle using the current keys.
+# editorGroup.background: surface.deep
+editorGroup.border: border.strong                                               # Color to separate multiple editor groups from each other
+editorGroup.dropBackground: alpha(accent.base, 50)                           # Background color when dragging editors around
+editorGroupHeader.tabsBackground: surface.deep                                     # Background color of the Tabs container
+editorGroupHeader.tabsBorder: border.strong                                     # Border color of the editor group title header when tabs are enabled. Editor groups are the containers of editors
+tab.activeBackground: surface.raised                                                # Active Tab background color
+tab.activeForeground: text.pure                                                  # Active Tab foreground color in an active group
+tab.border: border.strong                                                       # Border to separate Tabs from each other
+tab.activeBorder: accent.base                                                  # A border drawn to the bottom of the active tab
+tab.inactiveBackground: surface.deep                                               # Inactive Tab background color
+tab.inactiveForeground: text.subtle                                              # Inactive Tab foreground color in an active group
+
+# Editor Colors
+editor.foreground: text.default
+editor.background: surface.base
+editorLineNumber.foreground: text.subtle
+editorCursor.foreground: accent.base
+
+editor.selectionBackground: ui.selection                                        # Color of the editor selection
+editor.selectionHighlightBackground: surface.overlay                               # Color for regions with the same content as the selection
+
+editor.wordHighlightBackground: alpha(accent.base, 25)                     # Background color of a symbol during read-access, for example when reading a variable
+editor.wordHighlightStrongBackground: alpha(accent.base, 50)               # Background color of a symbol during write-access, for example when writing to a variable
+
+editor.findMatchBackground: alpha(accent.base, 80)
+editor.findMatchHighlightBackground: alpha(text.pure, 40)                    # Color of the other search matches
+editor.findRangeHighlightBackground: ui.lineHighlight                           # Color the range limiting the search
+
+editor.hoverHighlightBackground: surface.sunken                                    # Highlight below the word for which a hover is shown
+
+editor.lineHighlightBorder: ui.selection                                        # Background color for the border around the line at the cursor position
+
+editorLink.activeForeground: accent.base                                       # Color of active links
+editor.rangeHighlightBackground: alpha(accent.base, 15)                    # Background color of highlighted ranges, like by Quick Open and Find features
+
+editor.snippetTabstopHighlightBackground: surface.base                                 # Highlight background color of a snippet tabstop
+editor.snippetTabstopHighlightBorder: text.subtle                                # Highlight border color of a snippet tabstop
+editor.snippetFinalTabstopHighlightBackground: surface.base                            # Highlight background color of the final tabstop of a snippet
+editor.snippetFinalTabstopHighlightBorder: accent.base                         # Highlight border color of the final tabstop of a snippet
+
+editorWhitespace.foreground: text.faint                                         # Color of whitespace characters in the editor
+editorIndentGuide.background: text.faint                                        # Color of the editor indentation guides
+editorIndentGuide.activeBackground: alpha(text.pure, 45)                      # Color of the active indentation guide
+editorRuler.foreground: text.faint                                              # Color of the editor rulers
+
+editorCodeLens.foreground: text.subtle                                           # Foreground color of an editor CodeLens
+
+# NOTE: These are not set because they tend to be highly contested from
+# person to person. Thus, setting these is probably better suited
+# for workbench.colorCustomizations in User Settings
+
+editorOverviewRuler.border: surface.sunken                                         # Color of the overview ruler border
+editorOverviewRuler.selectionHighlightForeground: accent.base
+editorOverviewRuler.wordHighlightForeground: hue.auburn
+editorOverviewRuler.wordHighlightStrongForeground: accent.base
+editorOverviewRuler.modifiedForeground: alpha(text.pure, 80)
+editorOverviewRuler.addedForeground: alpha(accent.base, 80)
+editorOverviewRuler.deletedForeground: alpha(hue.auburn, 90)
+editorOverviewRuler.errorForeground: alpha(hue.auburn, 40)
+editorOverviewRuler.warningForeground: alpha(hue.orange, 50)
+editorOverviewRuler.infoForeground: alpha(text.pure, 40)
+
+editorError.foreground: hue.red                                                  # Foreground color of error squigglies in the editor
+editorWarning.foreground: hue.orange                                             # Foreground color of warning squigglies in the editor
+
+editorGutter.modifiedBackground: alpha(text.pure, 50)                   # Editor gutter background color for lines that are modified
+editorGutter.addedBackground: alpha(accent.base, 80)                   # Editor gutter background color for lines that are added
+editorGutter.deletedBackground: alpha(hue.auburn, 80)                   # Editor gutter background color for lines that are deleted
+
+# Explorer Colors
+gitDecoration.modifiedResourceForeground: accent.base
+gitDecoration.deletedResourceForeground: hue.auburn
+gitDecoration.untrackedResourceForeground: text.subtle
+gitDecoration.ignoredResourceForeground: alpha(text.pure, 50)
+gitDecoration.conflictingResourceForeground: hue.auburn
+
+# Diff Editor Colors
+diffEditor.insertedTextBackground: alpha(accent.base, 20)                  # Background color for inserted text
+diffEditor.removedTextBackground: alpha(hue.auburn, 20)                      # Background color for removed text
+
+# Editor Widget Colors
+editorWidget.background: surface.deep                                              # Background color of editor widgets, such as Find/Replace
+
+editorSuggestWidget.background: surface.deep                                       # Background color of the suggestion widget
+editorSuggestWidget.foreground: text.default                                           # Foreground color of the suggestion widget
+editorSuggestWidget.selectedBackground: ui.selection                            # Background color of the selected entry in the suggestion widget
+
+editorHoverWidget.background: surface.base                                             # Background color of the editor hover
+editorHoverWidget.border: text.subtle                                            # Border color of the editor hover
+
+editorMarkerNavigation.background: surface.deep                                    # Editor marker navigation widget background
+
+# Peek View Colors
+peekView.border: ui.selection                                                   # Color of the peek view borders and arrow
+peekViewEditor.background: surface.base                                                # Background color of the peek view editor
+peekViewEditor.matchHighlightBackground: alpha(accent.base, 80)            # Match highlight color in the peek view editor
+peekViewResult.background: surface.deep                                            # Background color of the peek view result list
+peekViewResult.fileForeground: text.default                                            # Foreground color for file nodes in the peek view result list
+peekViewResult.lineForeground: text.default                                            # Foreground color for line nodes in the peek view result list
+peekViewResult.matchHighlightBackground: alpha(accent.base, 80)            # Match highlight color in the peek view result list
+peekViewResult.selectionBackground: ui.selection                                # Background color of the selected entry in the peek view result list
+peekViewResult.selectionForeground: text.default                                       # Foreground color of the selected entry in the peek view result list
+peekViewTitle.background: surface.sunken                                           # Background color of the peek view title area
+peekViewTitleDescription.foreground: text.subtle                                 # Color of the peek view title info
+peekViewTitleLabel.foreground: text.default                                            # Color of the peek view title
+
+# Merge Conflicts
+merge.currentHeaderBackground: alpha(text.pure, 30)                      # Current header background in inline merge conflicts
+merge.incomingHeaderBackground: alpha(accent.base, 20)                     # Incoming header background in inline merge conflicts
+editorOverviewRuler.currentContentForeground: text.pure                          # Current overview ruler foreground for inline merge conflicts
+editorOverviewRuler.incomingContentForeground: accent.base                     # Incoming overview ruler foreground for inline merge conflicts
+
+# Panel Colors
+panel.background: surface.deep                                                     # Panel background color
+panel.border: border.strong                                                     # Panel border color on the top separating to the editor
+panelTitle.activeBorder: accent.base                                           # Border color for the active panel title
+panelTitle.activeForeground: text.default                                              # Title color for the active panel
+panelTitle.inactiveForeground: text.subtle                                       # Title color for the inactive panel
+
+# Status Bar Colors
+statusBar.background: accent.base                                              # Standard Status Bar background color
+statusBar.debuggingBackground: hue.orange                                        # Status Bar background color when a program is being debugged
+statusBar.noFolderBackground: surface.sunken                                       # Status Bar foreground color when no folder is opened
+statusBar.noFolderForeground: text.default                                             # Status Bar background color when no folder is opened
+statusBarItem.prominentBackground: hue.auburn                                    # Status Bar prominent items background color. Prominent items stand out from other Status Bar entries to indicate importance
+statusBarItem.prominentHoverBackground: hue.orange                               # Status Bar prominent items background color when hovering. Prominent items stand out from other Status Bar entries to indicate importance
+statusBarItem.remoteForeground: text.default                                           # Background color for the remote indicator on the status bar
+statusBarItem.remoteBackground: hue.orange                                       # Foreground color for the remote indicator on the status bar
+
+# Title Bar Colors (MacOS Only)
+titleBar.activeBackground: surface.deep                                            # Title Bar background when the window is active
+titleBar.activeForeground: text.default                                                # Title Bar foreground when the window is active
+titleBar.inactiveBackground: surface.deep                                        # Title Bar background when the window is inactive
+titleBar.inactiveForeground: text.subtle                                         # Title Bar foreground when the window is inactive
+
+# Notification Dialog Colors
+# DEAD KEYS — the singular `notification.*` namespace was renamed to
+# `notifications.*` and the severity/button variants were dropped entirely.
+# None of these have had any effect since around 2019. The intent is preserved
+# here so Phase 2 can restyle notifications against the current key set:
+#
+#   notification.background        -> notifications.background
+#   notification.foreground        -> notifications.foreground
+#   notification.buttonBackground  -> button.background (already styled)
+#   notification.buttonForeground  -> button.foreground (already styled)
+#   notification.errorBackground   -> notificationsErrorIcon.foreground
+#   notification.warningBackground -> notificationsWarningIcon.foreground
+#   notification.infoBackground    -> notificationsInfoIcon.foreground
+#
+# plus notifications.border, notificationLink.foreground, notificationToast.border
+# and the notificationCenter* group, none of which the theme has ever set.
+#
+# TODO(phase-2): restyle notifications.
+# notification.background: surface.base
+# notification.foreground: text.default
+# notification.buttonBackground: accent.base
+# notification.buttonForeground: text.default
+# notification.errorBackground: hue.auburn
+# notification.errorForeground: text.default
+# notification.infoBackground: alpha(text.pure, 50)
+# notification.infoForeground: surface.base
+# notification.warningBackground: hue.orange
+# notification.warningForeground: text.default
+
+# Extensions
+extensionButton.prominentForeground: text.default                                      # Extension view button foreground color (for example Install button)
+extensionButton.prominentBackground: alpha(accent.base, 90)                # Extension view button background color
+extensionButton.prominentHoverBackground: alpha(accent.base, 60)           # Extension view button background hover color
+
+# Quick Picker
+pickerGroup.border: accent.base                                                # Quick picker (Quick Open) color for grouping borders
+pickerGroup.foreground: accent.base                                            # Quick picker (Quick Open) color for grouping labels
+
+# Debug
+debugToolBar.background: surface.deep                                              # Debug toolbar background color
+
+# Welcome Page
+walkThrough.embeddedEditorBackground: surface.deep                                 # Background color for the embedded editors on the Interactive Playground
+
+# Setting Editor
+settings.headerForeground: text.default                                      # The foreground color for a section header or active title
+# DEAD KEY — removed from VS Code. settings.modifiedItemIndicator (set below)
+# is the surviving key and already carries this colour.
+# settings.modifiedItemForeground: hue.orange
+settings.modifiedItemIndicator: hue.orange                                  # The color of the line that indicates a modified setting
+settings.dropdownBackground: surface.deep                                  # Dropdown background
+settings.dropdownForeground: text.default                                      # Dropdown foreground
+settings.dropdownBorder: surface.sunken                                # Dropdown border
+settings.checkboxBackground: surface.deep                                  # Checkbox background
+settings.checkboxForeground: text.default                                      # Checkbox foreground
+settings.checkboxBorder: surface.sunken                                # Checkbox border
+settings.textInputBackground: surface.deep                                  # Text input box background
+settings.textInputForeground: text.default                                      # Text input box foreground
+settings.textInputBorder: surface.sunken                                # Text input box border
+settings.numberInputBackground: surface.deep                                  # Number input box background
+settings.numberInputForeground: text.default                                      # Number input box foreground
+settings.numberInputBorder: surface.sunken                                # Number input box border
+
+# Breadcrumbs
+breadcrumb.foreground: text.subtle                                               # Color of breadcrumb items
+breadcrumb.background: surface.base
+breadcrumb.focusForeground: text.default                                               # Color of focused breadcrumb items
+breadcrumb.activeSelectionForeground: text.default                                     # Color of selected breadcrumb items
+breadcrumbPicker.background: surface.deep                                          # Background color of breadcrumb item picker
+
+# Misc
+
+listFilterWidget.background: surface.raised                                         # Background color of the type filter widget in lists and trees.
+listFilterWidget.outline: surface.overlay                                          # Outline color of the type filter widget in lists and trees.
+listFilterWidget.noMatchesOutline: hue.auburn                                    # Outline color of the type filter widget in lists and trees, when there are no matches.
+
+# Syntaxes
