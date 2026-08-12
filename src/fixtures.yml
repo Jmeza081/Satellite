@@ -1,0 +1,553 @@
+# =============================================================================
+# Satellite — language coverage fixtures
+# =============================================================================
+#
+# Each case is a scope stack a grammar would emit, and the token the theme is
+# expected to paint it. scripts/fixtures.js resolves the stack against the built
+# theme's rules — same matching and precedence VS Code uses — and fails the
+# build when a case resolves to the wrong token or to nothing at all.
+#
+# This is what makes "supports Svelte" a checkable claim rather than an
+# assertion. It catches the two failure modes that actually occur: a scope no
+# rule matches, and a broad rule quietly outranking a specific one.
+#
+# It does NOT verify that a grammar emits a given scope — only that the theme
+# handles it correctly if it does. Scope names below are taken from the
+# published grammars rather than invented:
+#
+#   Vue      vuejs/language-tools      extensions/vscode/syntaxes/vue.tmLanguage.json
+#   Svelte   sveltejs/language-tools   packages/svelte-vscode/syntaxes/svelte.tmLanguage.src.yaml
+#   Astro    withastro/language-tools  packages/vscode/syntaxes/astro.tmLanguage.json
+#   Prisma   prisma/language-tools     packages/vscode/syntaxes/prisma.tmLanguage.json
+#   others   microsoft/vscode extensions/*/syntaxes
+#
+# `expect` names a token from tokens.yml. `style` is optional.
+
+- family: TypeScript and JSX
+  cases:
+    - {
+        as: line comment,
+        expect: text.subtle,
+        stack: [source.ts, comment.line.double-slash.ts],
+      }
+    - { as: block comment, expect: text.subtle, stack: [source.ts, comment.block.ts] }
+    - { as: string, expect: role.string, stack: [source.ts, string.quoted.double.ts] }
+    - {
+        as: string quote,
+        expect: role.string,
+        stack:
+          [source.ts, string.quoted.double.ts, punctuation.definition.string.begin.ts],
+      }
+    - {
+        as: template literal,
+        expect: role.string,
+        stack: [source.ts, string.template.ts],
+      }
+    - { as: keyword, expect: role.keyword, stack: [source.ts, keyword.control.flow.ts] }
+    - { as: storage type, expect: role.keyword, stack: [source.ts, storage.type.ts] }
+    - {
+        as: storage modifier,
+        expect: role.keyword,
+        stack: [source.ts, storage.modifier.ts],
+      }
+    - {
+        as: function name,
+        expect: role.function,
+        stack: [source.ts, meta.function.ts, entity.name.function.ts],
+      }
+    - {
+        as: method call,
+        expect: role.function,
+        stack: [source.ts, meta.function-call.ts, entity.name.function.ts],
+      }
+    - {
+        as: type name,
+        expect: role.type,
+        style: italic,
+        stack: [source.ts, entity.name.type.ts],
+      }
+    - {
+        as: interface name,
+        expect: role.type,
+        style: italic,
+        stack: [source.ts, entity.name.type.interface.ts],
+      }
+    - {
+        as: type parameter,
+        expect: role.constant,
+        stack: [source.ts, meta.type.parameters.ts, entity.name.type.type-parameter.ts],
+      }
+    - {
+        as: variable,
+        expect: role.variable,
+        stack: [source.ts, variable.other.readwrite.ts],
+      }
+    - {
+        as: object property,
+        expect: role.variable,
+        stack: [source.ts, variable.other.property.ts],
+      }
+    - {
+        as: parameter,
+        expect: role.variable,
+        style: italic,
+        stack: [source.ts, meta.parameters.ts, variable.parameter.ts],
+      }
+    - {
+        as: number,
+        expect: role.constant,
+        stack: [source.ts, constant.numeric.decimal.ts],
+      }
+    - {
+        as: language constant,
+        expect: role.constant,
+        stack: [source.ts, constant.language.null.ts],
+      }
+    - {
+        as: escape sequence,
+        expect: role.tag,
+        stack: [source.ts, string.quoted.double.ts, constant.character.escape.ts],
+      }
+    - { as: regexp, expect: role.regexp, stack: [source.ts, string.regexp.ts] }
+    - { as: brace, expect: role.punctuation, stack: [source.ts, meta.brace.round.ts] }
+    - {
+        as: JSX tag name,
+        expect: role.tag,
+        stack: [source.tsx, meta.tag.tsx, entity.name.tag.tsx],
+      }
+    - {
+        as: JSX attribute,
+        expect: role.type,
+        stack: [source.tsx, meta.tag.tsx, entity.other.attribute-name.tsx],
+      }
+    - {
+        as: JSX expression braces,
+        expect: role.function,
+        stack: [source.tsx, meta.tag.tsx, punctuation.section.embedded.begin.tsx],
+      }
+    - { as: invalid token, expect: role.invalid, stack: [source.ts, invalid.illegal.ts] }
+    - { as: this, expect: role.constant, stack: [source.ts, variable.language.this.ts] }
+
+- family: HTML, CSS and SCSS
+  cases:
+    - {
+        as: HTML tag,
+        expect: role.tag,
+        stack: [text.html.basic, meta.tag.any.html, entity.name.tag.html],
+      }
+    - {
+        as: HTML attribute name,
+        expect: role.type,
+        stack: [text.html.basic, meta.tag.any.html, entity.other.attribute-name.html],
+      }
+    - {
+        as: HTML attribute value,
+        expect: role.string,
+        stack: [text.html.basic, meta.tag.any.html, string.quoted.double.html],
+      }
+    - {
+        as: CSS selector element,
+        expect: role.tag,
+        stack: [source.css, meta.selector.css, entity.name.tag.css],
+      }
+    - {
+        as: CSS class selector,
+        expect: role.type,
+        stack: [source.css, meta.selector.css, entity.other.attribute-name.class.css],
+      }
+    - {
+        as: CSS property name,
+        expect: role.type,
+        stack: [source.css, meta.property-list.css, support.type.property-name.css],
+      }
+    - {
+        as: CSS property value,
+        expect: role.constant,
+        stack: [source.css, meta.property-value.css, support.constant.property-value.css],
+      }
+    - {
+        as: CSS numeric value,
+        expect: role.constant,
+        stack: [source.css, constant.numeric.css],
+      }
+    - {
+        as: CSS at-rule,
+        expect: role.keyword,
+        stack: [source.css, keyword.control.at-rule.media.css],
+      }
+    - {
+        as: Tailwind @apply,
+        expect: role.keyword,
+        stack: [source.css, keyword.control.at-rule.apply.css],
+      }
+    - {
+        as: SCSS variable,
+        expect: role.variable,
+        stack: [source.css.scss, variable.scss],
+      }
+    - {
+        as: SCSS parent selector,
+        expect: role.tag,
+        stack: [source.css.scss, entity.other.attribute-name.parent-selector.css],
+      }
+    - {
+        as: SCSS mixin at-rule,
+        expect: role.keyword,
+        stack: [source.css.scss, keyword.control.at-rule.mixin.scss],
+      }
+
+- family: Vue single-file components
+  cases:
+    - {
+        as: template tag,
+        expect: role.tag,
+        stack: [source.vue, meta.tag.vue, entity.name.tag.html.vue],
+      }
+    - {
+        as: attribute name,
+        expect: role.type,
+        stack: [source.vue, meta.tag.vue, entity.other.attribute-name.html.vue],
+      }
+    - {
+        as: "v-if directive",
+        expect: role.keyword,
+        stack:
+          [
+            source.vue,
+            meta.attribute.directive.control.vue,
+            keyword.control.conditional.vue,
+          ],
+      }
+    - {
+        as: "v-for directive",
+        expect: role.keyword,
+        stack:
+          [source.vue, meta.attribute.directive.control.vue, keyword.control.loop.vue],
+      }
+    - {
+        as: "bind shorthand :",
+        expect: role.type,
+        stack:
+          [
+            source.vue,
+            meta.attribute.directive.vue,
+            punctuation.attribute-shorthand.bind.html.vue,
+          ],
+      }
+    - {
+        as: "event shorthand @",
+        expect: role.type,
+        stack:
+          [
+            source.vue,
+            meta.attribute.directive.vue,
+            punctuation.attribute-shorthand.event.html.vue,
+          ],
+      }
+    - {
+        as: "slot shorthand #",
+        expect: role.type,
+        stack:
+          [
+            source.vue,
+            meta.attribute.directive.vue,
+            punctuation.attribute-shorthand.slot.html.vue,
+          ],
+      }
+    - {
+        as: interpolation braces,
+        expect: role.punctuation,
+        stack: [source.vue, punctuation.definition.interpolation.begin.html.vue],
+      }
+
+- family: Svelte
+  cases:
+    - {
+        as: element tag,
+        expect: role.tag,
+        stack: [source.svelte, meta.tag.start.svelte, entity.name.tag.svelte],
+      }
+    - {
+        as: component tag,
+        expect: role.tag,
+        stack: [source.svelte, meta.tag.start.svelte, support.class.component.svelte],
+      }
+    - {
+        as: attribute name,
+        expect: role.type,
+        stack: [source.svelte, meta.tag.start.svelte, entity.other.attribute-name.svelte],
+      }
+    - {
+        as: "{#if} block keyword",
+        expect: role.keyword,
+        stack:
+          [source.svelte, meta.embedded.block.svelte, keyword.control.conditional.svelte],
+      }
+    - {
+        as: "{#each} flow keyword",
+        expect: role.keyword,
+        stack: [source.svelte, meta.embedded.block.svelte, keyword.control.flow.svelte],
+      }
+    - {
+        as: block comment,
+        expect: text.subtle,
+        stack: [source.svelte, comment.block.svelte],
+      }
+    - {
+        as: numeric literal,
+        expect: role.constant,
+        stack: [source.svelte, constant.numeric.decimal.svelte],
+      }
+
+- family: Astro
+  cases:
+    - {
+        as: element tag,
+        expect: role.tag,
+        stack: [source.astro, meta.tag.start.astro, entity.name.tag.astro],
+      }
+    - {
+        as: component tag,
+        expect: role.tag,
+        stack: [source.astro, meta.tag.start.astro, support.class.component.astro],
+      }
+    - {
+        as: attribute name,
+        expect: role.type,
+        stack: [source.astro, meta.tag.start.astro, entity.other.attribute-name.astro],
+      }
+    - {
+        as: attribute value,
+        expect: role.string,
+        stack: [source.astro, meta.tag.start.astro, string.quoted.astro],
+      }
+    - {
+        as: expression braces,
+        expect: role.function,
+        stack: [source.astro, punctuation.section.embedded.begin.astro],
+      }
+    - {
+        as: block comment,
+        expect: text.subtle,
+        stack: [source.astro, comment.block.astro],
+      }
+
+- family: Data and schema
+  cases:
+    - {
+        as: JSON key,
+        expect: role.type,
+        stack:
+          [source.json, meta.structure.dictionary.json, support.type.property-name.json],
+      }
+    - {
+        as: JSON string value,
+        expect: role.string,
+        stack:
+          [source.json, meta.structure.dictionary.value.json, string.quoted.double.json],
+      }
+    - {
+        as: JSON number,
+        expect: role.constant,
+        stack: [source.json, constant.numeric.json],
+      }
+    - { as: YAML key, expect: role.keyword, stack: [source.yaml, entity.name.tag.yaml] }
+    - {
+        as: YAML string,
+        expect: role.string,
+        stack: [source.yaml, string.quoted.single.yaml],
+      }
+    - {
+        as: YAML anchor,
+        expect: role.string,
+        stack: [source.yaml, variable.other.alias.yaml],
+      }
+    - {
+        as: TOML section,
+        expect: role.keyword,
+        stack: [source.toml, entity.name.section.toml],
+      }
+    - {
+        as: TOML key,
+        expect: role.keyword,
+        stack: [source.toml, variable.other.key.toml],
+      }
+    - {
+        as: TOML date,
+        expect: role.constant,
+        stack: [source.toml, constant.other.date.toml],
+      }
+    - {
+        as: GraphQL field,
+        expect: role.regexp,
+        stack: [source.graphql, meta.selectionset.graphql, variable.graphql],
+      }
+    - {
+        as: GraphQL fragment name,
+        expect: role.function,
+        stack: [source.graphql, entity.name.fragment.graphql],
+      }
+    - {
+        as: Prisma model name,
+        expect: role.type,
+        stack: [source.prisma, entity.name.type.model.prisma],
+      }
+    - {
+        as: Prisma enum name,
+        expect: role.type,
+        stack: [source.prisma, entity.name.type.enum.prisma],
+      }
+    - {
+        as: Prisma attribute,
+        expect: role.function,
+        stack: [source.prisma, entity.name.function.attribute.prisma],
+      }
+    - {
+        as: Prisma boolean,
+        expect: role.constant,
+        stack: [source.prisma, constant.language.boolean.prisma],
+      }
+    - {
+        as: Prisma operator,
+        expect: role.keyword,
+        stack: [source.prisma, keyword.operator.assignment.prisma],
+      }
+
+- family: Server languages
+  cases:
+    - {
+        as: Python decorator,
+        expect: role.string,
+        stack:
+          [
+            source.python,
+            meta.function.decorator.python,
+            entity.name.function.decorator.python,
+          ],
+      }
+    - {
+        as: Python docstring,
+        expect: text.subtle,
+        stack: [source.python, string.quoted.docstring.multi.python],
+      }
+    - {
+        as: Python self,
+        expect: role.constant,
+        stack: [source.python, variable.language.special.self.python],
+      }
+    - {
+        as: Go storage type,
+        expect: role.type,
+        style: italic,
+        stack: [source.go, storage.type.go],
+      }
+    - {
+        as: Go function,
+        expect: role.function,
+        stack: [source.go, entity.name.function.go],
+      }
+    - {
+        as: Rust core type,
+        expect: role.type,
+        style: italic,
+        stack: [source.rust, storage.type.core.rust],
+      }
+    - {
+        as: Rust std class,
+        expect: role.type,
+        style: italic,
+        stack: [source.rust, storage.class.std.rust],
+      }
+    - {
+        as: Rust lifetime,
+        expect: role.constant,
+        stack: [source.rust, storage.modifier.lifetime.rust],
+      }
+    - {
+        as: Rust macro,
+        expect: role.tag,
+        stack: [source.rust, entity.name.function.macro.rust],
+      }
+    - {
+        as: PHP storage type,
+        expect: role.type,
+        style: italic,
+        stack: [source.php, storage.type.php],
+      }
+    - {
+        as: SQL keyword,
+        expect: role.keyword,
+        stack: [source.sql, keyword.other.DML.sql],
+      }
+    - {
+        as: SQL string,
+        expect: role.string,
+        stack: [source.sql, string.quoted.single.sql],
+      }
+
+- family: Prose and config
+  cases:
+    - {
+        as: Markdown heading,
+        expect: role.tag,
+        style: bold,
+        stack: [text.html.markdown, markup.heading.markdown],
+      }
+    - {
+        as: Markdown bold,
+        expect: role.constant,
+        style: bold,
+        stack: [text.html.markdown, markup.bold.markdown],
+      }
+    - {
+        as: Markdown link,
+        expect: role.function,
+        stack: [text.html.markdown, markup.underline.link.markdown],
+      }
+    - {
+        as: Markdown inline code,
+        expect: role.string,
+        stack: [text.html.markdown, markup.inline.raw.markdown],
+      }
+    - {
+        as: Markdown quote,
+        expect: role.regexp,
+        style: italic,
+        stack: [text.html.markdown, markup.quote.markdown],
+      }
+    - {
+        as: Shell variable,
+        expect: role.tag,
+        stack: [source.shell, variable.other.normal.shell],
+      }
+    - {
+        as: Shell string,
+        expect: role.string,
+        stack: [source.shell, string.quoted.double.shell],
+      }
+    - {
+        as: Dockerfile instruction,
+        expect: role.keyword,
+        stack: [source.dockerfile, keyword.other.special-method.dockerfile],
+      }
+    - {
+        as: Dockerfile comment,
+        expect: text.subtle,
+        stack: [source.dockerfile, comment.line.number-sign.dockerfile],
+      }
+    - {
+        as: Makefile target,
+        expect: role.keyword,
+        stack: [source.makefile, entity.name.function.target.makefile],
+      }
+    - { as: diff header, expect: text.subtle, stack: [source.diff, meta.diff.header] }
+    - {
+        as: diff inserted,
+        expect: role.string,
+        stack: [source.diff, markup.inserted.diff],
+      }
+    - {
+        as: diff deleted,
+        expect: role.invalid,
+        stack: [source.diff, markup.deleted.diff],
+      }

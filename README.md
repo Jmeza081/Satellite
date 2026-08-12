@@ -35,6 +35,29 @@ Note that you may have to restart your Vscode in order for the theme extension t
 
 ## Supported Languages
 
+Two layers do the work. Languages with a language server are coloured by
+**semantic tokens** — the compiler's own answer for what each identifier is,
+rather than the grammar's guess — which covers TypeScript, JavaScript, Go, Rust,
+C#, Java and Python from a single set of rules. Everything else falls back to
+TextMate scopes.
+
+Coverage is asserted, not claimed. `src/fixtures.yml` lists scope stacks the
+real grammars emit, and `yarn fixtures` checks that each one resolves to the
+intended colour at readable contrast:
+
+| Family | Languages |
+| --- | --- |
+| Core web | TypeScript, JavaScript, TSX, JSX, HTML, CSS |
+| Frameworks | Vue SFC, Svelte, Astro |
+| Styling | SCSS, Less, Tailwind, CSS-in-JS |
+| Data and schema | JSON, YAML, TOML, GraphQL, Prisma |
+| Server | Python, Go, Rust, PHP, Ruby, SQL |
+| Prose and config | Markdown, Shell, Dockerfile, Makefile, diffs |
+
+The fixtures verify how the theme handles a scope, not that a grammar emits it.
+Scope names are taken from each language's published grammar; the sources are
+listed at the top of `src/fixtures.yml`.
+
 ## Contributing
 
 If you'd like to contribute to this theme, please read the [contributing guidelines](./.github/CONTRIBUTING.md).
@@ -50,6 +73,7 @@ src/ui.yml        VS Code workbench colour keys
 src/syntax.yml    TextMate syntax rules
 src/semantic.yml  semantic token colours
 src/a11y.yml      the accessibility contract that `yarn verify` enforces
+src/fixtures.yml  per-language scope expectations that `yarn fixtures` checks
 src/themes.yml    which theme variants to build
 ```
 
@@ -66,6 +90,7 @@ yarn dev         # rebuild on every change
 yarn validate    # check colour keys against the VS Code reference
 yarn coverage    # ... and list which key groups are still unstyled
 yarn verify      # check contrast and colour-vision separation
+yarn fixtures    # check per-language scope coverage
 yarn test        # unit tests, then all of the above
 ```
 

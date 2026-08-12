@@ -608,14 +608,15 @@
 # Variables
 # =============================================================================
 
+# The js/ts/tsx `variable.other.constant.*` overrides that used to live here
+# were working around the grammar guessing "constant" from ALL_CAPS naming.
+# The TypeScript server reports `variable` vs `variable.readonly` correctly, so
+# semantic.yml now handles it and the per-dialect overrides are gone.
 - name: Variables and object properties
   scope:
     - variable
     - constant.other.key.perl # Perl edge case
     - support.variable.property # Object properties
-    - variable.other.constant.js # Fix incorrect highlighting of pseudo-constants in js, jsx
-    - variable.other.constant.ts # Fixes incorrect highlighting of pseudo-constants in ts
-    - variable.other.constant.tsx # Fixes incorrect highlighting of pseudo-constants in tsx
     - meta.object-literal.key.js
   settings:
     foreground: role.variable
@@ -677,6 +678,8 @@
     - punctuation.section.embedded.end.tsx
     - punctuation.section.embedded.begin.jsx
     - punctuation.section.embedded.end.jsx
+    - punctuation.section.embedded.begin.astro
+    - punctuation.section.embedded.end.astro
     - punctuation.separator.list.comma.css # Commas separating selectors in CSS
     - constant.language.empty-list.haskell
     - keyword.control.from.js
@@ -697,9 +700,12 @@
   settings:
     foreground: role.tag
 
+# Scoped to PowerShell. As a bare `support.constant` this also matched
+# `support.constant.property-value.css`, painting every CSS keyword value the
+# tag colour. Caught by src/fixtures.yml.
 - name: Powershell constants mistakenly scoped to `support`, rather than `constant` (edge)
   scope:
-    - support.constant
+    - source.powershell support.constant
   settings:
     fontStyle: normal
     foreground: role.tag
@@ -728,3 +734,70 @@
     - meta.preprocessor.haskell
   settings:
     foreground: text.subtle
+
+# =============================================================================
+# Framework and language coverage
+#
+# Rules added in Phase 3, each one because src/fixtures.yml showed a scope that
+# resolved to the wrong colour or to nothing at all. Scope names come from the
+# published grammars, not from guesswork.
+# =============================================================================
+
+- name: Component tags (Svelte, Astro, and other component grammars)
+  scope:
+    # `<MyComponent>` is scoped support.class.component, not entity.name.tag,
+    # so without this it inherited the `support` rule and rendered as a type —
+    # meaning a component and a plain element were different colours.
+    - support.class.component
+    - storage.type.class.component
+  settings:
+    foreground: role.tag
+
+- name: Vue directive shorthands
+  scope:
+    # The `:`, `@` and `#` that prefix a bound attribute. Nothing matched these,
+    # so they fell all the way back to plain text and `:class` rendered as two
+    # different colours. Coloured as the attribute they belong to so the pair
+    # reads as one unit.
+    - punctuation.attribute-shorthand
+  settings:
+    foreground: role.type
+
+- name: CSS keyword values
+  scope:
+    # `flex`, `none`, `inherit`. These are constants, but the grammar scopes
+    # them under support.constant.
+    - support.constant.property-value
+    - support.constant.font-name
+    - support.constant.media
+  settings:
+    foreground: role.constant
+
+- name: Python decorators
+  scope:
+    # Python scopes decorators as functions; the TypeScript grammar scopes them
+    # under meta.decorator. Matched here so a decorator is the same colour in
+    # both languages.
+    - entity.name.function.decorator
+    - meta.function.decorator.python entity.name.function
+  settings:
+    foreground: role.string
+
+- name: Rust macros
+  scope:
+    # `println!` expands into code rather than being called, and the semantic
+    # layer already maps the `macro` token type to the tag colour. This keeps
+    # the grammar fallback consistent with it.
+    - entity.name.function.macro
+  settings:
+    foreground: role.tag
+
+- name: Rust lifetimes
+  scope:
+    # `'a` is a parameter of the type system, so it takes the same colour as a
+    # generic type parameter rather than the storage-modifier gold.
+    - storage.modifier.lifetime
+    - entity.name.lifetime
+    - punctuation.definition.lifetime
+  settings:
+    foreground: role.constant
