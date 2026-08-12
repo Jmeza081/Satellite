@@ -121,7 +121,13 @@ role:
   type: oklch(0.680 0.105 188)
 
   constant: oklch(0.700 0.180 38)
-  tag: oklch(0.680 0.175 325)
+  # Chroma is pushed harder than the other roles. Tags and functions are the
+  # tightest pair in the palette: in JSX they sit inches apart
+  # (`<Button onClick={handleClick}>`), both are word-shaped so glyph shape is
+  # no help, and under deuteranopia magenta and cyan both lose most of their
+  # separation. Extra chroma here buys deltaE 13 -> 19 against the function
+  # cyan at the same lightness and contrast.
+  tag: oklch(0.680 0.220 325)
   regexp: oklch(0.940 0.115 120)
   invalid: oklch(0.665 0.205 22)
 
