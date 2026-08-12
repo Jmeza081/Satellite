@@ -1,0 +1,85 @@
+# Changelog
+
+All notable changes to Satellite are documented here.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+The theme was rebuilt for publication: re-graded against WCAG 2.2 and
+colour-vision simulation, extended across the web stack, and given the light and
+high-contrast companions it never had. The dark theme keeps the name
+`Satellite`, so an existing `workbench.colorTheme` setting continues to work.
+
+### Added
+
+- **Satellite Daybreak**, a light theme. Not an inversion — hues are held from
+  the dark theme, but chroma rises and lightness drops, because a colour needs
+  more saturation to read as itself against white.
+- **Satellite High Contrast** and **Satellite Daybreak High Contrast**, held to
+  WCAG AAA with the decorative exemptions withdrawn, so indent guides and rulers
+  must meet 3:1 like any other boundary.
+- **Semantic highlighting.** The 24 standard token types and their modifiers are
+  mapped to the palette, so TypeScript, JavaScript, Go, Rust, C#, Java and Python
+  are coloured by what the language server resolved rather than what the grammar
+  guessed. Deprecated symbols are struck through rather than recoloured, so the
+  signal does not depend on colour perception.
+- **Bracket pair colourisation**, six stops spread across hue and lightness.
+- Coverage for Vue, Svelte, Astro, Prisma, Tailwind, TOML, Rust lifetimes and
+  macros, and Python decorators.
+- Post-2019 UI surface: sticky scroll, inlay hints, ghost text and inline edits,
+  the command centre, notebooks, testing and coverage, the merge and multi-diff
+  editors, chat and inline chat, keybinding labels, banners, profile badges, the
+  source-control graph and terminal decorations. 184 colour keys became 821.
+- A build that can prove all of the above: `yarn verify` runs 336 contrast and
+  colour-vision checks, and `yarn fixtures` resolves 101 language scope stacks
+  against the theme's own rules. Both fail the build on regression.
+
+### Changed
+
+- **Comments** lifted from 2.39:1 to 4.68:1. They were below the point of
+  invisibility for many readers.
+- **Activity bar icons** lifted from 1.92:1 to 7.03:1. The primary navigation was
+  effectively unreadable.
+- **Status bar text** lifted from 3.57:1 to 5.34:1, by splitting the sea green
+  into a light stop that can be read as text and a deep stop that can hold text
+  as a fill. The 2019 palette had one stop that could do neither.
+- **Variables and constants** were 1.1 ΔE apart under tritanopia — effectively
+  one colour, because they sat at near-identical lightness. Six other pairs
+  collapsed similarly. Every adjacency is now separated by lightness.
+- **Punctuation** moved off the keyword gold onto a neutral slate. Gold now
+  means keyword.
+- **Attribute names** moved off the string green, so `class="btn"` no longer
+  renders the name and its value identically.
+- **Types** split from functions and keep italic as a second, non-colour cue.
+- **Body text** changed from `#FFFFFF` to `#E8EEF1` — still 13.2:1, with less
+  halation against the low-chroma ground.
+- **Terminal colours** are Satellite's own rather than Dracula's. ANSI black was
+  1.08:1 against the terminal background, so anything printing in black printed
+  nothing.
+- Italics narrowed to types, parameters, prose markup and error indicators.
+
+### Fixed
+
+- 55 colour keys were declared with no value and emitted as `null` into the
+  theme JSON.
+- 12 keys had not existed in VS Code for years, including the entire singular
+  `notification.*` namespace. Notifications are restyled on the current keys.
+- `support.constant` was matching CSS, painting every keyword value such as
+  `flex` or `none` the tag colour. The rule is PowerShell-specific and is now
+  scoped to it.
+- Component tags in Svelte and Astro are scoped `support.class.component`, not
+  `entity.name.tag`, so a component and a plain element were different colours.
+- Vue's `:`, `@` and `#` attribute shorthands matched no rule at all and fell
+  back to plain text, splitting `:class` into two colours.
+- Astro expression delimiters, Python decorators, Rust macros and Rust lifetimes
+  each disagreed with their equivalent in another language.
+- The workaround for [microsoft/vscode#4795](https://github.com/microsoft/vscode/issues/4795)
+  is retired; that issue closed years ago and quotes inherit the string colour.
+
+### Removed
+
+- Per-dialect `variable.other.constant.{js,ts,tsx}` overrides, which existed to
+  work around the grammar guessing "constant" from ALL_CAPS naming. The
+  TypeScript server reports this correctly and semantic highlighting now handles it.

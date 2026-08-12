@@ -6,3 +6,6 @@ theme
 # Packaged extension
 bin
 *.vsix
+
+# Scratch file written by scripts/assets.js while rasterising
+assets/.render.html

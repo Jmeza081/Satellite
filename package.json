@@ -13,6 +13,7 @@
 		"fixtures": "node ./scripts/fixtures.js",
 		"verify:report": "node ./scripts/verify.js",
 		"update-color-keys": "node ./scripts/update-color-keys.js",
+		"assets": "node ./scripts/assets.js",
 		"test": "node ./scripts/test.js && npm run build && npm run validate && npm run verify && npm run fixtures",
 		"package": "vsce package -o ./bin/satellite.vsix",
 		"vscode:prepublish": "npm run build && npm run validate && npm run verify && npm run fixtures"
@@ -24,11 +25,36 @@
 	"bugs": {
 		"url": "https://github.com/Jmeza081/Satellite/issues"
 	},
+	"icon": "assets/icon-128.png",
+	"galleryBanner": {
+		"color": "#0E191F",
+		"theme": "dark"
+	},
+	"keywords": [
+		"theme",
+		"color-theme",
+		"dark theme",
+		"light theme",
+		"high contrast",
+		"accessible",
+		"accessibility",
+		"wcag",
+		"color blind",
+		"colorblind",
+		"semantic highlighting"
+	],
 	"engines": {
-		"vscode": "^1.13.0"
+		"vscode": "^1.85.0"
 	},
 	"categories": [
 		"Themes"
+	],
+	"badges": [
+		{
+			"url": "https://img.shields.io/badge/contrast-WCAG%20AA-006C6B",
+			"href": "https://github.com/Jmeza081/Satellite#accessibility",
+			"description": "Every text role clears WCAG AA, verified on every build"
+		}
 	],
 	"contributes": {
 		"themes": [

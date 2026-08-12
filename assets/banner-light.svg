@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="Satellite — a space-inspired theme for VS Code">
+  <title>Satellite Daybreak</title>
+  <rect width="1280" height="320" fill="#F9FBFD"/>
+
+  <g transform="rotate(-18 1080 170)">
+    <path d="M850 170 A 230 96 0 0 1 1310 170" fill="none" stroke="#006665" stroke-width="4" opacity=".5"/>
+  </g>
+  <circle cx="1080" cy="196" r="78" fill="#67ACAB"/>
+  <g transform="rotate(-18 1080 170)">
+    <path d="M1310 170 A 230 96 0 0 1 850 170" fill="none" stroke="#006665" stroke-width="4" opacity=".5"/>
+  </g>
+  <circle cx="1246" cy="106" r="12" fill="#A24100"/>
+
+  <g transform="translate(72 96)">
+    <g transform="rotate(-28 64 64)">
+      <path d="M12 64 A 52 22 0 0 1 116 64" fill="none" stroke="#006665" stroke-width="6"/>
+    </g>
+    <circle cx="64" cy="70" r="29" fill="#67ACAB"/>
+    <g transform="rotate(-28 64 64)">
+      <path d="M116 64 A 52 22 0 0 1 12 64" fill="none" stroke="#006665" stroke-width="6"/>
+    </g>
+    <circle cx="93" cy="33" r="8.5" fill="#A24100"/>
+  </g>
+
+  <text x="232" y="158" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="60" font-weight="600" letter-spacing="-2" fill="#22333D">Satellite</text>
+  <text x="234" y="196" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="19" fill="#47726F">A space-inspired theme for VS Code — dark, light and high contrast</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
+    <rect x="234" y="222" width="95" height="26" rx="13" fill="#006968"/>
+    <text x="250" y="240" fill="#F9FBFD">WCAG AA</text>
+    <rect x="341" y="222" width="230" height="26" rx="13" fill="#E4EBEF"/>
+    <text x="357" y="240" fill="#495F6A">colour-vision verified</text>
+  </g>
+
+  <g>
+    <rect x="234" y="272" width="52" height="8" rx="4" fill="#754800"/>
+    <rect x="292" y="272" width="52" height="8" rx="4" fill="#317142"/>
+    <rect x="350" y="272" width="52" height="8" rx="4" fill="#0076C1"/>
+    <rect x="408" y="272" width="52" height="8" rx="4" fill="#8A0086"/>
+    <rect x="466" y="272" width="52" height="8" rx="4" fill="#B95340"/>
+    <rect x="524" y="272" width="52" height="8" rx="4" fill="#5C2D2E"/>
+  </g>
+</svg>

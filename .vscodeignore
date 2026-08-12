@@ -1,16 +1,21 @@
 # Everything the published extension does not need. The built theme JSON under
 # theme/ is the only artefact that has to ship, alongside package.json, the
-# README, the changelog and the licences.
+# icon, the README, the changelog and the licences.
 
 src/**
 scripts/**
 data/**
 node_modules/**
 
+# Design sources and the README artwork stay in the repository. vsce rewrites
+# relative image links in the README to raw repository URLs at package time,
+# so the banners do not need to be inside the .vsix — only the icon does.
+assets/**
+!assets/icon-128.png
+
 .github/**
 .vscode/**
 
 .gitignore
 .prettierrc.js
-.prettierrc.toml
 yarn.lock
