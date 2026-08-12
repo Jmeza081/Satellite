@@ -26,13 +26,17 @@ thresholds:
   largeText: 3.0
   # WCAG 2.2 SC 1.4.11 — non-text contrast for meaningful UI boundaries
   nonText: 3.0
-  # A documented floor, below AA, for the single case where meeting AA would
-  # destroy the meaning of the colour: ANSI black on a dark terminal ground.
-  # Black has to stay the darkest of the sixteen; raising it to 4.5:1 would make
-  # it a mid grey and leave the palette with no black at all. The floor is set
-  # where the colour is unambiguously visible against the background, which is
-  # the actual failure the audit found (the 2019 value was 1.08:1 — invisible).
-  # This level applies to exactly one key and must not be reused to excuse
+  # A documented floor, below AA, for the one place where meeting AA would
+  # destroy the meaning of the colour: the corner of the ANSI cube nearest the
+  # terminal background. On a dark ground that is black; on a light ground it is
+  # bright white. Either one has to stay at its end of the ramp — pushing it to
+  # 4.5:1 turns it into a mid grey and leaves the palette without that end at
+  # all. The floor is set where the colour is unambiguously visible, which is
+  # the failure the audit actually found: the 2019 ANSI black measured 1.08:1
+  # against the terminal background, so anything printing in black printed
+  # nothing.
+  #
+  # This applies to two keys across two themes and must not be reused to excuse
   # ordinary text failures.
   dim: 2.5
   # CIE76 deltaE below which two simulated colours are treated as confusable
@@ -380,3 +384,22 @@ adjacency:
   - a: text.subtle
     b: text.faint
     why: "comments vs indent guides"
+
+# -----------------------------------------------------------------------------
+# Per-theme overrides
+#
+# The high-contrast variants are held to AAA rather than AA, and the decorative
+# exemptions are withdrawn so indent guides, whitespace and rulers must meet the
+# non-text threshold like anything else. Without this an "HC" theme would only
+# ever be asserted to meet the same bar as the standard pair, and the label
+# would mean nothing a build could check.
+# -----------------------------------------------------------------------------
+overrides:
+  satellite-orbit-hc:
+    thresholds:
+      text: 7.0
+    exempt: false
+  satellite-daybreak-hc:
+    thresholds:
+      text: 7.0
+    exempt: false

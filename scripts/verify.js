@@ -47,7 +47,19 @@ function resolveRef(ref, colors) {
 }
 
 function verifyTheme({ entry, theme }, contract, tokenResolver) {
-    const { thresholds, pairs = [], adjacency = [], exempt = {} } = contract;
+    // Per-theme overrides let the high-contrast variants be held to a higher
+    // bar than the standard pair, using the same declared pairs. Without this
+    // an "HC" theme would only ever be asserted to meet plain AA, which would
+    // make the label meaningless.
+    const override = (contract.overrides || {})[entry.id] || {};
+    const thresholds = { ...contract.thresholds, ...(override.thresholds || {}) };
+    const { pairs = [], adjacency = [] } = contract;
+    // `exempt: false` in an override withdraws the decorative exemptions, so
+    // indent guides and rulers have to meet the non-text threshold like
+    // everything else.
+    const exemptionsApply = override.exempt !== false;
+    const exempt = exemptionsApply ? contract.exempt || {} : {};
+    const enforced = exemptionsApply ? {} : contract.exempt || {};
     const colors = theme.colors;
     const results = {
         name: entry.label,
@@ -115,6 +127,23 @@ function verifyTheme({ entry, theme }, contract, tokenResolver) {
         results.checks++;
         uiRows.push({ ok, label: pair.as, colour: fg, ratio, apca, need: threshold });
     }
+    // Keys that are exempt by default but enforced for high-contrast variants.
+    for (const key of Object.keys(enforced)) {
+        const value = colors[key];
+        if (!value) continue;
+        const { ratio, apca, ok } = checkContrast(value, editorBg, thresholds.nonText);
+        if (!ok) results.failures++;
+        results.checks++;
+        uiRows.push({
+            ok,
+            label: `${key} (exemption withdrawn for high contrast)`,
+            colour: value,
+            ratio,
+            apca,
+            need: thresholds.nonText,
+        });
+    }
+
     uiRows.sort((a, b) => (a.skip ? 1 : b.skip ? -1 : a.ratio - b.ratio));
     results.sections.push({ title: 'UI foreground / background pairs', rows: uiRows });
 

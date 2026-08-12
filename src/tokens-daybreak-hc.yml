@@ -1,0 +1,101 @@
+# =============================================================================
+# Satellite Daybreak High Contrast — light palette
+# =============================================================================
+#
+# The light counterpart to tokens-orbit-hc.yml, held to the same higher bar:
+# AAA for every text role, no decorative exemptions, visible panel seams.
+#
+# This is the hardest of the four to satisfy. A pure white ground with a 7:1
+# floor leaves roughly L 0.18-0.46 to work in — about a quarter of the range
+# Orbit has — and eleven roles still have to stay separable under three
+# colour-vision simulations inside it. The values were solved jointly; there is
+# very little slack, and `yarn verify` will say so if any of them moves.
+
+surface:
+  deep: oklch(0.980 0.003 238)
+  base: oklch(1 0 238) # pure white
+  raised: oklch(0.990 0.002 238)
+  overlay: oklch(0.930 0.010 238)
+
+border:
+  seam: oklch(0.620 0.018 238)
+  soft: oklch(0.655 0.016 238)
+  strong: oklch(0.520 0.020 238)
+
+wash:
+  selection: alpha(accent.base, 3D)
+  selectionSoft: alpha(accent.base, 26)
+  lineHighlight: alpha(text.default, 0F)
+  dropTarget: alpha(accent.base, 33)
+  findMatch: alpha(accent.base, 5C)
+  findOther: alpha(accent.base, 2E)
+  rangeHighlight: alpha(accent.base, 22)
+  added: alpha(vcs.added, 2E)
+  deleted: alpha(vcs.deleted, 2E)
+  modified: alpha(vcs.modified, 2E)
+
+text:
+  default: oklch(0.180 0.020 235)
+  muted: oklch(0.330 0.024 230)
+  subtle: oklch(0.439 0.035 208) # comments — 7.7:1, AAA
+  faint: oklch(0.620 0.016 225) # indent guides — 3.6:1, no longer exempt
+  onAccent: surface.base
+  onFill: surface.base
+
+role:
+  punctuation: oklch(0.307 0.021 238)
+  variable: oklch(0.246 0.050 27)
+  string: oklch(0.360 0.148 150)
+  keyword: oklch(0.440 0.096 85)
+  function: oklch(0.460 0.162 254)
+  type: oklch(0.240 0.121 182)
+  constant: oklch(0.320 0.156 42)
+  tag: oklch(0.334 0.170 318)
+  regexp: oklch(0.331 0.103 100)
+  invalid: oklch(0.423 0.234 30)
+
+accent:
+  base: oklch(0.400 0.095 194)
+  solid: oklch(0.400 0.095 194) # holds white at 8.9:1
+
+status:
+  error: oklch(0.423 0.234 30)
+  warning: oklch(0.400 0.120 70)
+  info: oklch(0.420 0.140 254)
+  success: oklch(0.380 0.130 150)
+
+vcs:
+  added: oklch(0.380 0.130 150)
+  modified: oklch(0.400 0.110 85)
+  deleted: oklch(0.400 0.200 30)
+  conflicting: oklch(0.400 0.150 42)
+  ignored: oklch(0.560 0.014 225)
+  untracked: oklch(0.380 0.120 150)
+
+bracket:
+  one: oklch(0.420 0.110 85)
+  two: oklch(0.334 0.170 318)
+  three: oklch(0.420 0.150 254)
+  four: oklch(0.360 0.160 42)
+  five: oklch(0.360 0.140 150)
+  six: oklch(0.360 0.140 268)
+
+ansi:
+  black: oklch(0.180 0.020 238)
+  red: oklch(0.423 0.234 30)
+  green: oklch(0.370 0.140 150)
+  yellow: oklch(0.400 0.110 85)
+  blue: oklch(0.420 0.150 254)
+  magenta: oklch(0.334 0.170 318)
+  cyan: oklch(0.380 0.090 196)
+  # As in Daybreak, a literal white is invisible here, so it becomes a mid grey.
+  white: oklch(0.430 0.014 230)
+  brightBlack: oklch(0.300 0.018 238)
+  brightRed: oklch(0.360 0.210 30)
+  brightGreen: oklch(0.320 0.130 150)
+  brightYellow: oklch(0.330 0.100 85)
+  brightBlue: oklch(0.350 0.140 254)
+  brightMagenta: oklch(0.280 0.160 318)
+  brightCyan: oklch(0.320 0.085 196)
+  # The corner nearest the background; held to the `dim` floor.
+  brightWhite: oklch(0.600 0.014 230)

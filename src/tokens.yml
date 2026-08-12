@@ -96,6 +96,19 @@ text:
   subtle: oklch(0.640 0.045 195) # comments and line numbers — was 2.39:1, now 4.7:1
   faint: oklch(0.430 0.026 220) # indent guides and whitespace (decorative)
 
+  # Two different "text on a coloured background" roles, which look identical on
+  # a dark theme and diverge on a light one.
+  #
+  # onAccent sits on accent.solid — a deep teal in both themes, so the text is
+  # light in both.
+  #
+  # onFill sits on a status fill: status.error, status.warning, a debugging
+  # status bar. Those are BRIGHT on Orbit and DARK on Daybreak, so this one
+  # flips. Collapsing the two into a single token is what made the light build
+  # render dark text on a dark button.
+  onAccent: text.default
+  onFill: surface.deep
+
 # -----------------------------------------------------------------------------
 # Syntax roles
 #

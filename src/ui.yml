@@ -64,7 +64,7 @@ editorActionList.focusForeground: text.default
 # Buttons, checkboxes, radios
 # -----------------------------------------------------------------------------
 button.background: accent.solid
-button.foreground: text.default
+button.foreground: text.onAccent
 button.border: border.seam
 button.separator: alpha(text.default, 40)
 button.hoverBackground: accent.base
@@ -128,7 +128,7 @@ scrollbarSlider.activeBackground: alpha(accent.base, 77)
 # Badges and progress
 # -----------------------------------------------------------------------------
 badge.background: accent.solid
-badge.foreground: text.default
+badge.foreground: text.onAccent
 progressBar.background: accent.base
 
 # -----------------------------------------------------------------------------
@@ -184,11 +184,11 @@ activityBar.activeBackground: alpha(accent.base, 14)
 activityBar.activeFocusBorder: accent.base
 activityBar.dropBorder: accent.base
 activityBarBadge.background: accent.solid
-activityBarBadge.foreground: text.default
+activityBarBadge.foreground: text.onAccent
 activityWarningBadge.background: status.warning
-activityWarningBadge.foreground: surface.deep
+activityWarningBadge.foreground: text.onFill
 activityErrorBadge.background: status.error
-activityErrorBadge.foreground: surface.deep
+activityErrorBadge.foreground: text.onFill
 
 activityBarTop.background: surface.deep
 activityBarTop.foreground: accent.base
@@ -198,7 +198,7 @@ activityBarTop.activeBackground: alpha(accent.base, 14)
 activityBarTop.dropBorder: accent.base
 
 profileBadge.background: accent.solid
-profileBadge.foreground: text.default
+profileBadge.foreground: text.onAccent
 profiles.sashBorder: border.soft
 
 # -----------------------------------------------------------------------------
@@ -384,13 +384,13 @@ inlineEdit.originalBorder: vcs.deleted
 inlineEdit.modifiedBorder: vcs.added
 inlineEdit.gutterIndicator.background: surface.raised
 inlineEdit.gutterIndicator.primaryBackground: accent.solid
-inlineEdit.gutterIndicator.primaryForeground: text.default
+inlineEdit.gutterIndicator.primaryForeground: text.onAccent
 inlineEdit.gutterIndicator.primaryBorder: accent.base
 inlineEdit.gutterIndicator.secondaryBackground: surface.overlay
 inlineEdit.gutterIndicator.secondaryForeground: text.muted
 inlineEdit.gutterIndicator.secondaryBorder: border.soft
 inlineEdit.gutterIndicator.successfulBackground: vcs.added
-inlineEdit.gutterIndicator.successfulForeground: surface.deep
+inlineEdit.gutterIndicator.successfulForeground: text.onFill
 inlineEdit.gutterIndicator.successfulBorder: vcs.added
 
 # Overview ruler
@@ -562,7 +562,7 @@ panelTitle.activeForeground: text.default
 panelTitle.inactiveForeground: text.subtle
 panelTitle.border: border.seam
 panelTitleBadge.background: accent.solid
-panelTitleBadge.foreground: text.default
+panelTitleBadge.foreground: text.onAccent
 panelInput.border: border.soft
 panelSection.border: border.seam
 panelSection.dropBackground: wash.dropTarget
@@ -582,11 +582,11 @@ outputViewStickyScroll.background: surface.overlay
 # enough that text.default clears 5.3:1.
 # -----------------------------------------------------------------------------
 statusBar.background: accent.solid
-statusBar.foreground: text.default
+statusBar.foreground: text.onAccent
 statusBar.border: border.seam
 statusBar.focusBorder: text.default
 statusBar.debuggingBackground: role.constant
-statusBar.debuggingForeground: surface.deep
+statusBar.debuggingForeground: text.onFill
 statusBar.debuggingBorder: border.seam
 statusBar.noFolderBackground: surface.raised
 statusBar.noFolderForeground: text.default
@@ -605,15 +605,15 @@ statusBarItem.remoteForeground: accent.base
 statusBarItem.remoteHoverBackground: surface.raised
 statusBarItem.remoteHoverForeground: accent.base
 statusBarItem.errorBackground: status.error
-statusBarItem.errorForeground: surface.deep
+statusBarItem.errorForeground: text.onFill
 statusBarItem.errorHoverBackground: surface.deep
 statusBarItem.errorHoverForeground: status.error
 statusBarItem.warningBackground: status.warning
-statusBarItem.warningForeground: surface.deep
+statusBarItem.warningForeground: text.onFill
 statusBarItem.warningHoverBackground: surface.deep
 statusBarItem.warningHoverForeground: status.warning
 statusBarItem.offlineBackground: role.constant
-statusBarItem.offlineForeground: surface.deep
+statusBarItem.offlineForeground: text.onFill
 statusBarItem.offlineHoverBackground: surface.deep
 statusBarItem.offlineHoverForeground: role.constant
 
@@ -674,10 +674,10 @@ banner.iconForeground: accent.base
 # Extensions
 # -----------------------------------------------------------------------------
 extensionButton.prominentBackground: accent.solid
-extensionButton.prominentForeground: text.default
+extensionButton.prominentForeground: text.onAccent
 extensionButton.prominentHoverBackground: accent.base
 extensionButton.background: accent.solid
-extensionButton.foreground: text.default
+extensionButton.foreground: text.onAccent
 extensionButton.hoverBackground: accent.base
 extensionButton.separator: alpha(text.default, 40)
 extensionBadge.remoteBackground: accent.solid
@@ -820,7 +820,7 @@ testing.messagePeekHeaderBackground: alpha(status.info, 22)
 testing.message.error.lineBackground: alpha(status.error, 22)
 testing.message.error.badgeBackground: status.error
 testing.message.error.badgeBorder: status.error
-testing.message.error.badgeForeground: surface.deep
+testing.message.error.badgeForeground: text.onFill
 testing.message.info.lineBackground: alpha(status.info, 1A)
 testing.message.info.decorationForeground: text.subtle
 testing.coveredBackground: alpha(vcs.added, 22)
@@ -831,7 +831,7 @@ testing.uncoveredBorder: alpha(status.error, 55)
 testing.uncoveredGutterBackground: alpha(status.error, 44)
 testing.uncoveredBranchBackground: alpha(status.warning, 33)
 testing.coverCountBadgeBackground: accent.solid
-testing.coverCountBadgeForeground: text.default
+testing.coverCountBadgeForeground: text.onAccent
 
 # -----------------------------------------------------------------------------
 # Notebooks

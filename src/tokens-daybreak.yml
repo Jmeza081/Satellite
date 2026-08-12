@@ -1,0 +1,167 @@
+# =============================================================================
+# Satellite Daybreak — light palette
+# =============================================================================
+#
+# The same token structure as tokens.yml, so ui.yml, syntax.yml and semantic.yml
+# are shared unchanged between the two themes. Only the numbers differ.
+#
+# Daybreak is not an inversion. Hues are held from Orbit — the warm/cool grammar
+# is the theme's identity and survives the change of ground — but chroma rises
+# and lightness drops, because a colour needs more saturation to read as itself
+# against white than against a dark blue-grey.
+#
+# One hue moves deliberately. The function cyan rotates about 35 degrees bluer,
+# because once darkened enough to clear AA on a white ground, cyan and the
+# string green converge; there is no lightness available to separate them, so
+# the hue has to do it. Everything else keeps its Orbit identity.
+#
+# The ground is a cool near-white on the same 238 degree axis as Orbit's, not a
+# neutral one, so both themes sit in the same world.
+
+# -----------------------------------------------------------------------------
+# Surfaces
+#
+# Inverted by role rather than by number. The editor is the brightest surface;
+# chrome sits slightly grey against it, which is the convention light themes use
+# and the opposite of the dark arrangement, where chrome is darker than the
+# editor.
+# -----------------------------------------------------------------------------
+surface:
+  deep: oklch(0.948 0.008 238) # activity bar, side bar, panel, terminal, widgets
+  base: oklch(0.988 0.003 238) # editor
+  raised: oklch(0.966 0.006 238) # active tab, dropdowns, hover states
+  overlay: oklch(0.920 0.012 238) # selected rows, badges, sticky scroll
+
+border:
+  # Orbit separates panels with a seam darker than either surface. On a light
+  # ground the same idea gives a grey hairline rather than a near-black one.
+  seam: oklch(0.865 0.010 238)
+  soft: oklch(0.905 0.008 238)
+  strong: oklch(0.640 0.020 238) # visible boundaries where 1.4.11 applies
+
+# -----------------------------------------------------------------------------
+# Washes
+#
+# Alphas are carried over from Orbit. They read slightly stronger on a light
+# ground because the underlying colours are darker, which is the right
+# direction: a selection has to be visible against white without swamping the
+# text sitting on it.
+# -----------------------------------------------------------------------------
+wash:
+  selection: alpha(accent.base, 33)
+  selectionSoft: alpha(accent.base, 1F)
+  lineHighlight: alpha(text.default, 09)
+  dropTarget: alpha(accent.base, 2E)
+  findMatch: alpha(accent.base, 55)
+  findOther: alpha(accent.base, 26)
+  rangeHighlight: alpha(accent.base, 1A)
+  added: alpha(vcs.added, 22)
+  deleted: alpha(vcs.deleted, 22)
+  modified: alpha(vcs.modified, 26)
+
+# -----------------------------------------------------------------------------
+# Text
+# -----------------------------------------------------------------------------
+text:
+  default: oklch(0.310 0.028 235)
+  muted: oklch(0.470 0.032 230)
+  subtle: oklch(0.520 0.048 191) # comments and line numbers
+  faint: oklch(0.810 0.020 225) # indent guides and whitespace (decorative)
+  onAccent: surface.base # text on the accent fill — light, as in Orbit
+  onFill: surface.base # text on a status fill — light here, dark in Orbit
+
+# -----------------------------------------------------------------------------
+# Syntax roles
+#
+# The same ladder as Orbit, run the other way: dimmest is now lightest.
+# -----------------------------------------------------------------------------
+# These eleven values were solved jointly, not picked one at a time. A light
+# ground leaves far less room than a dark one: everything that has to clear AA
+# against near-white is squeezed into roughly L 0.30-0.55, where Orbit has the
+# whole 0.43-0.95 range to spread across. Inside that band the roles have to
+# stay separable under three colour-vision simulations at once, and moving any
+# one of them pushes another below the line.
+#
+# They were found by search, bounded by the design intent — strings stay green
+# enough to read as strings, punctuation and comments stay near-neutral so they
+# recede, nothing outshines plain text. Without those bounds the search happily
+# produces grey strings and navy punctuation, which scores better and looks
+# nothing like Satellite.
+role:
+  punctuation: oklch(0.400 0.033 242)
+  variable: oklch(0.360 0.068 20)
+  string: oklch(0.495 0.100 150)
+  keyword: oklch(0.443 0.153 70)
+  # Rotated bluer than Orbit's 215. See the note at the top of this file.
+  function: oklch(0.550 0.153 247)
+  type: oklch(0.360 0.101 196)
+  constant: oklch(0.567 0.136 32)
+  tag: oklch(0.442 0.205 330)
+  regexp: oklch(0.548 0.125 105)
+  invalid: oklch(0.439 0.214 26)
+
+# -----------------------------------------------------------------------------
+# Accent
+# -----------------------------------------------------------------------------
+accent:
+  base: oklch(0.520 0.100 194) # cursor, links, active borders, focus rings
+  solid: oklch(0.470 0.095 194) # status bar and button fills
+
+# -----------------------------------------------------------------------------
+# Diagnostics and version control
+# -----------------------------------------------------------------------------
+status:
+  error: oklch(0.439 0.214 26)
+  warning: oklch(0.470 0.140 70)
+  info: oklch(0.500 0.150 247)
+  success: oklch(0.470 0.110 150)
+
+vcs:
+  added: oklch(0.470 0.110 150)
+  modified: oklch(0.470 0.140 78)
+  deleted: oklch(0.460 0.200 26)
+  conflicting: oklch(0.520 0.150 42)
+  ignored: oklch(0.700 0.014 225)
+  untracked: oklch(0.470 0.110 150)
+
+# -----------------------------------------------------------------------------
+# Bracket pair colourisation
+# -----------------------------------------------------------------------------
+bracket:
+  one: oklch(0.500 0.120 78)
+  two: oklch(0.450 0.185 325)
+  three: oklch(0.520 0.130 248)
+  four: oklch(0.540 0.165 35)
+  five: oklch(0.490 0.130 158)
+  six: oklch(0.470 0.140 268)
+
+# -----------------------------------------------------------------------------
+# Terminal ANSI
+#
+# The mirror of Orbit's problem. On a dark ground black is the colour that
+# cannot reach AA; on a light ground it is white. Bright variants go darker and
+# more saturated rather than lighter, because "brighter" on a white ground means
+# more vivid, not paler — a paler bright-green would be less readable, not more.
+# -----------------------------------------------------------------------------
+ansi:
+  black: oklch(0.330 0.026 238)
+  red: oklch(0.510 0.200 22)
+  green: oklch(0.500 0.130 155)
+  yellow: oklch(0.500 0.115 82)
+  blue: oklch(0.500 0.160 255)
+  magenta: oklch(0.450 0.185 325)
+  cyan: oklch(0.470 0.095 196)
+  # On a light ground a literally white "white" is invisible, so it becomes a
+  # mid grey that still reads as the light end of the ramp. VS Code's own Light+
+  # does the same thing, mapping ansiWhite to #555555.
+  white: oklch(0.520 0.014 230)
+  brightBlack: oklch(0.190 0.020 238)
+  brightRed: oklch(0.420 0.185 22)
+  brightGreen: oklch(0.420 0.120 158)
+  brightYellow: oklch(0.400 0.105 82)
+  brightBlue: oklch(0.410 0.150 255)
+  brightMagenta: oklch(0.360 0.170 325)
+  brightCyan: oklch(0.380 0.085 196)
+  # The corner of the ANSI cube nearest the background — the light-theme mirror
+  # of Orbit's black. Held to the `dim` floor in a11y.yml rather than AA.
+  brightWhite: oklch(0.640 0.014 230)

@@ -9,7 +9,7 @@
 Satellite-Dark
 </h2>
 <p align="center">
-A dark theme for vs code meant to be easy on the eyes.
+A space-inspired theme for VS Code, in dark and light, meant to be easy on the eyes.
 </p>
 
 ---
@@ -32,6 +32,23 @@ $ yarn build
 ```
 
 Note that you may have to restart your Vscode in order for the theme extension to show up in your settings.
+
+## Themes
+
+Four variants, all built from one set of partials — the workbench, syntax and
+semantic rules are shared, and only the palette differs.
+
+| Theme | Ground | Contrast floor |
+| --- | --- | --- |
+| **Satellite** | dark `#1A262E` | WCAG AA |
+| **Satellite Daybreak** | light | WCAG AA |
+| **Satellite High Contrast** | dark | WCAG AAA, no decorative exemptions |
+| **Satellite Daybreak High Contrast** | white | WCAG AAA, no decorative exemptions |
+
+The high-contrast pair is held to a genuinely higher bar by the build, not just
+named for one: `src/a11y.yml` raises their text threshold to 7:1 and withdraws
+the exemptions that let indent guides and rulers stay faint in the standard
+pair.
 
 ## Supported Languages
 

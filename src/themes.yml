@@ -20,3 +20,21 @@
   uiTheme: vs-dark
   tokens: tokens.yml
   output: theme/satellite.json
+
+- id: satellite-daybreak
+  label: Satellite Daybreak
+  uiTheme: vs
+  tokens: tokens-daybreak.yml
+  output: theme/satellite-daybreak.json
+
+- id: satellite-orbit-hc
+  label: Satellite High Contrast
+  uiTheme: hc-black
+  tokens: tokens-orbit-hc.yml
+  output: theme/satellite-orbit-hc.json
+
+- id: satellite-daybreak-hc
+  label: Satellite Daybreak High Contrast
+  uiTheme: hc-light
+  tokens: tokens-daybreak-hc.yml
+  output: theme/satellite-daybreak-hc.json

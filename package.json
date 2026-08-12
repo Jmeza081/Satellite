@@ -2,7 +2,7 @@
 	"name": "theme-satellite",
 	"version": "2.18.0",
 	"displayName": "Satellite",
-	"description": "A dark theme inspired by space",
+	"description": "A space-inspired theme for VS Code, in dark and light, with high-contrast variants",
 	"license": "MIT",
 	"scripts": {
 		"dev": "node ./scripts/dev.js",
@@ -36,6 +36,21 @@
 				"label": "Satellite",
 				"uiTheme": "vs-dark",
 				"path": "./theme/satellite.json"
+			},
+			{
+				"label": "Satellite Daybreak",
+				"uiTheme": "vs",
+				"path": "./theme/satellite-daybreak.json"
+			},
+			{
+				"label": "Satellite High Contrast",
+				"uiTheme": "hc-black",
+				"path": "./theme/satellite-orbit-hc.json"
+			},
+			{
+				"label": "Satellite Daybreak High Contrast",
+				"uiTheme": "hc-light",
+				"path": "./theme/satellite-daybreak-hc.json"
 			}
 		]
 	},
