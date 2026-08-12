@@ -15,7 +15,7 @@
 		"update-color-keys": "node ./scripts/update-color-keys.js",
 		"assets": "node ./scripts/assets.js",
 		"test": "node ./scripts/test.js && npm run build && npm run validate && npm run verify && npm run fixtures",
-		"package": "vsce package -o ./bin/satellite.vsix",
+		"package": "node ./scripts/package.js",
 		"vscode:prepublish": "npm run build && npm run validate && npm run verify && npm run fixtures"
 	},
 	"repository": {
@@ -81,6 +81,7 @@
 		]
 	},
 	"devDependencies": {
+		"@vscode/vsce": "^3.2.1",
 		"js-yaml": "^4.1.0",
 		"prettier": "^3.3.3"
 	}

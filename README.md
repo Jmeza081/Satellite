@@ -79,14 +79,54 @@ sources are listed at the top of that file.
 
 ## Installing without the Marketplace
 
+### From a `.vsix` — nothing to clone
+
+The `.vsix` is a single ~53 KB file containing all four themes. Anyone can
+install it without cloning the repository or waiting for a Marketplace listing.
+
+Grab one from the [Releases](https://github.com/Jmeza081/Satellite/releases)
+page, or from the artefacts of any [build run](https://github.com/Jmeza081/Satellite/actions)
+if you want to try a branch. Then:
+
 ```bash
-git clone https://github.com/Jmeza081/Satellite.git ~/.vscode/extensions/theme-satellite
-cd ~/.vscode/extensions/theme-satellite
+code --install-extension theme-satellite-*.vsix
+```
+
+Or inside VS Code: **Extensions** view → `...` menu → **Install from VSIX…**.
+Restart, then pick a theme with `Ctrl/Cmd` `K` then `Ctrl/Cmd` `T`.
+
+To remove it: `code --uninstall-extension theme-satellite`.
+
+To build one yourself:
+
+```bash
+yarn install
+yarn package        # -> bin/theme-satellite-<version>.vsix
+```
+
+Packaging runs the full gate first, so a theme that fails contrast or coverage
+checks cannot be packaged at all.
+
+### From source
+
+For working on the theme rather than using it:
+
+```bash
+git clone https://github.com/Jmeza081/Satellite.git
+cd Satellite
 yarn install
 yarn build
 ```
 
-Restart VS Code and the four themes appear in the theme picker.
+Then either press **F5** for an Extension Development Host, or symlink the
+checkout into your extensions folder so edits are live:
+
+```bash
+ln -s "$(pwd)" ~/.vscode/extensions/theme-satellite
+```
+
+`theme/` is generated and gitignored, so `yarn build` is required before
+VS Code can load the themes. Restart VS Code after symlinking.
 
 ## Development
 
@@ -123,6 +163,7 @@ yarn coverage    # ... and list which key groups are still unstyled
 yarn verify      # contrast and colour-vision separation — fails on regression
 yarn fixtures    # per-language scope coverage
 yarn assets      # re-render assets/*.svg to PNG
+yarn package     # build an installable .vsix into bin/
 yarn test        # unit tests, then all of the above
 ```
 

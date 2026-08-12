@@ -1,0 +1,98 @@
+name: Build
+
+# Two ways to get an installable .vsix without cloning the repository:
+#
+#   1. Every push and pull request uploads one as a workflow artefact. Anyone
+#      with repository access can download it from the run summary. Good for
+#      "try this branch" — no tagging, no release, nothing to clean up.
+#
+#   2. Pushing a v* tag additionally attaches it to a GitHub Release, which is
+#      a stable, linkable download that survives artefact expiry. That is the
+#      one to hand to a team.
+#
+# Neither path needs a Marketplace publisher account or token.
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      # The full gate: unit tests, then build, colour-key validation, the
+      # accessibility contract, and per-language scope coverage. Packaging
+      # re-runs build/validate/verify/fixtures via vscode:prepublish, so a
+      # failing theme can never produce an artefact.
+      - name: Test
+        run: yarn test
+
+      - name: Package
+        run: yarn package
+
+      - name: Report
+        run: |
+          echo "### Satellite build" >> "$GITHUB_STEP_SUMMARY"
+          echo '' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          ls -lh bin/*.vsix | awk '{print $9, $5}' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Download the artefact below, then:' >> "$GITHUB_STEP_SUMMARY"
+          echo '' >> "$GITHUB_STEP_SUMMARY"
+          echo '    code --install-extension theme-satellite-*.vsix' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: satellite-vsix
+          path: bin/*.vsix
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    # Only on a v* tag. Needs write access to create the release, which is why
+    # it is a separate job — the build job stays read-only.
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: satellite-vsix
+          path: bin
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" bin/*.vsix \
+            --title "Satellite ${GITHUB_REF_NAME}" \
+            --generate-notes \
+            --notes "Download the \`.vsix\` below and install it with:
+
+          \`\`\`
+          code --install-extension theme-satellite-*.vsix
+          \`\`\`
+
+          Or in VS Code: Extensions view → \`...\` menu → **Install from VSIX…**
+
+          No Marketplace account needed. To remove: \`code --uninstall-extension theme-satellite\`."
