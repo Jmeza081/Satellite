@@ -2,7 +2,8 @@
 # Satellite Nebula — dark palette
 # =============================================================================
 #
-# A deep blue and purple ground, lit by blood orange and gold.
+# Neon at night. A violet ground, dark enough to sit under saturated colour,
+# lit by blood orange and gold.
 #
 # Same token structure, same shared ui.yml and syntax.yml, and the same
 # accessibility contract as every other variant — `yarn verify` holds this file
@@ -10,23 +11,41 @@
 # src/a11y.yml. Nothing below is exempted or overridden.
 #
 # -----------------------------------------------------------------------------
-# THE GROUND IS TWO HUES, ON PURPOSE
+# ONE GROUND, NOT TWO
 # -----------------------------------------------------------------------------
-# Orbit keeps all five surfaces on a single 238° axis, because there the drift
-# between 218° and 279° was incidental and read as a mistake — panels that went
-# slightly purple next to the editor for no stated reason.
+# All five surfaces sit in the violet family, on the same short 285°–302° arc.
+# This is the rule tokens.yml sets out, and the reason it gives holds here too:
+# a ground that changes hue underneath you reads as a mistake rather than as
+# depth. An earlier draft put the editor on blue at 265° and the chrome on
+# purple at 295°, and the seam between them was the first thing anyone saw.
 #
-# Here the drift IS the design, so it is monotonic and declared rather than
-# incidental: the editor is the bluest surface at 265°, and every surface
-# further out or further up walks toward purple, ending at 295° for the chrome
-# and the overlays. You read code on deep blue, inside a purple frame.
+# Depth comes from lightness instead, which is the axis that survives colour
+# vision deficiency anyway:
 #
-#   295°  surface.deep      activity bar, side bar, panel, terminal   purple
-#   288°  surface.overlay   selected rows, badges, sticky scroll
-#   278°  surface.raised    dropdowns, hover, secondary buttons
-#   265°  surface.base      the editor                                blue
+#   0.152  surface.deep      activity bar, side bar, panel, terminal   302°
+#   0.208  surface.base      the editor                                285°
+#   0.265  surface.raised    dropdowns, hover, secondary buttons       288°
+#   0.315  surface.overlay   selected rows, badges, sticky scroll      292°
 #
-# A reviewer changing one of these should move it along that ramp, not off it.
+# The editor is lighter than the chrome around it, so the code sits forward
+# without a hue change doing the work.
+#
+# The ground is also darker than the first draft, and deliberately so. Neon is a
+# contrast effect before it is a saturation one — the same colour that glows on
+# this ground looks like poster paint on a lighter one. Dropping the editor to
+# 0.208 is what buys the syntax roles the room to run at full chroma and still
+# clear AA.
+#
+# -----------------------------------------------------------------------------
+# SATURATION
+# -----------------------------------------------------------------------------
+# Every syntax role is pushed to or past the sRGB boundary for its hue at its
+# lightness. Values below that read as impossibly high — chroma 0.29 at 335°,
+# say — are not errors: scripts/color.js binary-searches the largest in-gamut
+# chroma and clamps, so asking past the edge is how you ask for "as saturated as
+# this hue gets here". The exceptions are deliberate and marked: comments,
+# punctuation and variables stay low, because they are the tokens that repeat
+# most, and a file where every glyph glows is a file you cannot read.
 #
 # -----------------------------------------------------------------------------
 # WHERE THE WARM COLOURS GO
@@ -53,56 +72,63 @@
 # tokens.yml: under colour-vision simulation hue differences collapse and
 # lightness differences survive. Reading order, dimmest to brightest:
 #
-#   0.445  text.faint        indent guides           decorative
-#   0.655  text.subtle       comments                violet, recedes
-#   0.680  role.tag          JSX/HTML tags
-#   0.688  role.type         types                   + italic
-#   0.700  role.constant     numbers, constants      BLOOD ORANGE
-#   0.770  role.punctuation  braces, semicolons      structural, quiet
-#   0.795  role.function     calls and declarations
-#   0.800  role.variable     identifiers             near-foreground
-#   0.870  role.keyword      keywords, storage       GOLD
-#   0.910  role.string       string literals
-#   0.945  text.default      plain text
+#   0.430  text.faint        indent guides           decorative
+#   0.645  text.subtle       comments                violet, recedes
+#   0.680  role.constant     numbers, constants      BLOOD ORANGE
+#   0.710  role.type         types                   + italic
+#   0.715  role.tag          JSX/HTML tags           neon magenta
+#   0.778  role.punctuation  braces, semicolons      structural, quiet
+#   0.810  role.variable     identifiers             near-foreground
+#   0.820  role.function     calls and declarations  neon cyan
+#   0.865  role.keyword      keywords, storage       GOLD
+#   0.905  role.string       string literals         neon mint
+#   0.950  text.default      plain text
 #
-# Three constraints in here are tighter than they look, and all three were
-# solved against the verifier rather than by eye. They are the reason several
-# values are oddly specific; moving any one of them tends to break another.
+# Four constraints in here are tighter than they look, and all four were solved
+# by search against the verifier rather than by eye. They are the reason several
+# values are oddly specific; moving any one of them tends to break another. The
+# margin quoted is the worst of the three simulations, against a floor of 12.
 #
-#   · comments are violet and punctuation is slate — deuteranopia deltaE 14.
-#     They are the two lowest-chroma colours in the palette, so nearly all of
-#     their separation is lightness. Putting punctuation on the surface violet,
-#     which is the obvious move for a purple theme, drops this pair through the
-#     floor; so does closing the 0.115 lightness gap between them.
-#   · strings against variables — deuteranopia deltaE 13. Jade and rose both
-#     collapse toward yellow when the green channel goes, which is why the
-#     string chroma is high and its lightness sits well clear of the variable.
-#   · functions and variables sit 0.005 apart in lightness, as they do in
-#     Orbit, and are held apart entirely by hue across the blue/yellow axis.
+#   · constants against tags — deltaE 22. This is the pair saturation nearly
+#     cost us. Tritanopia collapses the blue/yellow axis, so a neon magenta and
+#     a neon orange both land on red and the pair fell to 5 when both roles were
+#     pushed to the gamut edge at the same lightness. It is bought back by
+#     lightness: the tag is the brighter of the two by 0.035, not the dimmer.
+#   · comments are violet and punctuation is slate — deltaE 16. They are the two
+#     lowest-chroma colours in the palette, so nearly all of their separation is
+#     lightness. Putting punctuation on the surface violet, which is the obvious
+#     move for a purple theme, drops the pair through the floor; so does closing
+#     the 0.133 lightness gap between them.
+#   · strings against variables — deltaE 14, the tightest in the theme. Mint and
+#     rose both collapse toward yellow when the green channel goes, which is why
+#     the string chroma is at the gamut edge and the variable's is not.
+#   · functions and variables sit 0.010 apart in lightness, as they nearly do in
+#     Orbit, and are held apart almost entirely by hue across the blue/yellow
+#     axis.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Surfaces — the blue-to-purple ramp described above
+# Surfaces — one violet family, separated by lightness
 # -----------------------------------------------------------------------------
 surface:
-  deep: oklch(0.185 0.040 295) # activity bar, side bar, panel, terminal, widgets
-  base: oklch(0.238 0.050 265) # editor
-  raised: oklch(0.288 0.052 278) # dropdowns, hover states, secondary buttons
-  overlay: oklch(0.335 0.056 288) # selected rows, badges, sticky scroll
+  deep: oklch(0.152 0.038 302) # activity bar, side bar, panel, terminal, widgets
+  base: oklch(0.208 0.048 285) # editor
+  raised: oklch(0.265 0.055 288) # dropdowns, hover states, secondary buttons
+  overlay: oklch(0.315 0.060 292) # selected rows, badges, sticky scroll
 
 border:
   # Satellite separates panels with a line darker than either surface rather
   # than a lighter one, and that is a large part of how the theme reads. Kept,
-  # and taken to the purple end of the ramp.
-  seam: oklch(0.125 0.032 296)
-  soft: oklch(0.355 0.048 282) # hairlines within a surface
-  strong: oklch(0.500 0.052 282) # visible boundaries where 1.4.11 applies
+  # and taken to the deep end of the violet arc.
+  seam: oklch(0.100 0.030 302)
+  soft: oklch(0.340 0.052 290) # hairlines within a surface
+  strong: oklch(0.490 0.058 290) # visible boundaries where 1.4.11 applies
 
 # -----------------------------------------------------------------------------
 # Washes — translucent fills. Alpha is a hex byte, as in VS Code's #RRGGBBAA.
 #
 # Selection, find and drop targets all derive from accent.base, so the whole
-# interaction layer is blood orange over blue.
+# interaction layer is blood orange over violet.
 # -----------------------------------------------------------------------------
 wash:
   selection: alpha(accent.base, 3D) # editor and workbench text selection
@@ -122,10 +148,10 @@ wash:
 text:
   # Carries a trace of the surface violet rather than being neutral, so it
   # settles onto the ground instead of floating in front of it.
-  default: oklch(0.945 0.014 288)
-  muted: oklch(0.780 0.024 288) # secondary UI text, section headers
-  subtle: oklch(0.655 0.055 292) # comments and line numbers
-  faint: oklch(0.445 0.038 288) # indent guides and whitespace (decorative)
+  default: oklch(0.950 0.016 290)
+  muted: oklch(0.790 0.028 290) # secondary UI text, section headers
+  subtle: oklch(0.645 0.060 292) # comments and line numbers
+  faint: oklch(0.430 0.042 290) # indent guides and whitespace (decorative)
 
   # onAccent sits on accent.solid, a deep blood orange, so it stays light.
   # onFill sits on a bright status fill and has to be dark. See tokens.yml for
@@ -134,32 +160,34 @@ text:
   onFill: surface.deep
 
 # -----------------------------------------------------------------------------
-# Syntax roles
+# Syntax roles — at the gamut edge except where marked
 # -----------------------------------------------------------------------------
 role:
   # Slate, not violet. Punctuation is adjacent to comments in the contract, and
   # both are low-chroma; putting this on the surface violet collapses the pair.
-  punctuation: oklch(0.770 0.048 224)
+  # Held quiet on purpose: braces and semicolons are structure, not signal.
+  punctuation: oklch(0.778 0.055 225)
 
   # The most common token in a file, so it sits close to plain text and carries
-  # only enough warmth to belong to the blood orange family.
-  variable: oklch(0.800 0.070 22)
+  # only enough warmth to belong to the blood orange family. Also held quiet on
+  # purpose — a neon identifier on every line is what makes a theme unreadable.
+  variable: oklch(0.810 0.084 14)
 
-  string: oklch(0.910 0.160 163)
-  keyword: oklch(0.870 0.140 88) # gold
-  function: oklch(0.795 0.115 208)
+  string: oklch(0.905 0.230 158) # neon mint, clamped to the edge
+  keyword: oklch(0.865 0.200 88) # neon gold, clamped to the edge
+  function: oklch(0.820 0.175 208) # neon cyan, clamped to the edge
 
   # Split from function and given italic as a second, non-colour cue, since
-  # teal and aqua stay close under every simulation.
-  type: oklch(0.688 0.095 192)
+  # teal and cyan stay close under every simulation.
+  type: oklch(0.710 0.130 178)
 
-  constant: oklch(0.700 0.190 36) # blood orange
-  # Chroma is pushed harder than the other roles: in JSX, tags and functions sit
-  # inches apart, both are word-shaped, and magenta and aqua lose most of their
-  # separation under deuteranopia. The extra chroma buys that pair back.
-  tag: oklch(0.680 0.220 332)
-  regexp: oklch(0.940 0.115 122)
-  invalid: oklch(0.665 0.205 20)
+  constant: oklch(0.680 0.220 39) # neon blood orange, clamped to the edge
+  # In JSX, tags and functions sit inches apart, both are word-shaped, and
+  # magenta and cyan lose most of their separation under deuteranopia. Tag runs
+  # at the highest chroma in the palette to buy that pair back.
+  tag: oklch(0.715 0.300 329)
+  regexp: oklch(0.935 0.160 132)
+  invalid: oklch(0.680 0.250 22)
 
 # -----------------------------------------------------------------------------
 # Accent — the blood orange that makes a screenshot recognisably Nebula
@@ -168,25 +196,25 @@ role:
 # and one dark enough to hold text.default as a fill.
 # -----------------------------------------------------------------------------
 accent:
-  base: oklch(0.720 0.175 40) # cursor, links, active borders, focus rings
-  solid: oklch(0.470 0.140 34) # status bar and button fills
+  base: oklch(0.730 0.215 40) # cursor, links, active borders, focus rings
+  solid: oklch(0.470 0.165 34) # status bar and button fills
 
 # -----------------------------------------------------------------------------
 # Diagnostics and version control
 # -----------------------------------------------------------------------------
 status:
-  error: oklch(0.665 0.205 20)
-  warning: oklch(0.800 0.150 78) # gold
-  info: oklch(0.740 0.110 262)
-  success: oklch(0.780 0.150 158)
+  error: oklch(0.680 0.250 22)
+  warning: oklch(0.810 0.180 78) # gold
+  info: oklch(0.760 0.150 262)
+  success: oklch(0.800 0.200 158)
 
 vcs:
-  added: oklch(0.760 0.150 158)
-  modified: oklch(0.820 0.140 85) # gold
-  deleted: oklch(0.700 0.190 22)
-  conflicting: oklch(0.720 0.175 40)
-  ignored: oklch(0.530 0.030 285)
-  untracked: oklch(0.720 0.130 158)
+  added: oklch(0.790 0.200 158)
+  modified: oklch(0.830 0.180 85) # gold
+  deleted: oklch(0.710 0.230 22)
+  conflicting: oklch(0.730 0.215 40)
+  ignored: oklch(0.520 0.035 290)
+  untracked: oklch(0.750 0.180 158)
 
 # -----------------------------------------------------------------------------
 # Bracket pair colourisation
@@ -195,12 +223,12 @@ vcs:
 # pair is the one that reads first.
 # -----------------------------------------------------------------------------
 bracket:
-  one: oklch(0.850 0.140 88)
-  two: oklch(0.720 0.180 332)
-  three: oklch(0.800 0.120 208)
-  four: oklch(0.740 0.180 40)
-  five: oklch(0.870 0.140 165)
-  six: oklch(0.760 0.140 272)
+  one: oklch(0.855 0.190 88)
+  two: oklch(0.730 0.250 335)
+  three: oklch(0.820 0.160 205)
+  four: oklch(0.750 0.210 40)
+  five: oklch(0.880 0.200 158)
+  six: oklch(0.770 0.180 272)
 
 # -----------------------------------------------------------------------------
 # Terminal ANSI
@@ -211,21 +239,21 @@ ansi:
   # ANSI black cannot reach AA on a dark ground without ceasing to be black, so
   # it is held to the documented `dim` floor in src/a11y.yml instead — high
   # enough that anything printing in black is unambiguously visible.
-  black: oklch(0.465 0.030 290)
+  black: oklch(0.448 0.034 292)
   # brightBlack is what CLI tools reach for when they print dim body text, so it
   # is held to full AA.
-  brightBlack: oklch(0.600 0.032 290)
-  red: oklch(0.665 0.205 20)
-  green: oklch(0.760 0.150 158)
-  yellow: oklch(0.820 0.140 85)
-  blue: oklch(0.700 0.150 265)
-  magenta: oklch(0.690 0.180 332)
-  cyan: oklch(0.720 0.110 200)
-  white: oklch(0.880 0.014 288)
-  brightRed: oklch(0.740 0.190 25)
-  brightGreen: oklch(0.870 0.150 158)
-  brightYellow: oklch(0.900 0.130 88)
-  brightBlue: oklch(0.790 0.130 265)
-  brightMagenta: oklch(0.790 0.160 332)
-  brightCyan: oklch(0.830 0.110 200)
-  brightWhite: oklch(0.975 0.008 288)
+  brightBlack: oklch(0.580 0.036 292)
+  red: oklch(0.680 0.250 22)
+  green: oklch(0.790 0.200 158)
+  yellow: oklch(0.830 0.180 85)
+  blue: oklch(0.720 0.190 265)
+  magenta: oklch(0.710 0.260 335)
+  cyan: oklch(0.760 0.150 200)
+  white: oklch(0.890 0.016 290)
+  brightRed: oklch(0.760 0.220 25)
+  brightGreen: oklch(0.890 0.200 158)
+  brightYellow: oklch(0.915 0.170 88)
+  brightBlue: oklch(0.810 0.160 265)
+  brightMagenta: oklch(0.810 0.210 335)
+  brightCyan: oklch(0.855 0.140 200)
+  brightWhite: oklch(0.980 0.010 290)

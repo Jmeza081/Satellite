@@ -17,7 +17,7 @@ semantic rules are shared, and only the palette differs.
 | Theme | Ground | Contrast floor |
 | --- | --- | --- |
 | **Satellite** | dark `#1A262E` | WCAG AA |
-| **Satellite Nebula** | dark `#131E36` | WCAG AA |
+| **Satellite Nebula** | dark `#16142D` | WCAG AA |
 | **Satellite Daybreak** | light | WCAG AA |
 | **Satellite High Contrast** | dark | WCAG AAA, no decorative exemptions |
 | **Satellite Daybreak High Contrast** | white | WCAG AAA, no decorative exemptions |
