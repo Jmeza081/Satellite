@@ -56,8 +56,12 @@
 # WHERE THE WARM COLOURS GO
 # -----------------------------------------------------------------------------
 # Blood orange is the accent — cursor, focus ring, links, active tab indicator,
-# selection wash, status bar fill. It is the colour a screenshot is recognised
-# by, and it is the one hue on screen with no neighbour anywhere near it.
+# selection wash. It is the colour a screenshot is recognised by, and it is the
+# one hue on screen with no neighbour anywhere near it.
+#
+# It is deliberately not the status bar. See `chrome.statusBar` below: the
+# accent is used where it marks something the eye is looking for, not as a band
+# that is lit all day. The bar still goes orange while a debug session runs.
 #
 # Gold is the second highlight, and it lands where the eye goes next: keywords,
 # warnings, modified files in the gutter, the outermost bracket pair.
@@ -223,6 +227,18 @@ role:
 accent:
   base: oklch(0.730 0.215 40) # cursor, links, active borders, focus rings
   solid: oklch(0.470 0.165 34) # status bar and button fills
+
+# -----------------------------------------------------------------------------
+# Chrome — large UI fills that are not signalling anything
+# -----------------------------------------------------------------------------
+chrome:
+  # The status bar at rest, and the one place Nebula does not use its accent.
+  # A blood orange band across the bottom of the window is the loudest thing on
+  # screen and it is on permanently, which reads as an alarm that never clears.
+  # This is the raised surface instead, so the bar is chrome until it has
+  # something to say — debugging, errors, warnings and offline all keep their
+  # own colour keys and still take over the bar when they fire.
+  statusBar: surface.raised
 
 # -----------------------------------------------------------------------------
 # Diagnostics and version control

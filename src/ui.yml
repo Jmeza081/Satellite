@@ -581,7 +581,7 @@ outputViewStickyScroll.background: surface.overlay
 # The 2019 accent could not hold white text (3.57:1). accent.solid is deep
 # enough that text.default clears 5.3:1.
 # -----------------------------------------------------------------------------
-statusBar.background: accent.solid
+statusBar.background: chrome.statusBar
 statusBar.foreground: text.onAccent
 statusBar.border: border.seam
 statusBar.focusBorder: text.default

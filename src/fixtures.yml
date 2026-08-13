@@ -336,7 +336,7 @@
   cases:
     - {
         as: JSON key,
-        expect: role.type,
+        expect: role.variable,
         stack:
           [source.json, meta.structure.dictionary.json, support.type.property-name.json],
       }

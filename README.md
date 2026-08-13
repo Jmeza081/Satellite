@@ -21,7 +21,9 @@ separated by lightness rather than hue, and the ground runs dark on purpose:
 neon is a contrast effect before it is a saturation one, so a dark ground is
 what lets the syntax roles sit at the edge of sRGB and still clear WCAG AA.
 
-Blood orange is the accent — cursor, focus ring, links, selection, status bar.
+Blood orange is the accent — cursor, focus ring, links, selection. Not the
+status bar: that rests on a violet surface and only turns orange when a debug
+session is running, so the loudest colour on screen means something is happening.
 Gold is the second highlight, on keywords and warnings. The remaining roles are
 cool, which is a constraint rather than a preference: the warm band holds three
 roles and no more, because orange and gold collapse toward the same yellow for a

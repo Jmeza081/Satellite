@@ -381,6 +381,23 @@
   settings:
     fontStyle: regular
 
+# A JSON key is an object property, and object properties are painted with
+# `role.variable` a few sections down. Without this rule they fall through to
+# the broad `support` selector above and come out as types instead, so the same
+# concept is one colour in a .ts file and another in a .json file — and in a
+# document that is nothing but keys and values, keys and string values end up
+# on neighbouring hues.
+#
+# Scoped to `source.json` rather than to `support.type.property-name`, because
+# CSS property names share that scope and are genuinely built-ins. The
+# descendant selector also covers .jsonc and .json5, whose grammars nest under
+# `source.json`.
+- name: JSON property names
+  scope:
+    - source.json support.type.property-name
+  settings:
+    foreground: role.variable
+
 # =============================================================================
 # Punctuation
 # =============================================================================

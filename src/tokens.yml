@@ -155,6 +155,17 @@ accent:
   solid: oklch(0.480 0.095 194) # status bar and button fills — holds text.default at 5.3:1
 
 # -----------------------------------------------------------------------------
+# Chrome — large UI fills that are not signalling anything
+# -----------------------------------------------------------------------------
+chrome:
+  # The status bar at rest. Split out from accent.solid because the bar is on
+  # screen permanently, so what reads as a confident accent on a button reads as
+  # a demand for attention along the bottom of the window. Every state that does
+  # want attention — debugging, errors, warnings, offline — has its own colour
+  # key and is unaffected by this one.
+  statusBar: accent.solid
+
+# -----------------------------------------------------------------------------
 # Diagnostics and version control
 # -----------------------------------------------------------------------------
 status:
