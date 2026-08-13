@@ -64,6 +64,11 @@
 				"path": "./theme/satellite.json"
 			},
 			{
+				"label": "Satellite Nebula",
+				"uiTheme": "vs-dark",
+				"path": "./theme/satellite-nebula.json"
+			},
+			{
 				"label": "Satellite Daybreak",
 				"uiTheme": "vs",
 				"path": "./theme/satellite-daybreak.json"

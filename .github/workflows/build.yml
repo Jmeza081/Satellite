@@ -2,9 +2,10 @@ name: Build
 
 # Two ways to get an installable .vsix without cloning the repository:
 #
-#   1. Every push and pull request uploads one as a workflow artefact. Anyone
-#      with repository access can download it from the run summary. Good for
-#      "try this branch" — no tagging, no release, nothing to clean up.
+#   1. Every commit on every branch uploads one as a workflow artefact, named
+#      for the commit that produced it. Anyone with repository access can
+#      download it from the run summary. Good for "try this branch" — no
+#      tagging, no release, nothing to clean up.
 #
 #   2. Pushing a v* tag additionally attaches it to a GitHub Release, which is
 #      a stable, linkable download that survives artefact expiry. That is the
@@ -13,11 +14,22 @@ name: Build
 # Neither path needs a Marketplace publisher account or token.
 
 on:
+  # Every branch, so a work-in-progress theme is installable before it is
+  # proposed anywhere. Tags are listed separately: a `branches` filter alone
+  # would stop tag pushes from building, which is what the release job needs.
   push:
-    branches: [master]
+    branches: ['**']
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+
+# A branch only ever needs its newest commit packaged. Superseded runs are
+# cancelled rather than left to finish, so a push during a build does not queue
+# behind an artefact nobody will download. Tags are excluded from cancellation
+# because their run also cuts the release.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
 permissions:
   contents: read
@@ -25,6 +37,12 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # A pull request from a branch in this repository is already covered by the
+    # push event, so building it again would package the same commit twice.
+    # Pull requests from forks have no such push and are still built.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - uses: actions/checkout@v4
 
@@ -46,20 +64,40 @@ jobs:
       - name: Package
         run: yarn package
 
+      # The .vsix filename carries the extension version, which does not change
+      # between commits, so the artefact is named for the commit instead. Two
+      # builds of the same branch are then told apart in the run list and after
+      # download, which is the whole point of packaging per commit.
+      - name: Identify build
+        id: build
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Report
         run: |
-          echo "### Satellite build" >> "$GITHUB_STEP_SUMMARY"
-          echo '' >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          ls -lh bin/*.vsix | awk '{print $9, $5}' >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          echo 'Download the artefact below, then:' >> "$GITHUB_STEP_SUMMARY"
-          echo '' >> "$GITHUB_STEP_SUMMARY"
-          echo '    code --install-extension theme-satellite-*.vsix' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### Satellite build"
+            echo ''
+            echo "Commit \`${{ steps.build.outputs.sha }}\` on \`${GITHUB_REF_NAME}\`."
+            echo ''
+            echo 'Themes in this package:'
+            echo ''
+            echo '```'
+            node -e "for (const t of require('./package.json').contributes.themes) console.log(t.uiTheme.padEnd(9), t.label)"
+            echo '```'
+            echo ''
+            echo '```'
+            ls -lh bin/*.vsix | awk '{print $9, $5}'
+            echo '```'
+            echo 'Download the artefact below, unzip it, then:'
+            echo ''
+            echo '    code --install-extension theme-satellite-*.vsix'
+            echo ''
+            echo 'Then pick the theme with `Ctrl/Cmd K` `Ctrl/Cmd T`.'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: satellite-vsix
+          name: satellite-vsix-${{ steps.build.outputs.sha }}
           path: bin/*.vsix
           if-no-files-found: error
           retention-days: 30
@@ -75,9 +113,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Matched by pattern rather than by name: the build job names the artefact
+      # for the commit, and a tag build has exactly one.
       - uses: actions/download-artifact@v4
         with:
-          name: satellite-vsix
+          pattern: satellite-vsix-*
+          merge-multiple: true
           path: bin
 
       - name: Publish release

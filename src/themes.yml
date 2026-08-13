@@ -21,6 +21,12 @@
   tokens: tokens.yml
   output: theme/satellite.json
 
+- id: satellite-nebula
+  label: Satellite Nebula
+  uiTheme: vs-dark
+  tokens: tokens-nebula.yml
+  output: theme/satellite-nebula.json
+
 - id: satellite-daybreak
   label: Satellite Daybreak
   uiTheme: vs
