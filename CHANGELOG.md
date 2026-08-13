@@ -14,6 +14,12 @@ high-contrast companions it never had. The dark theme keeps the name
 
 ### Added
 
+- **Satellite Nebula**, a second dark theme: a deep blue editor inside a purple
+  frame, lit by blood orange and gold. The surface ramp deliberately walks
+  across hue — 265° at the editor out to 295° at the chrome — which is the one
+  thing Nebula does that the other variants forbid, so the ramp is documented as
+  monotonic and the direction is stated. Held to the same AA floor and the same
+  adjacency contract as the rest; nothing is exempted for it.
 - **Satellite Daybreak**, a light theme. Not an inversion — hues are held from
   the dark theme, but chroma rises and lightness drops, because a colour needs
   more saturation to read as itself against white.
