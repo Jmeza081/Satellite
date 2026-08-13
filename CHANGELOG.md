@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [2.19.0] — 2026-08-13
+
 The theme was rebuilt for publication: re-graded against WCAG 2.2 and
 colour-vision simulation, extended across the web stack, and given the light and
 high-contrast companions it never had. The dark theme keeps the name
@@ -45,9 +49,13 @@ high-contrast companions it never had. The dark theme keeps the name
   the command centre, notebooks, testing and coverage, the merge and multi-diff
   editors, chat and inline chat, keybinding labels, banners, profile badges, the
   source-control graph and terminal decorations. 184 colour keys became 821.
-- A build that can prove all of the above: `yarn verify` runs 336 contrast and
+- A build that can prove all of the above: `yarn verify` runs 419 contrast and
   colour-vision checks, and `yarn fixtures` resolves 101 language scope stacks
   against the theme's own rules. Both fail the build on regression.
+- Generated brand artwork and README captures. `yarn brand` draws the icon and
+  banner from the palette and `yarn screenshots` captures one editor per theme,
+  so neither can drift out of step with the colours the way hand-drawn artwork
+  and hand-taken screenshots silently do.
 
 ### Changed
 
@@ -61,6 +69,18 @@ high-contrast companions it never had. The dark theme keeps the name
 - **Variables and constants** were 1.1 ΔE apart under tritanopia — effectively
   one colour, because they sat at near-identical lightness. Six other pairs
   collapsed similarly. Every adjacency is now separated by lightness.
+- **JSON keys** moved off the type colour onto the identifier colour, in every
+  theme. A JSON key is an object property, and object properties already used
+  that role, so the same concept was one colour in a `.ts` file and another in a
+  `.json` file — and in a document that is nothing but keys and values, keys and
+  string values sat on neighbouring hues. CSS and SCSS property names share the
+  scope but are genuinely built-ins, so the rule is scoped to `source.json` and
+  they are unchanged.
+- **The status bar** now resolves through a per-theme `chrome.statusBar` token
+  rather than the accent. Only Nebula changes, where the accent as a permanent
+  band along the window read as an alarm that never clears; the four other
+  themes set the token to their existing accent and are unchanged. Every state
+  that signals — debugging, errors, warnings, offline — keeps its own key.
 - **Punctuation** moved off the keyword gold onto a neutral slate. Gold now
   means keyword.
 - **Attribute names** moved off the string green, so `class="btn"` no longer
