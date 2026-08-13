@@ -20,10 +20,13 @@ high-contrast companions it never had. The dark theme keeps the name
   other dark variants — neon is a contrast effect before it is a saturation one,
   and the darker ground is what lets the syntax roles sit at the sRGB gamut edge
   and still clear AA. Held to the same AA floor and the same adjacency contract
-  as the rest; nothing is exempted for it. The saturation costs margin rather
-  than earning it: pushed to the edge, the neon magenta of tags and the blood
-  orange of constants both collapse to red under tritanopia, and that pair is
-  bought back by separating the two in lightness.
+  as the rest; nothing is exempted for it. Saturation costs separation rather
+  than earning it, so three roles are deliberately held off the gamut edge —
+  comments, punctuation and tags — while the rest run as saturated as their hue
+  allows. Identifiers are lilac, on the ground's own hue rather than in the warm
+  or the cool camp; the warm band carries three roles and no more, because
+  orange and gold collapse toward the same yellow without the red or green
+  channel.
 - **Satellite Daybreak**, a light theme. Not an inversion — hues are held from
   the dark theme, but chroma rises and lightness drops, because a colour needs
   more saturation to read as itself against white.

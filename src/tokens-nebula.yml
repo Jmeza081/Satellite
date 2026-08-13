@@ -39,13 +39,18 @@
 # -----------------------------------------------------------------------------
 # SATURATION
 # -----------------------------------------------------------------------------
-# Every syntax role is pushed to or past the sRGB boundary for its hue at its
-# lightness. Values below that read as impossibly high — chroma 0.29 at 335°,
-# say — are not errors: scripts/color.js binary-searches the largest in-gamut
-# chroma and clamps, so asking past the edge is how you ask for "as saturated as
-# this hue gets here". The exceptions are deliberate and marked: comments,
-# punctuation and variables stay low, because they are the tokens that repeat
-# most, and a file where every glyph glows is a file you cannot read.
+# Most syntax roles are pushed to or past the sRGB boundary for their hue at
+# their lightness. Values below that read as impossibly high — chroma 0.23 at
+# 158°, say — are not errors: scripts/color.js binary-searches the largest
+# in-gamut chroma and clamps, so asking past the edge is how you ask for "as
+# saturated as this hue gets here". Keywords, strings, functions, types,
+# constants and variables all clamp; none of them reaches the chroma it asks
+# for, and the number to read is the hex, not the request.
+#
+# Three roles are deliberately held below the edge, and are marked where they
+# are declared: comments, punctuation and tags. The first two repeat on every
+# line, and a file where every glyph glows is a file you cannot read. Tags were
+# the third once identifiers moved to lilac — see the note on role.tag.
 #
 # -----------------------------------------------------------------------------
 # WHERE THE WARM COLOURS GO
@@ -57,13 +62,16 @@
 # Gold is the second highlight, and it lands where the eye goes next: keywords,
 # warnings, modified files in the gutter, the outermost bracket pair.
 #
-# The remaining syntax roles are cool, and that is a constraint rather than a
-# preference. Ten roles cannot be drawn from two adjacent warm hues and still
-# clear deltaE 12 under protanopia and deuteranopia — orange and gold both
-# collapse toward the same yellow, so any third or fourth warm role collapses
-# with them. Strings, functions and types therefore sit on the cool side of the
-# wheel, where they stay separable from the warm pair under every simulation and
-# read as the cloud the warm colours are burning through.
+# The warm band carries exactly three roles, spread as far apart as it can hold
+# them: tags at 10°, constants at 39°, keywords at 88°. That is the ceiling, not
+# a stylistic choice. Orange and gold both collapse toward the same yellow under
+# protanopia and deuteranopia, so warm roles have to be bought apart with
+# lightness as well as hue, and there is only so much of that to go around.
+#
+# Strings, functions and types are therefore cool, where they stay separable
+# from the warm three under every simulation and read as the cloud the warm
+# colours are burning through. Identifiers are lilac, which puts them on the
+# ground's own hue rather than in either camp.
 #
 # -----------------------------------------------------------------------------
 # THE LADDER
@@ -75,8 +83,8 @@
 #   0.430  text.faint        indent guides           decorative
 #   0.645  text.subtle       comments                violet, recedes
 #   0.680  role.constant     numbers, constants      BLOOD ORANGE
+#   0.690  role.tag          JSX/HTML tags           dusty rose
 #   0.710  role.type         types                   + italic
-#   0.715  role.tag          JSX/HTML tags           neon magenta
 #   0.760  role.variable     identifiers             lilac, quiet
 #   0.778  role.punctuation  braces, semicolons      structural, quiet
 #   0.820  role.function     calls and declarations  neon cyan
@@ -89,18 +97,21 @@
 # values are oddly specific; moving any one of them tends to break another. The
 # margin quoted is the worst of the three simulations, against a floor of 12.
 #
-#   · constants against tags — deltaE 22. This is the pair saturation nearly
-#     cost us. Tritanopia collapses the blue/yellow axis, so a neon magenta and
-#     a neon orange both land on red and the pair fell to 5 when both roles were
-#     pushed to the gamut edge at the same lightness. It is bought back by
-#     lightness: the tag is the brighter of the two by 0.035, not the dimmer.
 #   · comments are violet and punctuation is slate — deltaE 16. They are the two
 #     lowest-chroma colours in the palette, so nearly all of their separation is
 #     lightness. Putting punctuation on the surface violet, which is the obvious
 #     move for a purple theme, drops the pair through the floor; so does closing
 #     the 0.133 lightness gap between them.
-#   · functions against variables — deltaE 18. Neon cyan against lilac, held by
-#     hue and by 0.060 of lightness.
+#   · functions against types — deltaE 16. Neon cyan against teal, 0.110 of
+#     lightness apart, with italic on the type as a second, non-colour cue.
+#   · functions against strings — deltaE 16. Cyan against mint, both cool, both
+#     bright; this is the pair that stops the cool side taking another role.
+#   · constants against tags — deltaE 23, and worth understanding before anyone
+#     re-saturates the tag. Tritanopia collapses the blue/yellow axis, so a warm
+#     tag and a warm constant both land on red. When the tag was a neon magenta
+#     at the gamut edge this pair measured 5, against a floor of 12. The dusty
+#     rose has room because it is not at the edge, not because the hazard went
+#     away.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -188,10 +199,18 @@ role:
   type: oklch(0.710 0.130 178)
 
   constant: oklch(0.680 0.220 39) # neon blood orange, clamped to the edge
-  # In JSX, tags and functions sit inches apart, both are word-shaped, and
-  # magenta and cyan lose most of their separation under deuteranopia. Tag runs
-  # at the highest chroma in the palette to buy that pair back.
-  tag: oklch(0.715 0.300 329)
+
+  # Dusty rose, and one of the three roles deliberately kept off the gamut edge.
+  #
+  # This was a neon magenta until identifiers moved to lilac, at which point the
+  # two sat deltaE 7 apart — and in JSX they are adjacent constantly, as in
+  # `<Panel value={dv} />`. The obvious repair does not work: softening the
+  # magenta pulls it toward the lilac's lightness and lands it at 6. Moving the
+  # hue across to the warm side is what buys the separation, and it measures 48.
+  #
+  # Chroma is held at 0.160 rather than pushed. At the edge this collides with
+  # the blood orange of constants under tritanopia; see the ladder note above.
+  tag: oklch(0.690 0.160 10)
   regexp: oklch(0.935 0.160 132)
   invalid: oklch(0.680 0.250 22)
 
