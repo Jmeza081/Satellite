@@ -77,8 +77,8 @@
 #   0.680  role.constant     numbers, constants      BLOOD ORANGE
 #   0.710  role.type         types                   + italic
 #   0.715  role.tag          JSX/HTML tags           neon magenta
+#   0.760  role.variable     identifiers             lilac, quiet
 #   0.778  role.punctuation  braces, semicolons      structural, quiet
-#   0.810  role.variable     identifiers             near-foreground
 #   0.820  role.function     calls and declarations  neon cyan
 #   0.865  role.keyword      keywords, storage       GOLD
 #   0.905  role.string       string literals         neon mint
@@ -99,12 +99,8 @@
 #     lightness. Putting punctuation on the surface violet, which is the obvious
 #     move for a purple theme, drops the pair through the floor; so does closing
 #     the 0.133 lightness gap between them.
-#   · strings against variables — deltaE 14, the tightest in the theme. Mint and
-#     rose both collapse toward yellow when the green channel goes, which is why
-#     the string chroma is at the gamut edge and the variable's is not.
-#   · functions and variables sit 0.010 apart in lightness, as they nearly do in
-#     Orbit, and are held apart almost entirely by hue across the blue/yellow
-#     axis.
+#   · functions against variables — deltaE 18. Neon cyan against lilac, held by
+#     hue and by 0.060 of lightness.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -168,10 +164,20 @@ role:
   # Held quiet on purpose: braces and semicolons are structure, not signal.
   punctuation: oklch(0.778 0.055 225)
 
-  # The most common token in a file, so it sits close to plain text and carries
-  # only enough warmth to belong to the blood orange family. Also held quiet on
+  # Lilac, so identifiers belong to the ground rather than adding a fourth accent
+  # to compete with the neon. Held below the chroma of the signalling roles on
   # purpose — a neon identifier on every line is what makes a theme unreadable.
-  variable: oklch(0.810 0.084 14)
+  #
+  # This replaced a warm rose that cleared the contract while sitting deltaE 6
+  # from the keyword gold under deuteranopia — `const x` with the two words
+  # nearly the same colour. Variables and keywords are not a declared adjacent
+  # pair in a11y.yml, so nothing was checking.
+  #
+  # That pair is worth adding to the contract, but it cannot simply be switched
+  # on: measured today it is 9.2 on Satellite and 10.2 on Daybreak under
+  # tritanopia, so declaring it would fail two shipped themes until their warm
+  # roles are re-graded. Nebula measures 23.
+  variable: oklch(0.760 0.170 305)
 
   string: oklch(0.905 0.230 158) # neon mint, clamped to the edge
   keyword: oklch(0.865 0.200 88) # neon gold, clamped to the edge
