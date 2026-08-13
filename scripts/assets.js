@@ -13,7 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { requireChromium, shoot } = require('./chromium');
 
 const ROOT = path.join(__dirname, '..');
 const ASSETS = path.join(ROOT, 'assets');
@@ -25,40 +25,6 @@ const TARGETS = {
     'banner.svg': [1280],
     'banner-light.svg': [1280],
 };
-
-function findChromium() {
-    const roots = [process.env.PLAYWRIGHT_BROWSERS_PATH, '/opt/pw-browsers'].filter(
-        Boolean,
-    );
-    for (const root of roots) {
-        if (!fs.existsSync(root)) continue;
-        const dirs = fs
-            .readdirSync(root)
-            .sort(
-                (a, b) =>
-                    (b.includes('headless') ? 1 : 0) - (a.includes('headless') ? 1 : 0),
-            );
-        for (const dir of dirs) {
-            for (const rel of [
-                // headless_shell first: smaller, and purpose-built for this
-                'chrome-linux/headless_shell',
-                'chrome-linux/chrome',
-                'chrome-mac/Chromium.app/Contents/MacOS/Chromium',
-            ]) {
-                const candidate = path.join(root, dir, rel);
-                if (fs.existsSync(candidate)) return candidate;
-            }
-        }
-    }
-    for (const name of ['chromium', 'chromium-browser', 'google-chrome']) {
-        try {
-            return execFileSync('which', [name], { encoding: 'utf8' }).trim();
-        } catch {
-            /* keep looking */
-        }
-    }
-    return null;
-}
 
 function aspect(svgPath) {
     const source = fs.readFileSync(svgPath, 'utf8');
@@ -86,33 +52,13 @@ function render(chromium, svgPath, width) {
             `<img src="${path.basename(svgPath)}">`,
     );
 
-    execFileSync(
-        chromium,
-        [
-            '--headless',
-            '--no-sandbox', // the build container runs as root
-            '--disable-gpu',
-            '--hide-scrollbars',
-            '--force-device-scale-factor=1',
-            `--window-size=${width},${height}`,
-            `--screenshot=${out}`,
-            'file://' + page,
-        ],
-        { stdio: 'pipe' },
-    );
+    const result = shoot(chromium, page, out, width, height);
 
     fs.unlinkSync(page);
-    return { out, width, height, bytes: fs.statSync(out).size };
+    return result;
 }
 
-const chromium = findChromium();
-if (!chromium) {
-    process.stderr.write(
-        'No Chromium found. Set PLAYWRIGHT_BROWSERS_PATH or install chromium, ' +
-            'then re-run. The committed PNGs are still valid.\n',
-    );
-    process.exit(1);
-}
+const chromium = requireChromium();
 
 for (const [name, widths] of Object.entries(TARGETS)) {
     const svgPath = path.join(ASSETS, name);

@@ -2,7 +2,7 @@
 	"name": "theme-satellite",
 	"version": "2.18.0",
 	"displayName": "Satellite",
-	"description": "A space-inspired theme for VS Code, in dark and light, with high-contrast variants",
+	"description": "A space-inspired theme for VS Code — neon on a violet ground, plus dark, light and high-contrast companions",
 	"license": "MIT",
 	"scripts": {
 		"dev": "node ./scripts/dev.js",
@@ -13,7 +13,9 @@
 		"fixtures": "node ./scripts/fixtures.js",
 		"verify:report": "node ./scripts/verify.js",
 		"update-color-keys": "node ./scripts/update-color-keys.js",
+		"brand": "node ./scripts/brand.js",
 		"assets": "node ./scripts/assets.js",
+		"screenshots": "node ./scripts/screenshots.js",
 		"test": "node ./scripts/test.js && npm run build && npm run validate && npm run verify && npm run fixtures",
 		"package": "node ./scripts/package.js",
 		"vscode:prepublish": "npm run build && npm run validate && npm run verify && npm run fixtures"
@@ -27,7 +29,7 @@
 	},
 	"icon": "assets/icon-128.png",
 	"galleryBanner": {
-		"color": "#0E191F",
+		"color": "#0F0719",
 		"theme": "dark"
 	},
 	"keywords": [
@@ -59,14 +61,14 @@
 	"contributes": {
 		"themes": [
 			{
-				"label": "Satellite",
-				"uiTheme": "vs-dark",
-				"path": "./theme/satellite.json"
-			},
-			{
 				"label": "Satellite Nebula",
 				"uiTheme": "vs-dark",
 				"path": "./theme/satellite-nebula.json"
+			},
+			{
+				"label": "Satellite",
+				"uiTheme": "vs-dark",
+				"path": "./theme/satellite.json"
 			},
 			{
 				"label": "Satellite Daybreak",

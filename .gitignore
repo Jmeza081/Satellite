@@ -7,5 +7,7 @@ theme
 bin
 *.vsix
 
-# Scratch file written by scripts/assets.js while rasterising
+# Scratch files written by scripts/assets.js and scripts/screenshots.js
+# while rasterising
 assets/.render.html
+assets/.shot.html
