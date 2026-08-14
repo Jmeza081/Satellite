@@ -7,6 +7,10 @@ scripts/**
 data/**
 node_modules/**
 
+# The Slack sidebar themes are a separate product built from the same palette.
+# They install by pasting a string into Slack, not from the VSIX.
+slack/**
+
 # Design sources and the README artwork stay in the repository. vsce rewrites
 # relative image links in the README to raw repository URLs at package time,
 # so the banners do not need to be inside the .vsix — only the icon does.

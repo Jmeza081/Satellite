@@ -11,21 +11,30 @@
 #   uiTheme  vs-dark | vs | hc-black | hc-light
 #   tokens   palette file, relative to src/
 #   output   destination, relative to the repository root
+#   slack    optional — also export this palette as a Slack sidebar theme
 #
 # Phase 4 adds the light and high-contrast variants by pointing new entries at
 # new token files. The ui.yml and syntax.yml partials are shared unchanged.
+#
+# `slack` is set on the two dark variants only. A Slack custom theme colours
+# the sidebar while the message pane follows Slack's own Light/Dark setting, so
+# a light or high-contrast column would be paired with whichever pane the
+# reader has set and could not be held to the contrast contract. See
+# src/slack.yml.
 
 - id: satellite
   label: Satellite
   uiTheme: vs-dark
   tokens: tokens.yml
   output: theme/satellite.json
+  slack: slack/satellite.txt
 
 - id: satellite-nebula
   label: Satellite Nebula
   uiTheme: vs-dark
   tokens: tokens-nebula.yml
   output: theme/satellite-nebula.json
+  slack: slack/satellite-nebula.txt
 
 - id: satellite-daybreak
   label: Satellite Daybreak

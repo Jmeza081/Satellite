@@ -7,7 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **Satellite for Slack.** The two dark palettes now also build to Slack
+  sidebar themes, committed to `slack/` as paste strings. Same
+  `src/tokens-*.yml`, same resolver, same rule that nothing outside a palette
+  file may hold a literal hex — so the Slack column and the VS Code side bar
+  are the same colour to the byte, and a palette change moves both products at
+  once. Only the dark variants export: a Slack custom theme colours the sidebar
+  while the message pane follows Slack's own Appearance setting, so a light or
+  high-contrast column could be paired with either pane and could not be held
+  to the contrast contract.
+
+    The slot map is [`src/slack.yml`](./src/slack.yml), with the reasoning
+    written next to each value. Two slots depart from the editor mapping. The
+    active channel takes `accent.base` rather than the `surface.overlay` VS Code
+    uses for a selected row — Slack draws no focus outline, so the colour carries
+    the whole affordance, and the raised surface measures 1.5:1 against the
+    column where the accent measures 7:1. The mention badge takes `accent.solid`
+    rather than `status.error`, because Slack always draws the count in white and
+    the error red holds white at only 3.2:1.
+
+    The contrast contract is declared alongside the map and reads its thresholds
+    from `src/a11y.yml`, so Slack and VS Code are held to one definition of AA.
+    `yarn slack:strict` measures every declared pair and fails the build;
+    `yarn test` now runs it. One shortfall is reported rather than exempted: the
+    badge fill sits at 2.7:1 against the column, under the 3:1 non-text floor,
+    because it is the one fill dark enough to hold Slack's white count at AA —
+    the numeral carries the meaning and clears 15:1.
+
+- `yarn slack`, `yarn slack:check` and `yarn slack:preview`. The first rebuilds
+  `slack/` and reports contrast, the second asserts the committed files match
+  `src/`, and the third re-renders the sidebar mock-ups in `assets/`. The mocks
+  are drawn from the eight theme colours and nothing else, and reproduce the
+  two behaviours Slack imposes on any theme — read channels dimmed below the
+  declared text colour, and a mention count that is always white.
+
+- `slack/README.md`, generated on every build so the paste strings in the prose
+  cannot drift from the ones in the files.
 
 ## [2.19.0] — 2026-08-13
 
