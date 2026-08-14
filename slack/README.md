@@ -52,14 +52,14 @@ preferences, and they can revert from the same screen.
 | ---- | ----- | -------- | - |
 | channel names at rest | 8.95:1 | 4.5 | ✓ |
 | channel names under the pointer | 6.78:1 | 4.5 | ✓ |
-| workspace menu and search field | 5.97:1 | 4.5 | ✓ |
+| workspace menu and search | 5.97:1 | 4.5 | ✓ |
 | the channel you are in | 7.03:1 | 4.5 | ✓ |
-| the mention count, which Slack always draws white | 6.25:1 | 4.5 | ✓ |
+| the mention count Slack always draws white | 6.25:1 | 4.5 | ✓ |
 | the active channel against the column | 7.03:1 | 3.0 | ✓ |
 | the online dot against the column | 9.49:1 | 3.0 | ✓ |
-| Mention Badge on Column BG <sup>1</sup> | 2.85:1 | 3.0 (advisory) | — |
+| the mention badge fill against the column <sup>1</sup> | 2.85:1 | 3.0 (advisory) | — |
 
-> **1.** The badge fill is quieter than 3:1 against the column because it is the one fill dark enough to hold Slack's white count at AA. The numeral carries the meaning and clears 15:1; a lighter pill would reverse that.
+> **1.** It is the one fill dark enough to hold Slack's white count at AA. The numeral carries the meaning and clears 15:1; a lighter pill would reverse that.
 
 <br clear="right">
 
@@ -86,14 +86,14 @@ preferences, and they can revert from the same screen.
 | ---- | ----- | -------- | - |
 | channel names at rest | 10.16:1 | 4.5 | ✓ |
 | channel names under the pointer | 8.00:1 | 4.5 | ✓ |
-| workspace menu and search field | 6.81:1 | 4.5 | ✓ |
+| workspace menu and search | 6.81:1 | 4.5 | ✓ |
 | the channel you are in | 7.74:1 | 4.5 | ✓ |
-| the mention count, which Slack always draws white | 7.40:1 | 4.5 | ✓ |
+| the mention count Slack always draws white | 7.40:1 | 4.5 | ✓ |
 | the active channel against the column | 7.74:1 | 3.0 | ✓ |
 | the online dot against the column | 11.42:1 | 3.0 | ✓ |
-| Mention Badge on Column BG <sup>1</sup> | 2.66:1 | 3.0 (advisory) | — |
+| the mention badge fill against the column <sup>1</sup> | 2.66:1 | 3.0 (advisory) | — |
 
-> **1.** The badge fill is quieter than 3:1 against the column because it is the one fill dark enough to hold Slack's white count at AA. The numeral carries the meaning and clears 15:1; a lighter pill would reverse that.
+> **1.** It is the one fill dark enough to hold Slack's white count at AA. The numeral carries the meaning and clears 15:1; a lighter pill would reverse that.
 
 <br clear="right">
 

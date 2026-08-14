@@ -46,6 +46,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `slack/README.md`, generated on every build so the paste strings in the prose
   cannot drift from the ones in the files.
 
+- **Satellite for iTerm2.** All five palettes now also build to
+  `.itermcolors` colour schemes, committed to `iterm/`. Unlike the Slack export
+  this is close to a direct port: the palettes have carried a full ANSI ramp
+  since the 2019 audit found ANSI black printing at 1.08:1, and `src/a11y.yml`
+  has held every one of those sixteen to a floor against the terminal ground
+  ever since. The values are the ones `src/ui.yml` gives VS Code's integrated
+  terminal, so a shell prints identically in both.
+
+    All five export, where only the dark two go to Slack. A terminal scheme sets
+    its own ground, so it cannot be paired with a surface it was not graded
+    against — the constraint that ruled out a light Slack column does not apply.
+
+    The work is in the chrome slots iTerm has and VS Code does not, mapped in
+    [`src/iterm.yml`](./src/iterm.yml). Three are worth noting. Bold text takes
+    the body colour rather than the bright-white corner of the cube, which would
+    make bold render _paler_ than body text on the light palettes. The badge is
+    opaque: iTerm's own is translucent and the first draft followed it, measuring
+    between 2.4:1 and 4.5:1 across the palettes, and since badge glyphs cover the
+    same area either way the alpha was buying nothing. `Tab Color` is left unset,
+    because iTerm only honours it when a profile opts in and a scheme that
+    repaints the tab bar on import is one people have to undo by hand.
+
+    `yarn iterm:strict` runs 23 contrast checks per scheme and fails the build;
+    `yarn test` now runs it. Selection is measured over the composited wash
+    rather than the raw translucent value, which is what a reader actually sees.
+    Components are written in sRGB rather than the Calibrated space older schemes
+    in the wild use, because the same numbers render differently in the two and a
+    scheme graded in one is not the scheme that was verified.
+
+- `scripts/export.js`, holding what the Slack and iTerm exports share: reading
+  thresholds out of `a11y.yml`, measuring a declared pair list, and refusing to
+  let a generated file or a hand-quoted README value drift from `src/`. Both
+  contracts now use the same `{ fg, bg, level, as }` shape `a11y.yml` already
+  used, so the three read alike. An exporter that measures contrast its own way
+  is one that will eventually disagree with the others about what AA means.
+
+- `yarn iterm`, `yarn iterm:check` and `yarn iterm:preview`, mirroring the
+  Slack commands. The previews render a mock session rather than a colour grid,
+  so the block cursor, a selection with text inside it, and a link are all
+  visible — and the ANSI ramp along the bottom includes the corner nearest the
+  ground, which is the one that cannot reach AA and therefore the one a preview
+  should not quietly leave out.
+
 ## [2.19.0] — 2026-08-13
 
 The theme was rebuilt for publication: re-graded against WCAG 2.2 and

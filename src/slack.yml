@@ -139,45 +139,48 @@ slots:
 # reading the code that enforces it. Thresholds are not repeated — they are
 # read from a11y.yml, so Slack and VS Code are held to one definition of AA.
 #
-# `fg` and `bg` are slot names, or a literal hex for a colour Slack draws that
-# the theme cannot set.
+# Pairs take the shape a11y.yml already uses — `{ fg, bg, level, as }` — so the
+# contracts read the same way whichever product they belong to. `fg` and `bg`
+# are slot names, or a literal hex for a colour Slack draws that the theme
+# cannot set. `level` names a threshold in a11y.yml: `text` is SC 1.4.3, and
+# `nonText` is SC 1.4.11, for shapes that carry meaning without text.
 # -----------------------------------------------------------------------------
 contrast:
-  # WCAG 2.2 SC 1.4.3 — anything that renders as text.
-  text:
-    - fg: textColor
-      bg: columnBg
-      note: channel names at rest
-    - fg: textColor
-      bg: hoverItem
-      note: channel names under the pointer
-    - fg: textColor
-      bg: menuBgHover
-      note: workspace menu and search field
-    - fg: activeItemText
-      bg: activeItem
-      note: the channel you are in
-    - fg: "#FFFFFF"
-      bg: mentionBadge
-      note: the mention count, which Slack always draws white
+  - { fg: textColor, bg: columnBg, level: text, as: channel names at rest }
+  - { fg: textColor, bg: hoverItem, level: text, as: channel names under the pointer }
+  - { fg: textColor, bg: menuBgHover, level: text, as: workspace menu and search }
+  - { fg: activeItemText, bg: activeItem, level: text, as: the channel you are in }
+  - {
+      fg: "#FFFFFF",
+      bg: mentionBadge,
+      level: text,
+      as: the mention count Slack always draws white,
+    }
+  - {
+      fg: activeItem,
+      bg: columnBg,
+      level: nonText,
+      as: the active channel against the column,
+    }
+  - {
+      fg: activePresence,
+      bg: columnBg,
+      level: nonText,
+      as: the online dot against the column,
+    }
 
-  # WCAG 2.2 SC 1.4.11 — shapes that carry meaning without text.
-  nonText:
-    - fg: activeItem
-      bg: columnBg
-      note: the active channel against the column
-    - fg: activePresence
-      bg: columnBg
-      note: the online dot against the column
-
-  # Measured and reported on every build, but not gated. Each entry needs a
-  # reason, and the reason has to be that meeting the threshold would cost more
-  # than it buys — not that it was inconvenient.
-  advisory:
-    - fg: mentionBadge
-      bg: columnBg
-      threshold: nonText
-      note: >-
-        The badge fill is quieter than 3:1 against the column because it is the
-        one fill dark enough to hold Slack's white count at AA. The numeral
-        carries the meaning and clears 15:1; a lighter pill would reverse that.
+# -----------------------------------------------------------------------------
+# Measured and reported on every build, but not gated. `because` is required:
+# an advisory without a reason is a hidden failure, and the reason has to be
+# that meeting the threshold would cost more than it buys — not that it was
+# inconvenient.
+# -----------------------------------------------------------------------------
+advisory:
+  - fg: mentionBadge
+    bg: columnBg
+    level: nonText
+    as: the mention badge fill against the column
+    because: >-
+      It is the one fill dark enough to hold Slack's white count at AA. The
+      numeral carries the meaning and clears 15:1; a lighter pill would reverse
+      that.

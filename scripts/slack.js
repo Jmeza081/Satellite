@@ -21,21 +21,28 @@
  * editor it was derived from.
  */
 
-const fs = require('fs');
-const path = require('path');
 const { readSource } = require('./yaml');
 const { createResolver } = require('./resolve');
-const { contrastRatio } = require('./color');
+const {
+    loadThresholds,
+    entriesFor,
+    measure,
+    report,
+    write,
+    stale,
+    readmeDrift,
+    footnote,
+    footnotes,
+} = require('./export');
 
-const ROOT = path.join(__dirname, '..');
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
-/** Reads slack.yml and a11y.yml, and fails loudly on anything malformed. */
+/** Reads slack.yml, and fails loudly on anything malformed. */
 function loadContract() {
     const map = readSource('slack.yml');
     if (!map || typeof map !== 'object') throw new Error('src/slack.yml is empty');
 
-    const { order, labels = {}, slots = {}, contrast = {} } = map;
+    const { order, labels = {}, slots = {}, contrast = [], advisory = [] } = map;
 
     if (!Array.isArray(order) || order.length !== 8) {
         throw new Error(
@@ -58,22 +65,7 @@ function loadContract() {
         }
     }
 
-    const a11y = readSource('a11y.yml');
-    const thresholds = (a11y && a11y.thresholds) || {};
-    for (const name of ['text', 'nonText']) {
-        if (typeof thresholds[name] !== 'number') {
-            throw new Error(`src/a11y.yml: thresholds.${name} is missing`);
-        }
-    }
-
-    return { order, labels, slots, contrast, thresholds };
-}
-
-/** Themes.yml entries that asked for a Slack export. */
-function slackEntries() {
-    const themes = readSource('themes.yml');
-    if (!Array.isArray(themes)) throw new Error('src/themes.yml must be a list');
-    return themes.filter((entry) => entry && entry.slack);
+    return { order, labels, slots, contrast, advisory, thresholds: loadThresholds() };
 }
 
 /**
@@ -111,48 +103,16 @@ function buildTheme(entry, contract) {
     };
 }
 
-/** Resolves a contrast reference: a slot name, or a literal hex Slack imposes. */
-function refColor(ref, colors) {
-    if (typeof ref === 'string' && ref.startsWith('#')) return ref.toUpperCase();
-    if (ref in colors) return colors[ref];
-    throw new Error(`slack.yml → contrast: "${ref}" is neither a slot nor a hex colour`);
-}
-
 /** Runs the declared contrast checks against one built theme. */
 function checkTheme(theme, contract) {
-    const { thresholds, contrast } = contract;
-    const rows = [];
-
-    const run = (list, threshold, kind) => {
-        for (const pair of list || []) {
-            const fg = refColor(pair.fg, theme.colors);
-            const bg = refColor(pair.bg, theme.colors);
-            const ratio = contrastRatio(fg, bg);
-            const floor = pair.threshold ? thresholds[pair.threshold] : threshold;
-            rows.push({
-                kind,
-                fg: pair.fg,
-                bg: pair.bg,
-                fgHex: fg,
-                bgHex: bg,
-                ratio,
-                threshold: floor,
-                ok: ratio >= floor,
-                note: pair.note || '',
-            });
-        }
-    };
-
-    run(contrast.text, thresholds.text, 'text');
-    run(contrast.nonText, thresholds.nonText, 'nonText');
-    run(contrast.advisory, thresholds.nonText, 'advisory');
-
-    const gated = rows.filter((row) => row.kind !== 'advisory');
-    return {
-        rows,
-        checks: gated.length,
-        failures: gated.filter((row) => !row.ok).length,
-    };
+    const { thresholds, contrast, advisory } = contract;
+    return report([
+        ...measure(contrast, theme.colors, thresholds, { where: 'slack.yml → contrast' }),
+        ...measure(advisory, theme.colors, thresholds, {
+            advisory: true,
+            where: 'slack.yml → advisory',
+        }),
+    ]);
 }
 
 // ---------------------------------------------------------------- generated docs
@@ -175,33 +135,20 @@ function slotTable(theme, contract) {
  * inside a table cell makes the whole table unreadable. The measurement stays
  * in the row; the argument moves below it.
  */
-function contrastTable(report, contract) {
+function contrastTable(report) {
     const lines = ['| Pair | Ratio | Required | |', '| ---- | ----- | -------- | - |'];
     const notes = [];
-    const name = (ref) => contract.labels[ref] || ref;
 
     for (const row of report.rows) {
-        const advisory = row.kind === 'advisory';
-        const label = advisory
-            ? `${name(row.fg)} on ${name(row.bg)}${footnote(notes, row.note)}`
-            : row.note || `${name(row.fg)} on ${name(row.bg)}`;
-        const required = advisory
+        const label = `${row.label}${footnote(notes, row.because)}`;
+        const required = row.advisory
             ? `${row.threshold.toFixed(1)} (advisory)`
             : row.threshold.toFixed(1);
-        const mark = row.ok ? '✓' : advisory ? '—' : '✗';
+        const mark = row.ok ? '✓' : row.advisory ? '—' : '✗';
         lines.push(`| ${label} | ${row.ratio.toFixed(2)}:1 | ${required} | ${mark} |`);
     }
 
-    const table = lines.join('\n');
-    if (notes.length === 0) return table;
-    return `${table}\n\n${notes.map((note, i) => `> **${i + 1}.** ${note}`).join('\n>\n')}`;
-}
-
-/** Registers a footnote and returns its marker. */
-function footnote(notes, text) {
-    if (!text) return '';
-    notes.push(text.trim().replace(/\s+/g, ' '));
-    return ` <sup>${notes.length}</sup>`;
+    return lines.join('\n') + footnotes(notes);
 }
 
 function renderReadme(built, contract) {
@@ -217,7 +164,7 @@ ${theme.string}
 
 ${slotTable(theme, contract)}
 
-${contrastTable(report, contract)}
+${contrastTable(report)}
 
 <br clear="right">
 `,
@@ -280,15 +227,16 @@ npm run slack:check     # assert the checked-in files match src/
 `;
 }
 
+/** What the root README must still quote for each theme: its paste string. */
+function snippets(built) {
+    return built.map(({ theme }) => ({ label: theme.label, snippet: theme.string }));
+}
+
 // ---------------------------------------------------------------------- build
 
 function buildAll() {
     const contract = loadContract();
-    const entries = slackEntries();
-
-    if (entries.length === 0) {
-        throw new Error('src/themes.yml: no entry declares a "slack" output');
-    }
+    const entries = entriesFor('slack');
 
     const built = entries.map((entry) => {
         const theme = buildTheme(entry, contract);
@@ -319,7 +267,7 @@ function buildAll() {
                         background: row.bg,
                         ratio: Number(row.ratio.toFixed(2)),
                         threshold: row.threshold,
-                        advisory: row.kind === 'advisory',
+                        advisory: row.advisory,
                         passes: row.ok,
                     })),
                 })),
@@ -334,57 +282,7 @@ function buildAll() {
     return { contract, built, files };
 }
 
-/** Writes the generated files, returning those whose contents actually moved. */
-function write(files) {
-    const changed = [];
-    for (const [relative, contents] of files) {
-        const target = path.join(ROOT, relative);
-        const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : null;
-        if (current !== contents) {
-            fs.mkdirSync(path.dirname(target), { recursive: true });
-            fs.writeFileSync(target, contents);
-            changed.push(relative);
-        }
-    }
-    return changed;
-}
-
-/**
- * Paste strings quoted in the root README that no longer match the build.
- *
- * slack/README.md is generated and cannot drift, but the root README quotes the
- * strings by hand — it is the page most people will copy from, so it is the one
- * that matters most and the one nothing else was checking.
- */
-function readmeDrift(built) {
-    const readme = path.join(ROOT, 'README.md');
-    if (!fs.existsSync(readme)) return [];
-    const text = fs.readFileSync(readme, 'utf8');
-    return built
-        .filter(({ theme }) => !text.includes(theme.string))
-        .map(({ theme }) => ({ label: theme.label, string: theme.string }));
-}
-
-/** Files whose checked-in contents differ from what src/ produces. */
-function stale(files) {
-    const out = [];
-    for (const [relative, contents] of files) {
-        const target = path.join(ROOT, relative);
-        const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : null;
-        if (current !== contents) out.push(relative);
-    }
-    return out;
-}
-
-module.exports = {
-    buildAll,
-    buildTheme,
-    checkTheme,
-    loadContract,
-    write,
-    stale,
-    readmeDrift,
-};
+module.exports = { buildAll, buildTheme, checkTheme, loadContract };
 
 // ----------------------------------------------------------------------- cli
 
@@ -398,7 +296,7 @@ if (require.main === module) {
 
         if (check) {
             const outdated = stale(files);
-            const drifted = readmeDrift(built);
+            const drifted = readmeDrift(snippets(built));
             if (outdated.length > 0) {
                 process.stderr.write(
                     `\nSlack export is out of date — run \`npm run slack\` and commit:\n` +
@@ -408,7 +306,7 @@ if (require.main === module) {
             if (drifted.length > 0) {
                 process.stderr.write(
                     `\nREADME.md quotes a stale paste string — update it to:\n` +
-                        drifted.map((d) => `  ${d.label}: ${d.string}\n`).join(''),
+                        drifted.map((d) => `  ${d.label}: ${d.snippet}\n`).join(''),
                 );
             }
             if (outdated.length > 0 || drifted.length > 0) process.exit(1);
@@ -435,8 +333,8 @@ if (require.main === module) {
 
             process.stdout.write('\n');
             for (const row of report.rows) {
-                const mark = row.ok ? 'pass' : row.kind === 'advisory' ? 'note' : 'FAIL';
-                const label = row.note || `${row.fg} on ${row.bg}`;
+                const mark = row.ok ? 'pass' : row.advisory ? 'note' : 'FAIL';
+                const label = row.label;
                 process.stdout.write(
                     `    ${mark}  ${String(row.ratio.toFixed(2)).padStart(6)}:1  ` +
                         `(needs ${row.threshold.toFixed(1)})  ${label}\n`,
@@ -444,10 +342,10 @@ if (require.main === module) {
             }
         }
 
-        const drifted = readmeDrift(built);
-        for (const { label, string } of drifted) {
+        const drifted = readmeDrift(snippets(built));
+        for (const { label, snippet } of drifted) {
             process.stdout.write(
-                `\n  README.md does not quote the current ${label} string:\n    ${string}\n`,
+                `\n  README.md does not quote the current ${label} string:\n    ${snippet}\n`,
             );
         }
 

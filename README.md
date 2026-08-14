@@ -188,6 +188,56 @@ try the alternative:
   draws the count in white with no way to change it, and the error red holds
   white at 3.2:1 — a loud pill with an unreadable number.
 
+## Satellite for iTerm2
+
+All five palettes as iTerm2 colour schemes, in [`iterm/`](./iterm). The sixteen
+ANSI colours are the same values `src/ui.yml` gives VS Code's integrated
+terminal, so a shell prints identically in both.
+
+<p align="center">
+  <img src="./assets/iterm-satellite-nebula.png" alt="Satellite Nebula in iTerm2" width="820">
+</p>
+
+| Scheme | Ground | |
+| --- | --- | --- |
+| **Satellite Nebula** | `#0F0719` | [`satellite-nebula.itermcolors`](./iterm/satellite-nebula.itermcolors) |
+| **Satellite** | `#0E191F` | [`satellite.itermcolors`](./iterm/satellite.itermcolors) |
+| **Satellite Daybreak** | `#E9EFF3` | [`satellite-daybreak.itermcolors`](./iterm/satellite-daybreak.itermcolors) |
+| **Satellite High Contrast** | `#010406` | [`satellite-orbit-hc.itermcolors`](./iterm/satellite-orbit-hc.itermcolors) |
+| **Satellite Daybreak High Contrast** | `#F7F9FA` | [`satellite-daybreak-hc.itermcolors`](./iterm/satellite-daybreak-hc.itermcolors) |
+
+Double-click the file to import it, then pick it from **Settings → Profiles →
+Colors → Color Presets…**. Presets apply per profile, so a profile you use for
+something else keeps its own colours. Sharing is just sending the file.
+
+All five export here, where only the two dark palettes export to Slack. The
+difference is that a terminal scheme sets its own ground: it cannot end up
+paired with a surface it was not graded against, so the light and
+high-contrast variants are as valid in a terminal as the dark ones.
+
+The map is [`src/iterm.yml`](./src/iterm.yml), and `yarn iterm:strict` runs 23
+contrast checks per scheme against the thresholds in `src/a11y.yml`. Full
+tables and previews for each are in [`iterm/README.md`](./iterm/README.md).
+Three decisions worth calling out:
+
+- **Bold text takes the body colour, not a brighter one.** The obvious value is
+  the bright-white corner of the ANSI cube, which lifts bold on a dark ground —
+  and on Daybreak makes bold render *paler* than body text. Bold is carried by
+  weight.
+- **The badge is opaque.** iTerm's own badge is translucent and the first draft
+  followed it, measuring between 2.4:1 and 4.5:1 depending on the palette. The
+  alpha bought nothing — badge glyphs cover the same area either way — so it
+  went, and the slot now clears AA everywhere.
+- **`Tab Color` is deliberately unset**, because iTerm only honours it when a
+  profile ticks *Use tab color*, and a scheme that silently repaints the tab bar
+  is one people have to undo by hand.
+
+One documented shortfall, inherited from the palettes rather than introduced
+here: the corner of the ANSI cube nearest the ground — black on the dark
+schemes, bright white on the light ones — sits below AA at the `dim` floor
+described under [Accessibility](#accessibility). It cannot reach 4.5:1 without
+ceasing to be the colour it names.
+
 ## Installing without the Marketplace
 
 ### From a `.vsix` — nothing to clone
@@ -255,11 +305,16 @@ src/semantic.yml         semantic token colours
 src/a11y.yml             the accessibility contract that `yarn verify` enforces
 src/fixtures.yml         per-language scope expectations `yarn fixtures` checks
 src/slack.yml            the Slack sidebar slot map and its contrast contract
-src/themes.yml           which variants to build, and which also export to Slack
+src/iterm.yml            the iTerm2 slot map and its contrast contract
+src/themes.yml           which variants to build, and where else they export
 ```
 
-The Slack themes are generated into `slack/`, which *is* committed — the paste
-strings are the product, so they need to be readable without a build.
+The Slack and iTerm exports are generated into `slack/` and `iterm/`, which
+*are* committed — the paste strings and the `.itermcolors` files are the
+product, so they need to be usable without a build. Both go through
+`scripts/export.js`, which holds the parts they share: reading the thresholds
+out of `a11y.yml`, measuring a declared pair list, and refusing to let a
+generated file or a hand-quoted README value drift from `src/`.
 
 Colours are authored in OKLCH — `oklch(<lightness> <chroma> <hue>)` — and
 converted to hex at build time, with chroma reduced automatically when a colour
@@ -284,6 +339,9 @@ yarn screenshots # recapture the README editor mock-ups, one per theme
 yarn slack       # rebuild slack/ and report its contrast
 yarn slack:check # assert the committed slack/ files match src/
 yarn slack:preview # re-render the Slack sidebar mock-ups
+yarn iterm       # rebuild iterm/ and report its contrast
+yarn iterm:check # assert the committed iterm/ files match src/
+yarn iterm:preview # re-render the terminal mock-ups
 yarn package     # build an installable .vsix into bin/
 yarn test        # unit tests, then all of the above
 ```
